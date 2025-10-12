@@ -1,0 +1,71 @@
+{
+    "best_model": "Random Forest",
+    "accuracy": 0.9423076923076923,
+    "best_params": {
+        "max_depth": 10,
+        "min_samples_split": 2,
+        "n_estimators": 100
+    },
+    "all_results": {
+        "Random Forest": {
+            "accuracy": 0.9423076923076923
+        },
+        "Gradient Boosting": {
+            "accuracy": 0.9423076923076923
+        }
+    },
+    "classification_report": {
+        "1": {
+            "precision": 1.0,
+            "recall": 0.8636363636363636,
+            "f1-score": 0.926829268292683,
+            "support": 22.0
+        },
+        "2": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 21.0
+        },
+        "3": {
+            "precision": 0.8928571428571429,
+            "recall": 1.0,
+            "f1-score": 0.9433962264150944,
+            "support": 25.0
+        },
+        "4": {
+            "precision": 0.8571428571428571,
+            "recall": 0.9,
+            "f1-score": 0.8780487804878049,
+            "support": 20.0
+        },
+        "5": {
+            "precision": 1.0,
+            "recall": 0.9375,
+            "f1-score": 0.967741935483871,
+            "support": 16.0
+        },
+        "accuracy": 0.9423076923076923,
+        "macro avg": {
+            "precision": 0.95,
+            "recall": 0.9402272727272727,
+            "f1-score": 0.9432032421358907,
+            "support": 104.0
+        },
+        "weighted avg": {
+            "precision": 0.946771978021978,
+            "recall": 0.9423076923076923,
+            "f1-score": 0.9424999628876386,
+            "support": 104.0
+        }
+    },
+    "training_samples": 416,
+    "testing_samples": 104,
+    "features": [
+        "sleep_quality",
+        "headaches_per_week",
+        "academic_performance",
+        "study_load",
+        "extracurricular_frequency"
+    ]
+}

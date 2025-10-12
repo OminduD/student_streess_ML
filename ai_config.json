@@ -1,0 +1,13 @@
+{
+    "enabled": false,
+    "provider": "huggingface",
+    "api_key": "",
+    "model": "mistralai/Mistral-7B-Instruct-v0.2",
+    "max_tokens": 500,
+    "timeout": 30,
+
+    "_comment_enabled": "Set to true to enable AI recommendations (falls back to rule-based if false)",
+    "_comment_provider": "Options: 'openai', 'anthropic', 'huggingface', 'custom'",
+    "_comment_api_key": "Your API key (or set AI_API_KEY environment variable).",
+    "_comment_model": "e.g., 'gpt-3.5-turbo' for OpenAI, 'mistralai/Mistral-7B-Instruct-v0.2' for HuggingFace"
+}
