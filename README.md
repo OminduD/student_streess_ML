@@ -1,4 +1,4 @@
-# Student Stress Predictor# Student Stress Predictor
+# Student Stress Predictor
 
 
 

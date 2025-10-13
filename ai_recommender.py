@@ -1,6 +1,6 @@
 """
 AI Recommendation Engine
-========================
+==========================
 Module for generating AI-powered stress management recommendations.
 Supports multiple AI providers with fallback to rule-based recommendations.
 """

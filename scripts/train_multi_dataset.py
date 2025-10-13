@@ -13,7 +13,7 @@ def train_multi_dataset_model(processed_folder='../data/processed', model_folder
     Trains model on combined multi-dataset with hyperparameter tuning.
     """
     print("=" * 70)
-    print("ADVANCED MULTI-DATASET MODEL TRAINING (with Hyperparameter Tuning)")
+    print("ADVANCED MULTI-DATASET MODEL TRAINING (with Hyperparameter Tuning)") 
     print("=" * 70)
     
     # Load processed data
@@ -31,7 +31,7 @@ def train_multi_dataset_model(processed_folder='../data/processed', model_folder
         
     except FileNotFoundError:
         print("❌ Error: Processed data not found.")
-        print("Please run 'python3 scripts/ingest_multi_dataset.py' first!")
+        print("Please run 'python3 scripts/ingest_multi_dataset.py' first! ")
         return False
     
     # Define models and parameter grids for GridSearchCV
@@ -60,7 +60,7 @@ def train_multi_dataset_model(processed_folder='../data/processed', model_folder
     best_model_name = ""
     
     print("\n" + "=" * 70)
-    print("TRAINING MODELS WITH HYPERPARAMETER TUNING (GridSearchCV)")
+    print("TRAINING MODELS WITH HYPERPARAMETER TUNING (GridSearchCV) ")
     print("=" * 70)
     
     for name, mp in models_and_params.items():

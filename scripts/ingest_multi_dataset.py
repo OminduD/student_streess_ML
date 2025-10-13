@@ -5,7 +5,7 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 import os
 
 def load_student_stress_factors(filepath):
-    """Load and process Student Stress Factors (2).csv"""
+    """Load and process Student Stress Factors (2).csv """
     print("\n[1/3] Loading Student Stress Factors dataset...")
     df = pd.read_csv(filepath)
     
@@ -16,7 +16,7 @@ def load_student_stress_factors(filepath):
         'How would you rate you academic performance 👩‍🎓?': 'academic_performance',
         'how would you rate your study load?': 'study_load',
         'How many times a week you practice extracurricular activities 🎾?': 'extracurricular_frequency',
-        'How would you rate your stress levels?': 'stress_level'
+        'How would you rate your stress levels?': 'stress_level' 
     }
     df.rename(columns=column_mapping, inplace=True)
     

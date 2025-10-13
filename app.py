@@ -1,7 +1,7 @@
 """
 Student Stress Predictor - Streamlit Web Application
-=====================================================
-A beautiful, interactive web interface for stress level prediction and data collection.
+=======================================================
+A beautiful, interactive web interface for stress level prediction and data collection.  
 """
 
 import streamlit as st
