@@ -27,58 +27,23 @@ st.set_page_config(
 # Initialize the storage connection once and cache it
 storage = get_storage()
 
-# Initialize theme in session state FIRST (before any other code)
-if 'theme' not in st.session_state:
-    # Check query params first, default to light if not present
-    query_params = st.query_params
-    if 'theme' in query_params and query_params['theme'] in ['light', 'dark']:
-        st.session_state.theme = query_params['theme']
-    else:
-        st.session_state.theme = 'light'  # Default to light mode
-        st.query_params['theme'] = 'light'
+# DARK MODE ONLY - No theme toggle needed
+# Using eye-comfortable dark colors with reduced blue light
+bg_gradient = "linear-gradient(-45deg, #1a1d29, #2d1b2e, #1e2837, #252134)"
+container_bg = "rgba(30, 35, 45, 0.9)"
+text_primary = "#e4e6eb"
+text_secondary = "#b8bdc8"
+card_bg = "rgba(40, 45, 60, 0.85)"
+card_border = "rgba(255, 255, 255, 0.1)"
+accent_1 = "#64b5f6"  # Softer blue
+accent_2 = "#4db6ac"  # Teal
+accent_3 = "#ffb74d"  # Warm amber
+shadow_color = "rgba(0, 0, 0, 0.3)"
+glow_color = "rgba(100, 181, 246, 0.2)"
 
-def toggle_theme():
-    """Toggle between light and dark mode"""
-    new_theme = 'dark' if st.session_state.theme == 'light' else 'light'
-    st.session_state.theme = new_theme
-    # Update query params for persistence in cloud
-    st.query_params['theme'] = new_theme
-
-# Get current theme
-current_theme = st.session_state.theme
-
-# Theme-specific colors (eye-comfortable)
-if current_theme == 'light':
-    # Soft, warm light mode colors
-    bg_gradient = "linear-gradient(-45deg, #e8f4f8, #fef5e7, #fdeef4, #e8f8f5)"
-    container_bg = "rgba(255, 255, 255, 0.9)"
-    text_primary = "#2c3e50"
-    text_secondary = "#5a6c7d"
-    card_bg = "rgba(255, 255, 255, 0.85)"
-    card_border = "rgba(149, 157, 165, 0.2)"
-    accent_1 = "#4a90e2"  # Soft blue
-    accent_2 = "#50c878"  # Emerald
-    accent_3 = "#e67e22"  # Warm orange
-    shadow_color = "rgba(0, 0, 0, 0.08)"
-    glow_color = "rgba(74, 144, 226, 0.3)"
-else:
-    # Dark mode with reduced blue light (eye-comfortable)
-    bg_gradient = "linear-gradient(-45deg, #1a1d29, #2d1b2e, #1e2837, #252134)"
-    container_bg = "rgba(30, 35, 45, 0.9)"
-    text_primary = "#e4e6eb"
-    text_secondary = "#b8bdc8"
-    card_bg = "rgba(40, 45, 60, 0.85)"
-    card_border = "rgba(255, 255, 255, 0.1)"
-    accent_1 = "#64b5f6"  # Softer blue
-    accent_2 = "#4db6ac"  # Teal
-    accent_3 = "#ffb74d"  # Warm amber
-    shadow_color = "rgba(0, 0, 0, 0.3)"
-    glow_color = "rgba(100, 181, 246, 0.2)"
-
-# Custom CSS for ULTRA MODERN styling with advanced animations
-# Using unique key to force CSS re-render on theme change
+# Custom CSS for ULTRA MODERN styling with advanced animations (Dark Mode Only)
 st.markdown(f"""
-    <style id="theme-{current_theme}">
+    <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;600;700&display=swap');
     
     /* Root variables for theme */
@@ -556,29 +521,9 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# Theme Toggle in Sidebar (More reliable for cloud deployment)
-with st.sidebar:
-    st.markdown("---")
-    st.markdown(f"""
-        <div style="text-align: center; padding: 10px; background: {card_bg}; border-radius: 10px; margin-bottom: 10px;">
-            <p style="color: {text_primary}; margin: 0; font-size: 14px;">🎨 <strong>Theme: {current_theme.upper()}</strong></p>
-            <div style="display: flex; justify-content: center; gap: 8px; margin-top: 8px;">
-                <div style="width: 25px; height: 25px; background: {accent_1}; border-radius: 5px; border: 2px solid {card_border};"></div>
-                <div style="width: 25px; height: 25px; background: {accent_2}; border-radius: 5px; border: 2px solid {card_border};"></div>
-                <div style="width: 25px; height: 25px; background: {accent_3}; border-radius: 5px; border: 2px solid {card_border};"></div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    theme_icon = "🌙 Switch to Dark" if current_theme == "light" else "☀️ Switch to Light"
-    if st.button(theme_icon, key=f"theme_toggle_{current_theme}", use_container_width=True):
-        toggle_theme()
-        st.rerun()
-
-# Add animated particles background (theme-aware)
-# Extract RGB from accent colors for particles
+# Add animated particles background (dark theme)
 particle_color_1 = glow_color
-particle_color_2 = f"{accent_1}4d" if current_theme == 'light' else f"{accent_1}33"  # 30% opacity
+particle_color_2 = f"{accent_1}33"  # 30% opacity for dark mode
 
 st.markdown(f"""
     <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden;">
@@ -600,45 +545,6 @@ st.markdown(f"""
                     animation: particles 16s linear infinite; left: 80%; animation-delay: 4.5s;"></div>
         <div style="position: absolute; width: 21px; height: 21px; background: {particle_color_1}; border-radius: 50%; 
                     animation: particles 23s linear infinite; left: 90%; animation-delay: 1.5s;"></div>
-    </div>
-""", unsafe_allow_html=True)
-
-# Floating Theme Toggle Button (Top Right Corner)
-float_button_icon = "🌙" if current_theme == "light" else "☀️"
-float_button_bg = card_bg
-float_button_hover = accent_1
-
-st.markdown(f"""
-    <style>
-    .floating-theme-btn {{
-        position: fixed;
-        top: 70px;
-        right: 20px;
-        z-index: 999;
-        background: {float_button_bg};
-        border: 2px solid {card_border};
-        border-radius: 50%;
-        width: 55px;
-        height: 55px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 26px;
-        cursor: pointer;
-        box-shadow: 0 4px 15px {shadow_color};
-        transition: all 0.3s ease;
-        text-decoration: none;
-    }}
-    
-    .floating-theme-btn:hover {{
-        transform: rotate(180deg) scale(1.1);
-        box-shadow: 0 6px 25px {glow_color};
-        border-color: {float_button_hover};
-    }}
-    </style>
-    
-    <div class="floating-theme-btn" onclick="window.location.href='?theme={'dark' if current_theme == 'light' else 'light'}'">
-        {float_button_icon}
     </div>
 """, unsafe_allow_html=True)
 
