@@ -14,6 +14,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from pathlib import Path
 from ai_recommender import get_ai_recommendations
+from database import get_storage
 
 # Page configuration
 st.set_page_config(
@@ -22,6 +23,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Initialize the storage connection once
+storage = get_storage()
 
 # Custom CSS for better styling
 st.markdown("""
@@ -52,6 +56,166 @@ st.markdown("""
     .stress-level-5 { color: #e74c3c; font-weight: bold; }
     </style>
 """, unsafe_allow_html=True)
+
+# File paths
+MODEL_PATH = "model/stress_predictor_model.joblib"
+METRICS_PATH = "model/metrics.json"
+
+# Initialize session state
+if 'prediction_made' not in st.session_state:
+    st.session_state.prediction_made = False
+if 'predicted_stress' not in st.session_state:
+    st.session_state.predicted_stress = None
+if 'input_data' not in st.session_state:
+    st.session_state.input_data = None
+
+@st.cache_resource
+def load_model():
+    """Load the trained model"""
+    try:
+        if os.path.exists(MODEL_PATH):
+            model = joblib.load(MODEL_PATH)
+            return model, None
+        else:
+            return None, "Model not found. Please train the model first."
+    except Exception as e:
+        return None, f"Error loading model: {str(e)}"
+
+def calculate_engineered_features(sleep_quality, headaches_per_week, 
+                                 academic_performance, study_load, 
+                                 extracurricular_frequency):
+    """Calculate engineered features"""
+    wellbeing_score = sleep_quality - (headaches_per_week / 2)
+    academic_pressure = study_load * (6 - academic_performance)
+    total_workload = study_load + (extracurricular_frequency / 2)
+    
+    return wellbeing_score, academic_pressure, total_workload
+
+def predict_stress(model, features):
+    """Make prediction using the model"""
+    try:
+        # Check if model has feature names and filter features accordingly
+        if hasattr(model, 'feature_names_in_'):
+            model_features = model.feature_names_in_.tolist()
+            # Keep only features the model was trained on
+            features = features[model_features]
+        
+        prediction = model.predict(features)[0]
+        # Get probability if available
+        if hasattr(model, 'predict_proba'):
+            proba = model.predict_proba(features)[0]
+            confidence = max(proba) * 100
+        else:
+            confidence = None
+        return int(prediction), confidence
+    except Exception as e:
+        st.error(f"Prediction error: {str(e)}")
+        return None, None
+
+def save_user_input(data, include_stress=False):
+    """Save user input using the database module"""
+    return storage.save_user_input(data, include_stress)
+
+def get_stress_description(stress_level):
+    """Get description and emoji for stress level"""
+    descriptions = {
+        1: ("Very Low Stress", "😊", "You're doing great! Keep up the healthy habits."),
+        2: ("Low Stress", "🙂", "Good stress management! Minor improvements possible."),
+        3: ("Moderate Stress", "😐", "Manageable stress. Consider relaxation techniques."),
+        4: ("High Stress", "😟", "Significant stress detected. Take action to reduce it."),
+        5: ("Very High Stress", "😰", "Critical stress level! Please seek support.")
+    }
+    return descriptions.get(stress_level, ("Unknown", "❓", ""))
+
+def load_statistics():
+    """Load statistics from the database module"""
+    return storage.get_all_data()
+
+# Main App
+def main():
+    # Header
+    st.markdown('<div class="main-header">🧠 Student Stress Predictor</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">AI-Powered Stress Level Assessment & Data Collection</div>', unsafe_allow_html=True)
+    
+    # Load model
+    model, error = load_model()
+    
+    if error:
+        st.error(f"⚠️ {error}")
+        st.info("Please run: `python scripts/train_multi_dataset.py`")
+        return
+    
+    st.success("✅ Model loaded successfully!")
+    
+    # Sidebar
+    with st.sidebar:
+        st.image("https://img.icons8.com/fluency/96/000000/mental-health.png", width=100)
+        st.title("Navigation")
+        page = st.radio("Select Page:", 
+                       ["🔮 Predict Stress", "📊 Statistics", "ℹ️ About"])
+        
+        st.markdown("---")
+        st.markdown("### Quick Stats")
+        stats_df = load_statistics()
+        if stats_df is not None and not stats_df.empty:
+            st.metric("Total Submissions", len(stats_df))
+            if 'stress_level' in stats_df.columns:
+                valid_stress = pd.to_numeric(stats_df['stress_level'], errors='coerce').dropna()
+                if len(valid_stress) > 0:
+                    avg_stress = valid_stress.mean()
+                    st.metric("Avg Stress Level", f"{avg_stress:.2f}")
+        else:
+            st.info("No data collected yet")
+    
+    # Main content based on page selection
+    if page == "🔮 Predict Stress":
+        show_prediction_page(model)
+    elif page == "📊 Statistics":
+        show_statistics_page()
+    else:
+        show_about_page()
+
+def show_prediction_page(model):
+# ... existing code ...
+        
+        with col2:
+            if st.button("📤 Submit", type="primary", use_container_width=True):
+                data = st.session_state.input_data.copy()
+                data['actual_stress'] = actual_stress
+                
+                if save_user_input(data, include_stress=True):
+                    # Message is now handled by the database module
+                    st.balloons()
+                else:
+                    # Error is now handled by the database module
+                    pass
+
+def get_recommendations(stress_level, sleep_quality, headaches, study_load, 
+                       academic_performance=3, extracurricular=3):
+# ... existing code ...
+    
+    stats_df = load_statistics()
+    
+    if stats_df is None or stats_df.empty:
+        st.info("📭 No data collected yet. Start by making predictions!")
+        return
+    
+    st.success(f"✅ Total submissions: **{len(stats_df)}** entries")
+    
+    # Overview metrics
+# ... existing code ...
+        
+        # Download button
+        csv = stats_df.to_csv(index=False)
+        st.download_button(
+            label="📥 Download CSV",
+            data=csv,
+            file_name=f"stress_data_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv"
+        )
+
+def show_about_page():
+    """Display about page"""
 
 # File paths
 MODEL_PATH = "model/stress_predictor_model.joblib"
@@ -108,40 +272,18 @@ def predict_stress(model, features):
         st.error(f"Prediction error: {str(e)}")
         return None, None
 
+from database import get_storage
+
 def save_to_csv(data, include_stress=False):
-    """Save user input to CSV file"""
-    try:
-        # Prepare data dictionary
-        record = {
-            'sleep_quality': data['sleep_quality'],
-            'headaches_per_week': data['headaches_per_week'],
-            'academic_performance': data['academic_performance'],
-            'study_load': data['study_load'],
-            'extracurricular_frequency': data['extracurricular_frequency'],
-            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'source': 'streamlit_app'
-        }
-        
-        if include_stress and 'actual_stress' in data:
-            record['stress_level'] = data['actual_stress']
-        else:
-            record['stress_level'] = ''
-        
-        # Create DataFrame
-        df = pd.DataFrame([record])
-        
-        # Check if file exists
-        if os.path.exists(USER_DATA_PATH):
-            # Append to existing file
-            df.to_csv(USER_DATA_PATH, mode='a', header=False, index=False)
-        else:
-            # Create new file with headers
-            df.to_csv(USER_DATA_PATH, mode='w', header=True, index=False)
-        
-        return True
-    except Exception as e:
-        st.error(f"Error saving data: {str(e)}")
-        return False
+    """Save user input to database"""
+    storage = get_storage()
+    return storage.save_user_input(data, include_stress)
+
+# REPLACE the load_statistics function with:
+def load_statistics():
+    """Load statistics from database"""
+    storage = get_storage()
+    return storage.get_all_data()
 
 def get_stress_description(stress_level):
     """Get description and emoji for stress level"""

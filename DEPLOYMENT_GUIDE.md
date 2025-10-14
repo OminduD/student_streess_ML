@@ -61,12 +61,12 @@ CREATE INDEX idx_stress_level ON user_inputs(stress_level) WHERE stress_level IS
 ALTER TABLE user_inputs ENABLE ROW LEVEL SECURITY;
 
 -- Create policy to allow insert/select with service key
-CREATE POLICY "Enable insert for service role" ON user_inputs
-    FOR INSERT TO service_role
+CREATE POLICY "Enable insert for anon" ON user_inputs
+    FOR INSERT TO anon
     WITH CHECK (true);
 
-CREATE POLICY "Enable select for service role" ON user_inputs
-    FOR SELECT TO service_role
+CREATE POLICY "Enable select for anon" ON user_inputs
+    FOR SELECT TO anon
     USING (true);
 ```
 

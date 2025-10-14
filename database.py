@@ -3,10 +3,7 @@ Database Module for Student Stress Predictor
 Uses Supabase for persistent data storage in cloud deployment
 """
 
-import os
-from datetime import datetime
-from typing import Optional, Dict, List
-import pandas as pd
+import streamlit as st
 
 # Try to import supabase, but allow fallback to CSV
 try:
@@ -14,7 +11,7 @@ try:
     SUPABASE_AVAILABLE = True
 except ImportError:
     SUPABASE_AVAILABLE = False
-    print("⚠️ Supabase not installed. Using CSV fallback.")
+    st.warning("⚠️ Supabase library not installed. `pip install supabase`. Using CSV fallback.")
 
 class DataStorage:
     """
@@ -42,16 +39,17 @@ class DataStorage:
             supabase_key = os.getenv("SUPABASE_KEY")
             
             if not supabase_url or not supabase_key:
-                print("⚠️ Supabase credentials not found in environment. Using CSV fallback.")
+                st.error("❌ **Supabase Error**: `SUPABASE_URL` or `SUPABASE_KEY` not found in environment variables.")
+                st.info("Please set them in your Streamlit Cloud secrets.")
                 self.use_supabase = False
                 return
             
             self.supabase_client = create_client(supabase_url, supabase_key)
-            print("✓ Connected to Supabase database")
+            st.success("✅ Connected to Supabase database.")
             
         except Exception as e:
-            print(f"⚠️ Failed to connect to Supabase: {e}")
-            print("   Using CSV fallback.")
+            st.error(f"❌ **Failed to connect to Supabase**: {e}")
+            st.info("Using CSV as a fallback. Check your Supabase URL and Key.")
             self.use_supabase = False
     
     def save_user_input(self, data: Dict, include_stress: bool = False) -> bool:
@@ -84,18 +82,24 @@ class DataStorage:
         if self.use_supabase:
             return self._save_to_supabase(record)
         else:
+            st.warning("Saving to local CSV file as a fallback.")
             return self._save_to_csv(record)
     
     def _save_to_supabase(self, record: Dict) -> bool:
         """Save record to Supabase"""
         try:
             result = self.supabase_client.table('user_inputs').insert(record).execute()
-            print(f"✓ Data saved to Supabase (ID: {result.data[0]['id']})")
+            
+            # Check for API errors in the result
+            if hasattr(result, 'error') and result.error:
+                st.error(f"❌ **Supabase API Error**: {result.error.message}")
+                return False
+
+            st.success(f"✓ Data saved to Supabase successfully!")
             return True
         except Exception as e:
-            print(f"❌ Error saving to Supabase: {e}")
-            # Fallback to CSV
-            print("   Falling back to CSV...")
+            st.error(f"❌ **Error saving to Supabase**: {e}")
+            st.info("This could be due to incorrect RLS policies or table structure. Falling back to CSV.")
             return self._save_to_csv(record)
     
     def _save_to_csv(self, record: Dict) -> bool:
@@ -108,10 +112,10 @@ class DataStorage:
             else:
                 df.to_csv(self.csv_path, mode='w', header=True, index=False)
             
-            print(f"✓ Data saved to CSV: {self.csv_path}")
+            st.info(f"✓ Data saved to local CSV: {self.csv_path}")
             return True
         except Exception as e:
-            print(f"❌ Error saving to CSV: {e}")
+            st.error(f"❌ Error saving to CSV: {e}")
             return False
     
     def get_all_data(self) -> Optional[pd.DataFrame]:
@@ -124,6 +128,7 @@ class DataStorage:
         if self.use_supabase:
             return self._get_from_supabase()
         else:
+            st.info("Loading data from local CSV file.")
             return self._get_from_csv()
     
     def _get_from_supabase(self) -> Optional[pd.DataFrame]:
@@ -131,17 +136,21 @@ class DataStorage:
         try:
             result = self.supabase_client.table('user_inputs').select("*").execute()
             
+            if hasattr(result, 'error') and result.error:
+                st.error(f"❌ **Supabase API Error (get_all_data)**: {result.error.message}")
+                return None
+
             if result.data:
                 df = pd.DataFrame(result.data)
-                print(f"✓ Retrieved {len(df)} records from Supabase")
+                st.info(f"✓ Retrieved {len(df)} records from Supabase.")
                 return df
             else:
-                print("ℹ️ No data found in Supabase")
-                return None
+                st.info("ℹ️ No data found in Supabase table 'user_inputs'.")
+                return pd.DataFrame() # Return empty dataframe
                 
         except Exception as e:
-            print(f"❌ Error retrieving from Supabase: {e}")
-            # Fallback to CSV
+            st.error(f"❌ **Error retrieving from Supabase**: {e}")
+            st.info("Falling back to CSV.")
             return self._get_from_csv()
     
     def _get_from_csv(self) -> Optional[pd.DataFrame]:
@@ -150,13 +159,13 @@ class DataStorage:
             if os.path.exists(self.csv_path):
                 df = pd.read_csv(self.csv_path)
                 df = df.dropna(subset=['sleep_quality'])
-                print(f"✓ Retrieved {len(df)} records from CSV")
+                st.info(f"✓ Retrieved {len(df)} records from CSV.")
                 return df
             else:
-                print("ℹ️ No CSV file found")
+                st.warning("ℹ️ No CSV file found.")
                 return None
         except Exception as e:
-            print(f"❌ Error reading CSV: {e}")
+            st.error(f"❌ Error reading CSV: {e}")
             return None
     
     def get_statistics(self) -> Dict:
@@ -227,9 +236,11 @@ class DataStorage:
 # Singleton instance
 _storage_instance: Optional[DataStorage] = None
 
+@st.cache_resource
 def get_storage() -> DataStorage:
     """Get or create the storage singleton instance"""
     global _storage_instance
     if _storage_instance is None:
         _storage_instance = DataStorage()
     return _storage_instance
+

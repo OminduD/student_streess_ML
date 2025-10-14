@@ -54,8 +54,13 @@ CREATE TABLE user_inputs (
 
 ALTER TABLE user_inputs ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Enable all for service role" ON user_inputs
-    FOR ALL TO service_role USING (true) WITH CHECK (true);
+CREATE POLICY "Enable insert for anon" ON user_inputs
+    FOR INSERT TO anon
+    WITH CHECK (true);
+
+CREATE POLICY "Enable select for anon" ON user_inputs
+    FOR SELECT TO anon
+    USING (true);
 ```
 
 **Get your credentials:**
