@@ -19,6 +19,9 @@ supabase==2.0.3
 # API Requests (for AI recommendations)
 requests>=2.31.0
 
+# Groq AI (optional - for fast AI recommendations)
+# groq>=0.4.0  # Uncomment if you want to use the official Groq SDK
+
 # Jupyter Notebook (for analysis)
 jupyter>=1.0.0
 notebook>=6.5.0

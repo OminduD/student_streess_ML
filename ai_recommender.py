@@ -26,7 +26,8 @@ class AIRecommendationEngine:
         """
         self.config = self._load_config(config_path)
         self.provider = self.config.get('provider', 'openai')
-        self.api_key = self.config.get('api_key', os.getenv('AI_API_KEY'))
+        # Support both AI_API_KEY and GROQ_API_KEY environment variables
+        self.api_key = self.config.get('api_key') or os.getenv('GROQ_API_KEY') or os.getenv('AI_API_KEY')
         self.api_url = self.config.get('api_url', '')
         self.model = self.config.get('model', 'gpt-3.5-turbo')
         self.enabled = self.config.get('enabled', False)
@@ -89,6 +90,11 @@ class AIRecommendationEngine:
                 )
             elif self.provider == 'anthropic':
                 return self._get_anthropic_recommendations(
+                    stress_level, sleep_quality, headaches_per_week,
+                    academic_performance, study_load, extracurricular_frequency
+                )
+            elif self.provider == 'groq':
+                return self._get_groq_recommendations(
                     stress_level, sleep_quality, headaches_per_week,
                     academic_performance, study_load, extracurricular_frequency
                 )
@@ -213,6 +219,69 @@ Format each recommendation on a new line starting with an emoji."""
             line.strip() 
             for line in content.split('\n') 
             if line.strip() and len(line.strip()) > 10
+        ]
+        
+        return recommendations[:5]  # Max 5 recommendations
+    
+    def _get_groq_recommendations(
+        self, stress_level, sleep_quality, headaches,
+        academic_perf, study_load, extracurricular
+    ) -> List[str]:
+        """
+        Get recommendations from Groq API (SUPER FAST and FREE!).
+        Groq provides incredibly fast inference with generous free tier.
+        Sign up at: https://console.groq.com
+        """
+        
+        url = self.api_url or "https://api.groq.com/openai/v1/chat/completions"
+        
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        # Groq supports models like llama-3.1-70b-versatile (best quality)
+        # or llama-3.1-8b-instant (fastest)
+        model = self.model or "llama-3.1-70b-versatile"
+        
+        data = {
+            "model": model,
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "You are an empathetic student wellness advisor specializing in stress management and mental health support. Provide practical, actionable advice."
+                },
+                {
+                    "role": "user",
+                    "content": self._create_prompt(
+                        stress_level, sleep_quality, headaches,
+                        academic_perf, study_load, extracurricular
+                    )
+                }
+            ],
+            "max_tokens": self.max_tokens,
+            "temperature": 0.7,
+            "top_p": 0.9,
+            "stream": False
+        }
+        
+        response = requests.post(url, headers=headers, json=data, timeout=self.timeout)
+        response.raise_for_status()
+        
+        result = response.json()
+        content = result['choices'][0]['message']['content']
+        
+        # Parse recommendations (split by lines, filter empty)
+        recommendations = [
+            line.strip() 
+            for line in content.split('\n') 
+            if line.strip() and len(line.strip()) > 10
+        ]
+        
+        # Remove common prefixes
+        recommendations = [
+            rec.lstrip('0123456789.-) ') 
+            for rec in recommendations
         ]
         
         return recommendations[:5]  # Max 5 recommendations

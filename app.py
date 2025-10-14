@@ -27,33 +27,183 @@ st.set_page_config(
 # Initialize the storage connection once and cache it
 storage = get_storage()
 
-# Custom CSS for better styling
+# Custom CSS for modern, beautiful styling
 st.markdown("""
     <style>
-    .main-header {
-        font-size: 3rem;
-        font-weight: bold;
-        color: #1f77b4;
-        text-align: center;
-        margin-bottom: 1rem;
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    
+    * {
+        font-family: 'Poppins', sans-serif;
     }
+    
+    .main-header {
+        font-size: 3.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        margin-bottom: 0.5rem;
+        animation: fadeInDown 0.8s ease-out;
+    }
+    
     .sub-header {
-        font-size: 1.5rem;
-        color: #555;
+        font-size: 1.3rem;
+        color: #6b7280;
         text-align: center;
         margin-bottom: 2rem;
+        font-weight: 300;
+        animation: fadeIn 1s ease-out;
     }
+    
     .metric-card {
-        background-color: #f0f2f6;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #1f77b4;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: none;
+        transition: transform 0.3s ease;
     }
-    .stress-level-1 { color: #2ecc71; font-weight: bold; }
-    .stress-level-2 { color: #3498db; font-weight: bold; }
-    .stress-level-3 { color: #f39c12; font-weight: bold; }
-    .stress-level-4 { color: #e67e22; font-weight: bold; }
-    .stress-level-5 { color: #e74c3c; font-weight: bold; }
+    
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .stress-level-1 { 
+        color: #10b981; 
+        font-weight: bold; 
+        text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+    }
+    .stress-level-2 { 
+        color: #3b82f6; 
+        font-weight: bold; 
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+    .stress-level-3 { 
+        color: #f59e0b; 
+        font-weight: bold; 
+        text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+    }
+    .stress-level-4 { 
+        color: #f97316; 
+        font-weight: bold; 
+        text-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+    }
+    .stress-level-5 { 
+        color: #ef4444; 
+        font-weight: bold; 
+        text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+    }
+    
+    .prediction-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 3rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        text-align: center;
+        color: white;
+        animation: scaleIn 0.5s ease-out;
+    }
+    
+    .recommendation-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        margin: 1rem 0;
+        border-left: 5px solid #667eea;
+        transition: all 0.3s ease;
+        animation: slideInLeft 0.5s ease-out;
+    }
+    
+    .recommendation-card:hover {
+        transform: translateX(10px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .ai-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+    }
+    
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes scaleIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    .stButton>button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+    }
+    
+    .stButton>button:hover {
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        transform: translateY(-2px);
+    }
+    
+    .sidebar .sidebar-content {
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    div[data-testid="stMetricValue"] {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .element-container:has(> .stAlert) {
+        animation: slideInLeft 0.5s ease-out;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -287,19 +437,37 @@ def show_prediction_page(model):
         
         with res_col2:
             st.markdown(f"""
-            <div style='text-align: center; padding: 2rem; background-color: #f0f2f6; border-radius: 1rem;'>
-                <h1 style='font-size: 4rem; margin: 0;'>{emoji}</h1>
-                <h2 class='stress-level-{predicted_stress}' style='margin: 0.5rem 0;'>
+            <div class='prediction-card'>
+                <h1 style='font-size: 5rem; margin: 0; animation: pulse 2s infinite;'>{emoji}</h1>
+                <h2 style='margin: 1rem 0 0.5rem 0; font-size: 2rem;'>
                     Stress Level: {predicted_stress}/5
                 </h2>
-                <h3 style='color: #555;'>{level_name}</h3>
-                <p style='font-size: 1.1rem;'>{description}</p>
+                <h3 style='color: rgba(255,255,255,0.9); font-weight: 300; font-size: 1.5rem;'>{level_name}</h3>
+                <p style='font-size: 1.1rem; color: rgba(255,255,255,0.95); margin-top: 1rem;'>{description}</p>
             </div>
+            <style>
+            @keyframes pulse {{
+                0%, 100% {{ transform: scale(1); }}
+                50% {{ transform: scale(1.1); }}
+            }}
+            </style>
             """, unsafe_allow_html=True)
         
         # Recommendations
         st.markdown("---")
         st.subheader("💡 AI-Powered Recommendations")
+        
+        # Check if AI is enabled
+        from ai_recommender import AIRecommendationEngine
+        engine = AIRecommendationEngine()
+        
+        if engine.enabled and engine.api_key:
+            if engine.provider == 'groq':
+                st.markdown('<div class="ai-badge">⚡ Powered by Groq AI (Lightning Fast!)</div>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<div class="ai-badge">🤖 Powered by {engine.provider.upper()} AI</div>', unsafe_allow_html=True)
+        else:
+            st.info("💡 **Tip**: Enable Groq AI for personalized recommendations! Add your API key to `ai_config.json` or set `GROQ_API_KEY` environment variable. Get a free key at: https://console.groq.com")
         
         with st.spinner("🤖 Generating personalized recommendations..."):
             recommendations = get_recommendations(
@@ -312,7 +480,12 @@ def show_prediction_page(model):
             )
         
         for i, rec in enumerate(recommendations, 1):
-            st.info(f"**{i}.** {rec}")
+            st.markdown(f"""
+            <div class="recommendation-card">
+                <strong style="color: #667eea; font-size: 1.1rem;">#{i}</strong>
+                <p style="margin: 0.5rem 0 0 0; font-size: 1rem; color: #374151;">{rec}</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         # Feedback section
         st.markdown("---")
