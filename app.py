@@ -27,13 +27,21 @@ st.set_page_config(
 # Initialize the storage connection once and cache it
 storage = get_storage()
 
-# Initialize theme in session state
+# Initialize theme in session state FIRST (before any other code)
 if 'theme' not in st.session_state:
     st.session_state.theme = 'light'
 
+# Check query params for theme (for Streamlit Cloud compatibility)
+query_params = st.query_params
+if 'theme' in query_params:
+    st.session_state.theme = query_params['theme']
+
 def toggle_theme():
     """Toggle between light and dark mode"""
-    st.session_state.theme = 'dark' if st.session_state.theme == 'light' else 'light'
+    new_theme = 'dark' if st.session_state.theme == 'light' else 'light'
+    st.session_state.theme = new_theme
+    # Update query params for persistence in cloud
+    st.query_params['theme'] = new_theme
 
 # Get current theme
 current_theme = st.session_state.theme
@@ -524,15 +532,39 @@ st.markdown(f"""
     ::-webkit-scrollbar-thumb:hover {{
         background: linear-gradient(135deg, {accent_2} 0%, {accent_1} 100%);
     }}
+    
+    /* Theme Toggle Button Specific Styling */
+    button[key*="theme_toggle"] {{
+        background: {card_bg} !important;
+        border: 2px solid {card_border} !important;
+        border-radius: 50% !important;
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.5rem !important;
+        padding: 0 !important;
+        box-shadow: 0 4px 15px {shadow_color} !important;
+        transition: all 0.3s ease !important;
+    }}
+    
+    button[key*="theme_toggle"]:hover {{
+        transform: rotate(180deg) scale(1.1) !important;
+        box-shadow: 0 6px 20px {glow_color} !important;
+        border-color: {accent_1} !important;
+    }}
     </style>
 """, unsafe_allow_html=True)
 
-# Theme Toggle Button
-col1, col2, col3 = st.columns([6, 1, 1])
+# Theme Toggle Button (Streamlit Cloud Compatible)
+col1, col2, col3 = st.columns([8, 1, 1])
+with col2:
+    st.write("")  # Spacer
 with col3:
-    theme_icon = "🌙" if st.session_state.theme == "light" else "☀️"
-    theme_label = "Dark" if st.session_state.theme == "light" else "Light"
-    if st.button(f"{theme_icon} {theme_label}", key="theme_toggle", help="Toggle dark/light mode"):
+    theme_icon = "🌙" if current_theme == "light" else "☀️"
+    theme_label = "Dark" if current_theme == "light" else "Light"
+    # Use a unique key that changes with theme to force proper state
+    if st.button(f"{theme_icon}", key=f"theme_toggle_{current_theme}", 
+                 help=f"Switch to {theme_label} mode", 
+                 use_container_width=True):
         toggle_theme()
         st.rerun()
 
