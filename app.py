@@ -1240,68 +1240,36 @@ def show_about_page():
     st.markdown("""
     <div class="glass-card" style="animation-delay: 1.3s;">
         <h3 style="color: #667eea; margin-bottom: 1rem; font-weight: 600;">🔄 Data Flow</h3>
+        <div style="text-align: center; background: rgba(102, 126, 234, 0.1); padding: 2rem; border-radius: 15px; margin: 1.5rem 0;">
+            <p style="color: #e4e6eb; font-size: 1.1rem; line-height: 2; font-weight: 500;">
+                User Input → Feature Engineering → ML Model → Prediction<br>
+                <span style="color: #64b5f6;">↓</span><br>
+                Save to Database → Future Model Improvements
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    ```
-    User Input → Feature Engineering → ML Model → Prediction
-                        ↓
-                  Save to Supabase → Future Model Retraining
-    ```
+    st.markdown("""
+    <div class="glass-card" style="animation-delay: 1.4s;">
+        <h3 style="color: #667eea; margin-bottom: 1rem; font-weight: 600;">⚠️ Disclaimer</h3>
+        <p style="color: #b8bdc8; font-size: 1.05rem; line-height: 1.8; text-align: center; padding: 1rem;">
+            This tool is for <strong style="color: #e4e6eb;">educational and informational purposes only</strong>. 
+            It should not replace professional medical or psychological advice. If you're experiencing severe stress, 
+            please consult with a qualified healthcare professional.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    ---
-    
-    ### 🚀 Getting Started
-    
-    **First Time Setup:**
-    ```bash
-    # Install dependencies
-    pip install -r requirements.txt
-    
-    # Process data
-    python scripts/ingest_multi_dataset.py
-    
-    # Train model
-    python scripts/train_multi_dataset.py
-    
-    # Run app
-    streamlit run app.py
-    ```
-    
-    **Retrain with new data:**
-    ```bash
-    python scripts/download_training_data.py # Downloads from Supabase
-    python scripts/ingest_multi_dataset.py   # Includes new data
-    python scripts/train_multi_dataset.py    # Retrains with new data
-    ```
-    
-    ---
-    
-    ### 📚 Resources
-    
-    - **Project Documentation**: See README.md
-    - **Deployment Guide**: See DEPLOYMENT_GUIDE.md
-    - **Analysis Notebook**: notebooks/multi_dataset_analysis.ipynb
-    
-    ---
-    
-    ### ⚠️ Disclaimer
-    
-    This tool is for **educational and informational purposes only**. It should not replace 
-    professional medical or psychological advice. If you're experiencing severe stress, 
-    please consult with a qualified healthcare professional.
-    
-    ---
-    
-    ### 👨‍💻 Technical Details
-    
-    - **Framework**: Streamlit
-    - **ML Library**: scikit-learn
-    - **Data Storage**: Supabase (PostgreSQL)
-    - **Visualization**: Plotly
-    
-    ---
-    
-    **Version**: 1.1.0 (Cloud-ready)
-    **Last Updated**: October 2025
+    st.markdown("""
+    <div style="text-align: center; margin-top: 2rem; padding: 1.5rem; animation-delay: 1.5s;">
+        <p style="color: #64b5f6; font-size: 0.95rem; font-weight: 500;">
+            Version 2.0 (Dark Mode) • Built with ❤️ using Machine Learning
+        </p>
+        <p style="color: #b8bdc8; font-size: 0.85rem; margin-top: 0.5rem;">
+            Last Updated: October 2025
+        </p>
+    </div>
     """)
 
 if __name__ == "__main__":
