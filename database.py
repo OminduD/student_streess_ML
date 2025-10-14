@@ -3,6 +3,10 @@ Database Module for Student Stress Predictor
 Uses Supabase for persistent data storage in cloud deployment
 """
 
+import os
+from datetime import datetime
+from typing import Optional, Dict, List
+import pandas as pd
 import streamlit as st
 
 # Try to import supabase, but allow fallback to CSV
@@ -35,17 +39,26 @@ class DataStorage:
     def _init_supabase(self):
         """Initialize Supabase client"""
         try:
-            supabase_url = os.getenv("SUPABASE_URL")
-            supabase_key = os.getenv("SUPABASE_KEY")
-            
+            # First, try to get from Streamlit secrets
+            try:
+                supabase_url = st.secrets["SUPABASE_URL"]
+                supabase_key = st.secrets["SUPABASE_KEY"]
+                print("✓ Loaded Supabase credentials from Streamlit secrets.")
+            except (AttributeError, KeyError):
+                # Fallback to environment variables
+                print("ℹ️ Streamlit secrets not found. Falling back to environment variables.")
+                supabase_url = os.getenv("SUPABASE_URL")
+                supabase_key = os.getenv("SUPABASE_KEY")
+
             if not supabase_url or not supabase_key:
-                st.error("❌ **Supabase Error**: `SUPABASE_URL` or `SUPABASE_KEY` not found in environment variables.")
-                st.info("Please set them in your Streamlit Cloud secrets.")
+                st.error("❌ **Supabase Error**: `SUPABASE_URL` or `SUPABASE_KEY` not found in secrets or environment variables.")
+                st.info("Please set them in your Streamlit Cloud secrets or a local .env file.")
                 self.use_supabase = False
                 return
             
             self.supabase_client = create_client(supabase_url, supabase_key)
-            st.success("✅ Connected to Supabase database.")
+            # Don't show success message on every run, only on first connection.
+            # This is handled by the singleton pattern.
             
         except Exception as e:
             st.error(f"❌ **Failed to connect to Supabase**: {e}")
@@ -82,24 +95,28 @@ class DataStorage:
         if self.use_supabase:
             return self._save_to_supabase(record)
         else:
-            st.warning("Saving to local CSV file as a fallback.")
+            st.warning("⚠️ Supabase not connected. Saving to local CSV file as a fallback.")
             return self._save_to_csv(record)
     
     def _save_to_supabase(self, record: Dict) -> bool:
         """Save record to Supabase"""
+        if not self.supabase_client:
+            st.error("❌ Cannot save to Supabase, client not initialized.")
+            return False
         try:
             result = self.supabase_client.table('user_inputs').insert(record).execute()
             
             # Check for API errors in the result
             if hasattr(result, 'error') and result.error:
                 st.error(f"❌ **Supabase API Error**: {result.error.message}")
+                st.info("This could be due to incorrect RLS policies or table structure.")
                 return False
 
-            st.success(f"✓ Data saved to Supabase successfully!")
+            st.success(f"✓ Thank you! Your data has been saved to the cloud.")
             return True
         except Exception as e:
             st.error(f"❌ **Error saving to Supabase**: {e}")
-            st.info("This could be due to incorrect RLS policies or table structure. Falling back to CSV.")
+            st.info("Falling back to CSV.")
             return self._save_to_csv(record)
     
     def _save_to_csv(self, record: Dict) -> bool:
@@ -128,11 +145,14 @@ class DataStorage:
         if self.use_supabase:
             return self._get_from_supabase()
         else:
-            st.info("Loading data from local CSV file.")
+            st.info("ℹ️ Supabase not connected. Loading data from local CSV file.")
             return self._get_from_csv()
     
     def _get_from_supabase(self) -> Optional[pd.DataFrame]:
         """Retrieve data from Supabase"""
+        if not self.supabase_client:
+            st.error("❌ Cannot get data from Supabase, client not initialized.")
+            return None
         try:
             result = self.supabase_client.table('user_inputs').select("*").execute()
             
@@ -142,10 +162,8 @@ class DataStorage:
 
             if result.data:
                 df = pd.DataFrame(result.data)
-                st.info(f"✓ Retrieved {len(df)} records from Supabase.")
                 return df
             else:
-                st.info("ℹ️ No data found in Supabase table 'user_inputs'.")
                 return pd.DataFrame() # Return empty dataframe
                 
         except Exception as e:
@@ -159,10 +177,8 @@ class DataStorage:
             if os.path.exists(self.csv_path):
                 df = pd.read_csv(self.csv_path)
                 df = df.dropna(subset=['sleep_quality'])
-                st.info(f"✓ Retrieved {len(df)} records from CSV.")
                 return df
             else:
-                st.warning("ℹ️ No CSV file found.")
                 return None
         except Exception as e:
             st.error(f"❌ Error reading CSV: {e}")
@@ -172,7 +188,7 @@ class DataStorage:
         """Get statistics from stored data"""
         df = self.get_all_data()
         
-        if df is None or len(df) == 0:
+        if df is None or df.empty:
             return {
                 'total_submissions': 0,
                 'avg_stress': None,
@@ -213,7 +229,7 @@ class DataStorage:
         try:
             df = self.get_all_data()
             
-            if df is None or len(df) == 0:
+            if df is None or df.empty:
                 print("⚠️ No data to export")
                 return False
             
@@ -233,14 +249,19 @@ class DataStorage:
             return False
 
 
-# Singleton instance
+# Singleton instance for the DataStorage class
 _storage_instance: Optional[DataStorage] = None
 
 @st.cache_resource
 def get_storage() -> DataStorage:
-    """Get or create the storage singleton instance"""
+    """
+    Get or create the storage singleton instance.
+    Using st.cache_resource ensures the connection is made only once.
+    """
     global _storage_instance
     if _storage_instance is None:
+        print("Creating new DataStorage instance.")
         _storage_instance = DataStorage()
     return _storage_instance
+
 
