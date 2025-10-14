@@ -394,10 +394,113 @@ st.markdown(f"""
         transform: translateY(-2px) scale(1.02) !important;
     }}
     
-    /* Sidebar with Glass Effect */
-    .sidebar .sidebar-content {{
-        background: linear-gradient(180deg, {accent_1}f2 0%, {accent_2}f2 100%) !important;
-        backdrop-filter: blur(10px) !important;
+    /* Sidebar with Ultra Modern Glass Effect */
+    section[data-testid="stSidebar"] {{
+        background: linear-gradient(180deg, 
+            rgba(102, 126, 234, 0.15) 0%, 
+            rgba(118, 75, 162, 0.15) 50%,
+            rgba(77, 182, 172, 0.15) 100%) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+        border-right: 1px solid {card_border} !important;
+        box-shadow: 4px 0 24px {shadow_color} !important;
+    }}
+    
+    section[data-testid="stSidebar"] > div {{
+        background: transparent !important;
+    }}
+    
+    /* Sidebar Logo Container */
+    section[data-testid="stSidebar"] .stImage {{
+        display: flex !important;
+        justify-content: center !important;
+        margin: 1rem auto !important;
+        padding: 1rem !important;
+        background: linear-gradient(135deg, {accent_1}20 0%, {accent_2}20 100%) !important;
+        border-radius: 20px !important;
+        border: 2px solid {card_border} !important;
+        box-shadow: 0 8px 16px {shadow_color} !important;
+        animation: float 3s ease-in-out infinite !important;
+    }}
+    
+    @keyframes float {{
+        0%, 100% {{ transform: translateY(0px); }}
+        50% {{ transform: translateY(-10px); }}
+    }}
+    
+    /* Sidebar Title */
+    section[data-testid="stSidebar"] .stMarkdown h1 {{
+        color: {text_primary} !important;
+        font-size: 1.8rem !important;
+        font-weight: 700 !important;
+        text-align: center !important;
+        margin: 1.5rem 0 !important;
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 50%, {accent_3} 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        text-shadow: 0 0 20px {glow_color} !important;
+        animation: gradientSlide 5s ease infinite !important;
+    }}
+    
+    /* Sidebar Radio Buttons */
+    section[data-testid="stSidebar"] .stRadio > div {{
+        background: {card_bg} !important;
+        border-radius: 15px !important;
+        padding: 1rem !important;
+        border: 1px solid {card_border} !important;
+        box-shadow: 0 4px 12px {shadow_color} !important;
+    }}
+    
+    section[data-testid="stSidebar"] .stRadio label {{
+        color: {text_primary} !important;
+        font-weight: 500 !important;
+        font-size: 1.05rem !important;
+        padding: 0.8rem 1rem !important;
+        border-radius: 10px !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+    }}
+    
+    section[data-testid="stSidebar"] .stRadio label:hover {{
+        background: linear-gradient(135deg, {accent_1}30 0%, {accent_2}30 100%) !important;
+        transform: translateX(5px) !important;
+        box-shadow: 0 0 15px {glow_color} !important;
+    }}
+    
+    /* Sidebar Metrics */
+    section[data-testid="stSidebar"] [data-testid="stMetricValue"] {{
+        color: {accent_1} !important;
+        font-size: 2rem !important;
+        font-weight: 800 !important;
+        text-shadow: 0 0 10px {glow_color} !important;
+    }}
+    
+    section[data-testid="stSidebar"] [data-testid="stMetricLabel"] {{
+        color: {text_secondary} !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+    }}
+    
+    /* Sidebar Divider */
+    section[data-testid="stSidebar"] hr {{
+        border: none !important;
+        height: 2px !important;
+        background: linear-gradient(90deg, transparent 0%, {accent_1} 50%, transparent 100%) !important;
+        margin: 1.5rem 0 !important;
+        animation: pulse 2s ease-in-out infinite !important;
+    }}
+    
+    /* Sidebar Headers */
+    section[data-testid="stSidebar"] h3 {{
+        color: {text_primary} !important;
+        font-weight: 600 !important;
+        font-size: 1.2rem !important;
+        margin: 1rem 0 0.5rem 0 !important;
+        text-align: center !important;
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
     }}
     
     /* Animated Metrics */
@@ -649,25 +752,113 @@ def main():
         st.info("Please run: `python scripts/train_multi_dataset.py`")
         return
     
-    # Sidebar
+    # Sidebar with Ultra Modern Design
     with st.sidebar:
+        # Logo with cool animation
         st.image("https://img.icons8.com/fluency/96/000000/mental-health.png", width=100)
-        st.title("Navigation")
-        page = st.radio("Select Page:", 
-                       ["🔮 Predict Stress", "📊 Statistics", "ℹ️ About"])
+        
+        # Animated title with gradient
+        st.markdown("""
+        <h1 style="text-align: center; margin: 1rem 0;">
+            🧠 StressAI
+        </h1>
+        """, unsafe_allow_html=True)
         
         st.markdown("---")
-        st.markdown("### Quick Stats")
+        
+        # Navigation with cool label
+        st.markdown("""
+        <div style="text-align: center; margin-bottom: 0.5rem;">
+            <span style="color: #64b5f6; font-weight: 600; font-size: 1.1rem; 
+                         text-transform: uppercase; letter-spacing: 2px;">
+                📍 Navigate
+            </span>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        page = st.radio("Select Page:", 
+                       ["🔮 Predict Stress", "📊 Statistics", "ℹ️ About"],
+                       label_visibility="collapsed")
+        
+        st.markdown("---")
+        
+        # Stats section with modern cards
+        st.markdown("""
+        <div style="text-align: center; margin-bottom: 1rem;">
+            <span style="color: #64b5f6; font-weight: 600; font-size: 1.1rem; 
+                         text-transform: uppercase; letter-spacing: 2px;">
+                📊 Live Stats
+            </span>
+        </div>
+        """, unsafe_allow_html=True)
+        
         stats_df = load_statistics()
         if stats_df is not None and not stats_df.empty:
-            st.metric("Total Submissions", len(stats_df))
+            # Submissions metric
+            st.markdown("""
+            <div style="background: rgba(100, 181, 246, 0.1); 
+                        border-radius: 12px; 
+                        padding: 1rem; 
+                        margin-bottom: 0.8rem;
+                        border: 1px solid rgba(100, 181, 246, 0.2);
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            """, unsafe_allow_html=True)
+            st.metric("📥 Total Submissions", len(stats_df))
+            st.markdown("</div>", unsafe_allow_html=True)
+            
+            # Average stress metric
             if 'stress_level' in stats_df.columns:
                 valid_stress = pd.to_numeric(stats_df['stress_level'], errors='coerce').dropna()
                 if len(valid_stress) > 0:
                     avg_stress = valid_stress.mean()
-                    st.metric("Avg Stress Level", f"{avg_stress:.2f}")
+                    
+                    # Color based on stress level
+                    if avg_stress < 2.5:
+                        stress_color = "#10b981"
+                        stress_emoji = "😊"
+                    elif avg_stress < 3.5:
+                        stress_color = "#ffb74d"
+                        stress_emoji = "😐"
+                    else:
+                        stress_color = "#ef4444"
+                        stress_emoji = "😰"
+                    
+                    st.markdown(f"""
+                    <div style="background: rgba(77, 182, 172, 0.1); 
+                                border-radius: 12px; 
+                                padding: 1rem;
+                                border: 1px solid rgba(77, 182, 172, 0.2);
+                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                    """, unsafe_allow_html=True)
+                    st.metric(f"{stress_emoji} Avg Stress", f"{avg_stress:.2f}")
+                    st.markdown("</div>", unsafe_allow_html=True)
         else:
-            st.info("No data collected yet")
+            st.markdown("""
+            <div style="background: rgba(100, 181, 246, 0.1); 
+                        border-radius: 12px; 
+                        padding: 1.5rem; 
+                        text-align: center;
+                        border: 1px solid rgba(100, 181, 246, 0.2);">
+                <p style="color: #b8bdc8; margin: 0;">📊 No data yet</p>
+                <p style="color: #64b5f6; font-size: 0.85rem; margin: 0.5rem 0 0 0;">
+                    Start predicting to see stats!
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        # Footer with version info
+        st.markdown("""
+        <div style="text-align: center; margin-top: 2rem; padding: 1rem;">
+            <p style="color: #64b5f6; font-size: 0.75rem; margin: 0; font-weight: 600;">
+                ⚡ Powered by AI
+            </p>
+            <p style="color: #b8bdc8; font-size: 0.7rem; margin: 0.3rem 0 0 0;">
+                v2.0 • Dark Mode
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
     
     # Main content based on page selection
     if page == "🔮 Predict Stress":
