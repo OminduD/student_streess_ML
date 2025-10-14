@@ -512,12 +512,12 @@ def show_statistics_page():
 
         # Download button
         csv = stats_df.to_csv(index=False)
-	st.download_button(
-	    label="📥 Download CSV",
-	    data=csv,
-	    file_name=f"stress_data_{datetime.now().strftime('%Y%m%d')}.csv",
-	    mime="text/csv"
-	)
+        st.download_button(
+            label="📥 Download CSV",
+            data=csv,
+            file_name=f"stress_data_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv"
+        )
 
 def show_about_page():
     """Display about page"""
