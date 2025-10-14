@@ -7,7 +7,7 @@ import sys
 import pandas as pd
 from datetime import datetime, timedelta
 
-def check_new_data(min_new_samples=10):
+def check_new_data(MIN_LABELED_RECORDS = 5):
     """
     Check if there's enough new data for retraining
     
@@ -35,8 +35,8 @@ def check_new_data(min_new_samples=10):
     print(f"\nTotal records: {len(df)}")
     print(f"Labeled records: {len(labeled_df)}")
     
-    if len(labeled_df) < min_new_samples:
-        print(f"\n⚠️ Not enough labeled data ({len(labeled_df)} < {min_new_samples})")
+    if len(labeled_df) < MIN_LABELED_RECORDS:
+        print(f"\n⚠️ Not enough labeled data ({len(labeled_df)} < {MIN_LABELED_RECORDS})")
         print("   Skipping training.")
         return False
     
