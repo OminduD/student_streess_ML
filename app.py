@@ -27,143 +27,204 @@ st.set_page_config(
 # Initialize the storage connection once and cache it
 storage = get_storage()
 
+# Initialize theme in session state
+if 'theme' not in st.session_state:
+    st.session_state.theme = 'light'
+
+def toggle_theme():
+    """Toggle between light and dark mode"""
+    st.session_state.theme = 'dark' if st.session_state.theme == 'light' else 'light'
+
+# Get current theme
+current_theme = st.session_state.theme
+
+# Theme-specific colors (eye-comfortable)
+if current_theme == 'light':
+    # Soft, warm light mode colors
+    bg_gradient = "linear-gradient(-45deg, #e8f4f8, #fef5e7, #fdeef4, #e8f8f5)"
+    container_bg = "rgba(255, 255, 255, 0.9)"
+    text_primary = "#2c3e50"
+    text_secondary = "#5a6c7d"
+    card_bg = "rgba(255, 255, 255, 0.85)"
+    card_border = "rgba(149, 157, 165, 0.2)"
+    accent_1 = "#4a90e2"  # Soft blue
+    accent_2 = "#50c878"  # Emerald
+    accent_3 = "#e67e22"  # Warm orange
+    shadow_color = "rgba(0, 0, 0, 0.08)"
+    glow_color = "rgba(74, 144, 226, 0.3)"
+else:
+    # Dark mode with reduced blue light (eye-comfortable)
+    bg_gradient = "linear-gradient(-45deg, #1a1d29, #2d1b2e, #1e2837, #252134)"
+    container_bg = "rgba(30, 35, 45, 0.9)"
+    text_primary = "#e4e6eb"
+    text_secondary = "#b8bdc8"
+    card_bg = "rgba(40, 45, 60, 0.85)"
+    card_border = "rgba(255, 255, 255, 0.1)"
+    accent_1 = "#64b5f6"  # Softer blue
+    accent_2 = "#4db6ac"  # Teal
+    accent_3 = "#ffb74d"  # Warm amber
+    shadow_color = "rgba(0, 0, 0, 0.3)"
+    glow_color = "rgba(100, 181, 246, 0.2)"
+
 # Custom CSS for ULTRA MODERN styling with advanced animations
-st.markdown("""
+st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;600;700&display=swap');
     
-    /* Animated Background Gradient */
-    .stApp {
-        background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
-        background-size: 400% 400%;
-        animation: gradientShift 15s ease infinite;
-    }
+    /* Root variables for theme */
+    :root {{
+        --bg-gradient: {bg_gradient};
+        --container-bg: {container_bg};
+        --text-primary: {text_primary};
+        --text-secondary: {text_secondary};
+        --card-bg: {card_bg};
+        --card-border: {card_border};
+        --accent-1: {accent_1};
+        --accent-2: {accent_2};
+        --accent-3: {accent_3};
+        --shadow: {shadow_color};
+        --glow: {glow_color};
+    }}
     
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+    /* Smooth theme transitions */
+    * {{
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+    }}
+    
+    /* Animated Background Gradient */
+    .stApp {{
+        background: {bg_gradient};
+        background-size: 400% 400%;
+        animation: gradientShift 20s ease infinite;
+    }}
+    
+    @keyframes gradientShift {{
+        0% {{ background-position: 0% 50%; }}
+        50% {{ background-position: 100% 50%; }}
+        100% {{ background-position: 0% 50%; }}
+    }}
     
     /* Glassmorphism container */
-    .main .block-container {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(20px);
+    .main .block-container {{
+        background: {container_bg};
+        backdrop-filter: blur(25px) saturate(180%);
+        -webkit-backdrop-filter: blur(25px) saturate(180%);
         border-radius: 30px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid {card_border};
+        box-shadow: 0 8px 32px {shadow_color}, 0 0 0 1px {card_border};
         padding: 2rem;
-        animation: fadeInScale 0.8s ease-out;
-    }
+        animation: fadeInScale 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }}
     
-    * {
+    * {{
         font-family: 'Poppins', 'Inter', sans-serif;
-    }
+    }}
     
     /* Animated Header with Glow */
-    .main-header {
-        font-size: 4rem;
+    .main-header {{
+        font-size: 3.5rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 50%, {accent_3} 100%);
         background-size: 200% 200%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        background-clip: text;
         text-align: center;
         margin-bottom: 0.5rem;
-        animation: fadeInDown 0.8s ease-out, gradientSlide 3s ease infinite;
-        text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        animation: fadeInDown 0.8s ease-out, gradientSlide 4s ease infinite;
+        filter: drop-shadow(0 0 20px {glow_color});
         letter-spacing: -1px;
-    }
+    }}
     
-    @keyframes gradientSlide {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
+    @keyframes gradientSlide {{
+        0%, 100% {{ background-position: 0% 50%; }}
+        50% {{ background-position: 100% 50%; }}
+    }}
     
     /* Floating Animation */
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
-    }
+    @keyframes float {{
+        0%, 100% {{ transform: translateY(0px) rotate(0deg); }}
+        33% {{ transform: translateY(-15px) rotate(2deg); }}
+        66% {{ transform: translateY(-5px) rotate(-2deg); }}
+    }}
     
-    .sub-header {
-        font-size: 1.4rem;
-        color: #4b5563;
+    .sub-header {{
+        font-size: 1.3rem;
+        color: {text_secondary};
         text-align: center;
         margin-bottom: 2rem;
         font-weight: 400;
-        animation: fadeIn 1s ease-out;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
+        animation: fadeIn 1s ease-out 0.3s both;
+        text-shadow: 0 2px 4px {shadow_color};
+    }}
     
     /* Glassmorphism Cards */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.7);
+    .glass-card {{
+        background: {card_bg};
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        border: 1px solid {card_border};
         padding: 2rem;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 32px {shadow_color};
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         animation: slideInUp 0.6s ease-out;
-    }
+    }}
     
-    .glass-card:hover {
+    .glass-card:hover {{
         transform: translateY(-10px) scale(1.02);
-        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
-        border-color: rgba(102, 126, 234, 0.5);
-    }
+        box-shadow: 0 15px 40px {glow_color};
+        border-color: {accent_1};
+    }}
     
     /* Neon Glow Effect for Stress Levels */
-    .stress-level-1 { 
+    .stress-level-1 {{ 
         color: #10b981; 
         font-weight: bold; 
         text-shadow: 0 0 20px rgba(16, 185, 129, 0.8),
                      0 0 40px rgba(16, 185, 129, 0.5);
         animation: neonGlow 2s ease-in-out infinite;
-    }
-    .stress-level-2 { 
+    }}
+    .stress-level-2 {{ 
         color: #3b82f6; 
         font-weight: bold; 
         text-shadow: 0 0 20px rgba(59, 130, 246, 0.8),
                      0 0 40px rgba(59, 130, 246, 0.5);
         animation: neonGlow 2s ease-in-out infinite;
-    }
-    .stress-level-3 { 
+    }}
+    .stress-level-3 {{ 
         color: #f59e0b; 
         font-weight: bold; 
         text-shadow: 0 0 20px rgba(245, 158, 11, 0.8),
                      0 0 40px rgba(245, 158, 11, 0.5);
         animation: neonGlow 2s ease-in-out infinite;
-    }
-    .stress-level-4 { 
+    }}
+    .stress-level-4 {{ 
         color: #f97316; 
         font-weight: bold; 
         text-shadow: 0 0 20px rgba(249, 115, 22, 0.8),
                      0 0 40px rgba(249, 115, 22, 0.5);
         animation: neonGlow 2s ease-in-out infinite;
-    }
-    .stress-level-5 { 
+    }}
+    .stress-level-5 {{ 
         color: #ef4444; 
         font-weight: bold; 
         text-shadow: 0 0 20px rgba(239, 68, 68, 0.8),
                      0 0 40px rgba(239, 68, 68, 0.5);
         animation: neonGlow 2s ease-in-out infinite;
-    }
+    }}
     
-    @keyframes neonGlow {
-        0%, 100% { filter: brightness(1); }
-        50% { filter: brightness(1.3); }
-    }
+    @keyframes neonGlow {{
+        0%, 100% {{ filter: brightness(1); }}
+        50% {{ filter: brightness(1.3); }}
+    }}
     
     /* Epic Prediction Card with 3D Effect */
-    .prediction-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    .prediction-card {{
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 50%, {accent_3} 100%);
         background-size: 200% 200%;
         padding: 3.5rem;
         border-radius: 25px;
-        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5),
-                    0 0 80px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 20px 60px {glow_color}, 0 0 80px {glow_color};
         text-align: center;
         color: white;
         animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275),
@@ -171,9 +232,9 @@ st.markdown("""
         position: relative;
         overflow: hidden;
         transform-style: preserve-3d;
-    }
+    }}
     
-    .prediction-card::before {
+    .prediction-card::before {{
         content: '';
         position: absolute;
         top: -50%;
@@ -183,139 +244,139 @@ st.markdown("""
         background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
         transform: rotate(45deg);
         animation: shimmer 3s infinite;
-    }
+    }}
     
-    @keyframes shimmer {
-        0% { transform: translateX(-100%) rotate(45deg); }
-        100% { transform: translateX(100%) rotate(45deg); }
-    }
+    @keyframes shimmer {{
+        0% {{ transform: translateX(-100%) rotate(45deg); }}
+        100% {{ transform: translateX(100%) rotate(45deg); }}
+    }}
     
     /* Glassmorphism Recommendation Cards */
-    .recommendation-card {
-        background: rgba(255, 255, 255, 0.9);
+    .recommendation-card {{
+        background: {card_bg};
         backdrop-filter: blur(10px);
         padding: 1.8rem;
         border-radius: 20px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 32px {shadow_color};
         margin: 1.2rem 0;
         border-left: 6px solid transparent;
-        border-image: linear-gradient(135deg, #667eea, #764ba2) 1;
+        border-image: linear-gradient(135deg, {accent_1}, {accent_2}) 1;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         animation: slideInLeft 0.5s ease-out;
         position: relative;
         overflow: hidden;
-    }
+    }}
     
-    .recommendation-card::before {
+    .recommendation-card::before {{
         content: '';
         position: absolute;
         left: 0;
         top: 0;
         height: 100%;
         width: 6px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
+        background: linear-gradient(135deg, {accent_1}, {accent_2});
         transition: width 0.3s ease;
-    }
+    }}
     
-    .recommendation-card:hover {
+    .recommendation-card:hover {{
         transform: translateX(15px) scale(1.02);
-        box-shadow: 0 12px 30px rgba(102, 126, 234, 0.25);
-    }
+        box-shadow: 0 12px 30px {glow_color};
+    }}
     
-    .recommendation-card:hover::before {
+    .recommendation-card:hover::before {{
         width: 100%;
         opacity: 0.1;
-    }
+    }}
     
     /* Animated AI Badge with Pulse */
-    .ai-badge {
+    .ai-badge {{
         display: inline-block;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 100%);
         color: white;
         padding: 0.5rem 1.5rem;
         border-radius: 25px;
         font-size: 0.9rem;
         font-weight: 700;
         margin-bottom: 1.5rem;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+        box-shadow: 0 4px 15px {glow_color};
         animation: pulse 2s infinite, float 3s ease-in-out infinite;
         position: relative;
-    }
+    }}
     
-    .ai-badge::after {
+    .ai-badge::after {{
         content: '⚡';
         margin-left: 0.5rem;
         animation: sparkle 1.5s infinite;
-    }
+    }}
     
-    @keyframes sparkle {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.5; transform: scale(1.2); }
-    }
+    @keyframes sparkle {{
+        0%, 100% {{ opacity: 1; transform: scale(1); }}
+        50% {{ opacity: 0.5; transform: scale(1.2); }}
+    }}
     
-    @keyframes fadeInDown {
-        from {
+    @keyframes fadeInDown {{
+        from {{
             opacity: 0;
             transform: translateY(-30px);
-        }
-        to {
+        }}
+        to {{
             opacity: 1;
             transform: translateY(0);
-        }
-    }
+        }}
+    }}
     
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
+    @keyframes fadeIn {{
+        from {{ opacity: 0; }}
+        to {{ opacity: 1; }}
+    }}
     
-    @keyframes fadeInScale {
-        from {
+    @keyframes fadeInScale {{
+        from {{
             opacity: 0;
             transform: scale(0.95);
-        }
-        to {
+        }}
+        to {{
             opacity: 1;
             transform: scale(1);
-        }
-    }
+        }}
+    }}
     
-    @keyframes scaleIn {
-        from {
+    @keyframes scaleIn {{
+        from {{
             opacity: 0;
             transform: scale(0.9);
-        }
-        to {
+        }}
+        to {{
             opacity: 1;
             transform: scale(1);
-        }
-    }
+        }}
+    }}
     
-    @keyframes slideInLeft {
-        from {
+    @keyframes slideInLeft {{
+        from {{
             opacity: 0;
             transform: translateX(-30px);
-        }
-        to {
+        }}
+        to {{
             opacity: 1;
             transform: translateX(0);
-        }
-    }
+        }}
+    }}
     
-    @keyframes slideInUp {
-        from {
+    @keyframes slideInUp {{
+        from {{
             opacity: 0;
             transform: translateY(30px);
-        }
-        to {
+        }}
+        to {{
             opacity: 1;
             transform: translateY(0);
-        }
-    }
+        }}
+    }}
     
     /* Epic Button with Gradient and Effects */
-    .stButton>button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    .stButton>button {{
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 100%) !important;
         background-size: 200% 200% !important;
         color: white !important;
         border: none !important;
@@ -323,14 +384,14 @@ st.markdown("""
         padding: 1rem 2.5rem !important;
         font-weight: 700 !important;
         font-size: 1.15rem !important;
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5) !important;
+        box-shadow: 0 10px 30px {glow_color} !important;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
         position: relative !important;
         overflow: hidden !important;
         letter-spacing: 0.5px !important;
-    }
+    }}
     
-    .stButton>button::before {
+    .stButton>button::before {{
         content: '' !important;
         position: absolute !important;
         top: 50% !important;
@@ -341,128 +402,139 @@ st.markdown("""
         background: rgba(255, 255, 255, 0.3) !important;
         transform: translate(-50%, -50%) !important;
         transition: width 0.6s, height 0.6s !important;
-    }
+    }}
     
-    .stButton>button:hover {
-        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.7) !important;
+    .stButton>button:hover {{
+        box-shadow: 0 15px 40px {glow_color} !important;
         transform: translateY(-5px) scale(1.05) !important;
         background-position: 100% 50% !important;
-    }
+    }}
     
-    .stButton>button:hover::before {
+    .stButton>button:hover::before {{
         width: 300px !important;
         height: 300px !important;
-    }
+    }}
     
-    .stButton>button:active {
+    .stButton>button:active {{
         transform: translateY(-2px) scale(1.02) !important;
-    }
+    }}
     
     /* Sidebar with Glass Effect */
-    .sidebar .sidebar-content {
-        background: linear-gradient(180deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%) !important;
+    .sidebar .sidebar-content {{
+        background: linear-gradient(180deg, {accent_1}f2 0%, {accent_2}f2 100%) !important;
         backdrop-filter: blur(10px) !important;
-    }
+    }}
     
     /* Animated Metrics */
-    div[data-testid="stMetricValue"] {
+    div[data-testid="stMetricValue"] {{
         font-size: 2.5rem !important;
         font-weight: 800 !important;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 100%);
         background-size: 200% 200%;
         animation: gradientSlide 3s ease infinite;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-    }
+    }}
     
     /* Slider Styling */
-    .stSlider > div > div > div > div {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    }
+    .stSlider > div > div > div > div {{
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 100%) !important;
+    }}
     
     /* Info/Success/Warning Message Styling */
-    .element-container:has(> .stAlert) {
+    .element-container:has(> .stAlert) {{
         animation: slideInLeft 0.5s ease-out;
-    }
+    }}
     
     div[data-testid="stInfo"],
     div[data-testid="stSuccess"],
-    div[data-testid="stWarning"] {
+    div[data-testid="stWarning"] {{
         backdrop-filter: blur(10px);
         border-radius: 15px;
         border-left-width: 5px;
         animation: slideInUp 0.5s ease-out;
-    }
+    }}
     
     /* Expander Styling */
-    .streamlit-expanderHeader {
-        background: rgba(102, 126, 234, 0.1) !important;
+    .streamlit-expanderHeader {{
+        background: {card_bg} !important;
         border-radius: 10px !important;
         font-weight: 600 !important;
         transition: all 0.3s ease !important;
-    }
+    }}
     
-    .streamlit-expanderHeader:hover {
-        background: rgba(102, 126, 234, 0.2) !important;
+    .streamlit-expanderHeader:hover {{
+        background: {card_bg} !important;
         transform: translateX(5px) !important;
-    }
+        box-shadow: 0 4px 12px {glow_color} !important;
+    }}
     
     /* Loading Spinner */
-    .stSpinner > div {
-        border-color: #667eea transparent transparent transparent !important;
-    }
+    .stSpinner > div {{
+        border-color: {accent_1} transparent transparent transparent !important;
+    }}
     
     /* Tab Styling */
-    .stTabs [data-baseweb="tab-list"] {
+    .stTabs [data-baseweb="tab-list"] {{
         gap: 8px;
-        background: rgba(255, 255, 255, 0.5);
+        background: {card_bg};
         padding: 10px;
         border-radius: 15px;
-    }
+    }}
     
-    .stTabs [data-baseweb="tab"] {
-        background: rgba(255, 255, 255, 0.7);
+    .stTabs [data-baseweb="tab"] {{
+        background: {container_bg};
         border-radius: 10px;
         padding: 10px 20px;
+        color: {text_primary};
         transition: all 0.3s ease;
-    }
+    }}
     
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .stTabs [aria-selected="true"] {{
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 100%);
         color: white;
-    }
+    }}
     
     /* Particle Effect Background */
-    @keyframes particles {
-        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-        100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-    }
+    @keyframes particles {{
+        0% {{ transform: translateY(0) rotate(0deg); opacity: 1; }}
+        100% {{ transform: translateY(-100vh) rotate(360deg); opacity: 0; }}
+    }}
     
     /* Smooth Scroll */
-    html {
+    html {{
         scroll-behavior: smooth;
-    }
+    }}
     
     /* Custom Scrollbar */
-    ::-webkit-scrollbar {
+    ::-webkit-scrollbar {{
         width: 10px;
-    }
+    }}
     
-    ::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
+    ::-webkit-scrollbar-track {{
+        background: {card_bg};
         border-radius: 10px;
-    }
+    }}
     
-    ::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    ::-webkit-scrollbar-thumb {{
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 100%);
         border-radius: 10px;
-    }
+    }}
     
-    ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    }
+    ::-webkit-scrollbar-thumb:hover {{
+        background: linear-gradient(135deg, {accent_2} 0%, {accent_1} 100%);
+    }}
     </style>
 """, unsafe_allow_html=True)
+
+# Theme Toggle Button
+col1, col2, col3 = st.columns([6, 1, 1])
+with col3:
+    theme_icon = "🌙" if st.session_state.theme == "light" else "☀️"
+    theme_label = "Dark" if st.session_state.theme == "light" else "Light"
+    if st.button(f"{theme_icon} {theme_label}", key="theme_toggle", help="Toggle dark/light mode"):
+        toggle_theme()
+        st.rerun()
 
 # Add animated particles background
 st.markdown("""
