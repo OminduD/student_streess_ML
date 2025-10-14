@@ -27,111 +27,230 @@ st.set_page_config(
 # Initialize the storage connection once and cache it
 storage = get_storage()
 
-# Custom CSS for modern, beautiful styling
+# Custom CSS for ULTRA MODERN styling with advanced animations
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;600;700&display=swap');
     
-    * {
-        font-family: 'Poppins', sans-serif;
+    /* Animated Background Gradient */
+    .stApp {
+        background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
     }
     
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Glassmorphism container */
+    .main .block-container {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        animation: fadeInScale 0.8s ease-out;
+    }
+    
+    * {
+        font-family: 'Poppins', 'Inter', sans-serif;
+    }
+    
+    /* Animated Header with Glow */
     .main-header {
-        font-size: 3.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-size: 4rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-size: 200% 200%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-align: center;
         margin-bottom: 0.5rem;
-        animation: fadeInDown 0.8s ease-out;
+        animation: fadeInDown 0.8s ease-out, gradientSlide 3s ease infinite;
+        text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        letter-spacing: -1px;
+    }
+    
+    @keyframes gradientSlide {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+    
+    /* Floating Animation */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
     }
     
     .sub-header {
-        font-size: 1.3rem;
-        color: #6b7280;
+        font-size: 1.4rem;
+        color: #4b5563;
         text-align: center;
         margin-bottom: 2rem;
-        font-weight: 300;
+        font-weight: 400;
         animation: fadeIn 1s ease-out;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
-    .metric-card {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        padding: 1.5rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border: none;
-        transition: transform 0.3s ease;
+    /* Glassmorphism Cards */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation: slideInUp 0.6s ease-out;
     }
     
-    .metric-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    .glass-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        border-color: rgba(102, 126, 234, 0.5);
     }
     
+    /* Neon Glow Effect for Stress Levels */
     .stress-level-1 { 
         color: #10b981; 
         font-weight: bold; 
-        text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        text-shadow: 0 0 20px rgba(16, 185, 129, 0.8),
+                     0 0 40px rgba(16, 185, 129, 0.5);
+        animation: neonGlow 2s ease-in-out infinite;
     }
     .stress-level-2 { 
         color: #3b82f6; 
         font-weight: bold; 
-        text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        text-shadow: 0 0 20px rgba(59, 130, 246, 0.8),
+                     0 0 40px rgba(59, 130, 246, 0.5);
+        animation: neonGlow 2s ease-in-out infinite;
     }
     .stress-level-3 { 
         color: #f59e0b; 
         font-weight: bold; 
-        text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+        text-shadow: 0 0 20px rgba(245, 158, 11, 0.8),
+                     0 0 40px rgba(245, 158, 11, 0.5);
+        animation: neonGlow 2s ease-in-out infinite;
     }
     .stress-level-4 { 
         color: #f97316; 
         font-weight: bold; 
-        text-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+        text-shadow: 0 0 20px rgba(249, 115, 22, 0.8),
+                     0 0 40px rgba(249, 115, 22, 0.5);
+        animation: neonGlow 2s ease-in-out infinite;
     }
     .stress-level-5 { 
         color: #ef4444; 
         font-weight: bold; 
-        text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        text-shadow: 0 0 20px rgba(239, 68, 68, 0.8),
+                     0 0 40px rgba(239, 68, 68, 0.5);
+        animation: neonGlow 2s ease-in-out infinite;
     }
     
+    @keyframes neonGlow {
+        0%, 100% { filter: brightness(1); }
+        50% { filter: brightness(1.3); }
+    }
+    
+    /* Epic Prediction Card with 3D Effect */
     .prediction-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 3rem;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-size: 200% 200%;
+        padding: 3.5rem;
+        border-radius: 25px;
+        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5),
+                    0 0 80px rgba(102, 126, 234, 0.3);
         text-align: center;
         color: white;
-        animation: scaleIn 0.5s ease-out;
+        animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                   gradientShift 8s ease infinite;
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
     }
     
+    .prediction-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: rotate(45deg);
+        animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) rotate(45deg); }
+    }
+    
+    /* Glassmorphism Recommendation Cards */
     .recommendation-card {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-        margin: 1rem 0;
-        border-left: 5px solid #667eea;
-        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        padding: 1.8rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        margin: 1.2rem 0;
+        border-left: 6px solid transparent;
+        border-image: linear-gradient(135deg, #667eea, #764ba2) 1;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         animation: slideInLeft 0.5s ease-out;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .recommendation-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 6px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        transition: width 0.3s ease;
     }
     
     .recommendation-card:hover {
-        transform: translateX(10px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transform: translateX(15px) scale(1.02);
+        box-shadow: 0 12px 30px rgba(102, 126, 234, 0.25);
     }
     
+    .recommendation-card:hover::before {
+        width: 100%;
+        opacity: 0.1;
+    }
+    
+    /* Animated AI Badge with Pulse */
     .ai-badge {
         display: inline-block;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 0.3rem 1rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+        animation: pulse 2s infinite, float 3s ease-in-out infinite;
+        position: relative;
+    }
+    
+    .ai-badge::after {
+        content: '⚡';
+        margin-left: 0.5rem;
+        animation: sparkle 1.5s infinite;
+    }
+    
+    @keyframes sparkle {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(1.2); }
     }
     
     @keyframes fadeInDown {
@@ -148,6 +267,17 @@ st.markdown("""
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
+    }
+    
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
     }
     
     @keyframes scaleIn {
@@ -172,39 +302,190 @@ st.markdown("""
         }
     }
     
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Epic Button with Gradient and Effects */
     .stButton>button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 25px;
-        padding: 0.75rem 2rem;
-        font-weight: 600;
-        font-size: 1.1rem;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        background-size: 200% 200% !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 30px !important;
+        padding: 1rem 2.5rem !important;
+        font-weight: 700 !important;
+        font-size: 1.15rem !important;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5) !important;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        position: relative !important;
+        overflow: hidden !important;
+        letter-spacing: 0.5px !important;
+    }
+    
+    .stButton>button::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        width: 0 !important;
+        height: 0 !important;
+        border-radius: 50% !important;
+        background: rgba(255, 255, 255, 0.3) !important;
+        transform: translate(-50%, -50%) !important;
+        transition: width 0.6s, height 0.6s !important;
     }
     
     .stButton>button:hover {
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.7) !important;
+        transform: translateY(-5px) scale(1.05) !important;
+        background-position: 100% 50% !important;
     }
     
+    .stButton>button:hover::before {
+        width: 300px !important;
+        height: 300px !important;
+    }
+    
+    .stButton>button:active {
+        transform: translateY(-2px) scale(1.02) !important;
+    }
+    
+    /* Sidebar with Glass Effect */
     .sidebar .sidebar-content {
-        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(180deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%) !important;
+        backdrop-filter: blur(10px) !important;
     }
     
+    /* Animated Metrics */
     div[data-testid="stMetricValue"] {
-        font-size: 2rem;
-        font-weight: 700;
+        font-size: 2.5rem !important;
+        font-weight: 800 !important;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-size: 200% 200%;
+        animation: gradientSlide 3s ease infinite;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
     
+    /* Slider Styling */
+    .stSlider > div > div > div > div {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    }
+    
+    /* Info/Success/Warning Message Styling */
     .element-container:has(> .stAlert) {
         animation: slideInLeft 0.5s ease-out;
     }
+    
+    div[data-testid="stInfo"],
+    div[data-testid="stSuccess"],
+    div[data-testid="stWarning"] {
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        border-left-width: 5px;
+        animation: slideInUp 0.5s ease-out;
+    }
+    
+    /* Expander Styling */
+    .streamlit-expanderHeader {
+        background: rgba(102, 126, 234, 0.1) !important;
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .streamlit-expanderHeader:hover {
+        background: rgba(102, 126, 234, 0.2) !important;
+        transform: translateX(5px) !important;
+    }
+    
+    /* Loading Spinner */
+    .stSpinner > div {
+        border-color: #667eea transparent transparent transparent !important;
+    }
+    
+    /* Tab Styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.5);
+        padding: 10px;
+        border-radius: 15px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    /* Particle Effect Background */
+    @keyframes particles {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+    
+    /* Smooth Scroll */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    }
     </style>
+""", unsafe_allow_html=True)
+
+# Add animated particles background
+st.markdown("""
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden;">
+        <div style="position: absolute; width: 20px; height: 20px; background: rgba(102, 126, 234, 0.3); border-radius: 50%; 
+                    animation: particles 15s linear infinite; left: 10%; animation-delay: 0s;"></div>
+        <div style="position: absolute; width: 15px; height: 15px; background: rgba(118, 75, 162, 0.3); border-radius: 50%; 
+                    animation: particles 20s linear infinite; left: 20%; animation-delay: 2s;"></div>
+        <div style="position: absolute; width: 25px; height: 25px; background: rgba(240, 147, 251, 0.3); border-radius: 50%; 
+                    animation: particles 18s linear infinite; left: 30%; animation-delay: 4s;"></div>
+        <div style="position: absolute; width: 18px; height: 18px; background: rgba(79, 172, 254, 0.3); border-radius: 50%; 
+                    animation: particles 22s linear infinite; left: 40%; animation-delay: 1s;"></div>
+        <div style="position: absolute; width: 22px; height: 22px; background: rgba(102, 126, 234, 0.3); border-radius: 50%; 
+                    animation: particles 17s linear infinite; left: 50%; animation-delay: 3s;"></div>
+        <div style="position: absolute; width: 16px; height: 16px; background: rgba(118, 75, 162, 0.3); border-radius: 50%; 
+                    animation: particles 21s linear infinite; left: 60%; animation-delay: 5s;"></div>
+        <div style="position: absolute; width: 24px; height: 24px; background: rgba(240, 147, 251, 0.3); border-radius: 50%; 
+                    animation: particles 19s linear infinite; left: 70%; animation-delay: 2.5s;"></div>
+        <div style="position: absolute; width: 19px; height: 19px; background: rgba(79, 172, 254, 0.3); border-radius: 50%; 
+                    animation: particles 16s linear infinite; left: 80%; animation-delay: 4.5s;"></div>
+        <div style="position: absolute; width: 21px; height: 21px; background: rgba(102, 126, 234, 0.3); border-radius: 50%; 
+                    animation: particles 23s linear infinite; left: 90%; animation-delay: 1.5s;"></div>
+    </div>
 """, unsafe_allow_html=True)
 
 # File paths
@@ -284,9 +565,21 @@ def load_statistics():
 
 # Main App
 def main():
-    # Header
-    st.markdown('<div class="main-header">🧠 Student Stress Predictor</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-header">AI-Powered Stress Level Assessment & Data Collection</div>', unsafe_allow_html=True)
+    # Epic Animated Header with Icons
+    st.markdown("""
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <div class="main-header" style="margin-bottom: 0.5rem;">
+            <span style="display: inline-block; animation: float 3s ease-in-out infinite;">🧠</span>
+            Student Stress Predictor
+            <span style="display: inline-block; animation: float 3s ease-in-out infinite; animation-delay: 1.5s;">✨</span>
+        </div>
+        <div class="sub-header">
+            <span style="display: inline-block; animation: pulse 2s infinite; margin-right: 0.5rem;">⚡</span>
+            AI-Powered Stress Level Assessment & Data Collection
+            <span style="display: inline-block; animation: pulse 2s infinite; animation-delay: 1s; margin-left: 0.5rem;">🚀</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Load model
     model, error = load_model()
@@ -326,23 +619,61 @@ def main():
 
 def show_prediction_page(model):
     """Display the prediction page"""
-    st.header("🔮 Stress Level Prediction")
     
+    # Beautiful section header
     st.markdown("""
-    ### How it works:
-    1. Enter your information using the sliders below
-    2. Click **Predict My Stress Level**
-    3. View your results and recommendations
-    4. Optionally submit your actual stress level to help improve the model
-    """)
+    <div style="text-align: center; margin: 2rem 0;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; 
+                   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                   margin-bottom: 1rem; animation: fadeInDown 0.6s ease-out;">
+            🔮 Stress Level Prediction
+        </h1>
+    </div>
+    """, unsafe_allow_html=True)
     
-    st.markdown("---")
+    # Glass card with instructions
+    st.markdown("""
+    <div class="glass-card" style="margin-bottom: 2rem; animation-delay: 0.2s;">
+        <h3 style="color: #667eea; margin-bottom: 1rem; font-weight: 600;">✨ How it works:</h3>
+        <div style="display: grid; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; 
+                             width: 32px; height: 32px; border-radius: 50%; display: flex; 
+                             align-items: center; justify-content: center; font-weight: bold;">1</span>
+                <span style="color: #4b5563;">Enter your information using the sliders below</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; 
+                             width: 32px; height: 32px; border-radius: 50%; display: flex; 
+                             align-items: center; justify-content: center; font-weight: bold;">2</span>
+                <span style="color: #4b5563;">Click the <strong>Predict My Stress Level</strong> button</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; 
+                             width: 32px; height: 32px; border-radius: 50%; display: flex; 
+                             align-items: center; justify-content: center; font-weight: bold;">3</span>
+                <span style="color: #4b5563;">View your personalized results and AI-powered recommendations</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; 
+                             width: 32px; height: 32px; border-radius: 50%; display: flex; 
+                             align-items: center; justify-content: center; font-weight: bold;">4</span>
+                <span style="color: #4b5563;">Share your actual stress level to help improve our AI</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Create two columns for input
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("📋 Lifestyle Factors")
+        st.markdown("""
+        <div class="glass-card" style="animation-delay: 0.4s;">
+            <h3 style="color: #667eea; margin-bottom: 1.5rem; font-weight: 600;">📋 Lifestyle Factors</h3>
+        </div>
+        """, unsafe_allow_html=True)
         
         sleep_quality = st.slider(
             "😴 Sleep Quality",
@@ -363,7 +694,11 @@ def show_prediction_page(model):
         )
     
     with col2:
-        st.subheader("📚 Academic Factors")
+        st.markdown("""
+        <div class="glass-card" style="animation-delay: 0.5s;">
+            <h3 style="color: #764ba2; margin-bottom: 1.5rem; font-weight: 600;">📚 Academic Factors</h3>
+        </div>
+        """, unsafe_allow_html=True)
         
         academic_performance = st.slider(
             "👩‍🎓 Academic Performance",
@@ -569,18 +904,41 @@ def get_recommendations(stress_level, sleep_quality, headaches, study_load,
 
 def show_statistics_page():
     """Display statistics page"""
-    st.header("📊 Data Statistics & Insights")
+    st.markdown("""
+    <div class="glass-card" style="text-align: center; margin-bottom: 2rem; animation-delay: 0.1s;">
+        <h1 style="color: #667eea; font-weight: 700; font-size: 2.5rem; margin: 0;">
+            📊 Data Statistics & Insights
+        </h1>
+        <p style="color: #6b7280; margin-top: 0.5rem;">Real-time analytics from our student community</p>
+    </div>
+    """, unsafe_allow_html=True)
 
     stats_df = load_statistics()
 
     if stats_df is None or len(stats_df) == 0:
-        st.info("📭 No data collected yet. Start by making predictions!")
+        st.markdown("""
+        <div class="glass-card" style="text-align: center; padding: 3rem; animation-delay: 0.2s;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">📭</div>
+            <h3 style="color: #667eea; margin-bottom: 0.5rem;">No Data Yet</h3>
+            <p style="color: #6b7280;">Start by making predictions to see insights!</p>
+        </div>
+        """, unsafe_allow_html=True)
         return
 
-    st.success(f"✅ Total submissions: **{len(stats_df)}** entries")
+    st.markdown(f"""
+    <div class="glass-card" style="text-align: center; margin-bottom: 2rem; animation-delay: 0.2s;">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">✅</div>
+        <h2 style="color: #10b981; margin: 0;">{len(stats_df)}</h2>
+        <p style="color: #6b7280; margin-top: 0.3rem;">Total Submissions</p>
+    </div>
+    """, unsafe_allow_html=True)
 
     # Overview metrics
-    st.subheader("📈 Overview")
+    st.markdown("""
+    <div class="glass-card" style="animation-delay: 0.3s; margin-bottom: 1.5rem;">
+        <h3 style="color: #667eea; margin-bottom: 1.5rem; font-weight: 600;">📈 Overview Metrics</h3>
+    </div>
+    """, unsafe_allow_html=True)
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
@@ -694,52 +1052,134 @@ def show_statistics_page():
 
 def show_about_page():
     """Display about page"""
-    st.header("ℹ️ About This Application")
+    st.markdown("""
+    <div class="glass-card" style="text-align: center; margin-bottom: 2rem; animation-delay: 0.1s;">
+        <h1 style="color: #667eea; font-weight: 700; font-size: 2.5rem; margin: 0;">
+            ℹ️ About This Application
+        </h1>
+        <p style="color: #6b7280; margin-top: 0.5rem;">Built with ❤️ using Machine Learning</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown("""
-    ### 🧠 Student Stress Predictor
+    <div class="glass-card" style="animation-delay: 0.2s;">
+        <h3 style="color: #667eea; margin-bottom: 1rem; font-weight: 600;">🧠 Student Stress Predictor</h3>
+        <p style="color: #4b5563; font-size: 1.05rem; line-height: 1.8;">
+            This application uses <strong>Machine Learning</strong> to predict student stress levels based on lifestyle 
+            and academic factors. It combines data from multiple sources and continuously improves as 
+            more users contribute their data.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    This application uses **Machine Learning** to predict student stress levels based on lifestyle 
-    and academic factors. It combines data from multiple sources and continuously improves as 
-    more users contribute their data.
+    st.markdown("""
+    <div class="glass-card" style="animation-delay: 0.3s;">
+        <h3 style="color: #667eea; margin-bottom: 1rem; font-weight: 600;">🎯 How It Works</h3>
+    </div>
+    """, unsafe_allow_html=True)
     
-    ---
+    col1, col2 = st.columns(2)
     
-    ### 🎯 How It Works
+    with col1:
+        st.markdown("""
+        <div class="glass-card" style="animation-delay: 0.4s;">
+            <div style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">1️⃣</div>
+            <h4 style="color: #667eea; text-align: center; margin-bottom: 0.5rem;">Data Collection</h4>
+            <p style="color: #6b7280; text-align: center;">Users input lifestyle & academic info</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="glass-card" style="animation-delay: 0.6s;">
+            <div style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">3️⃣</div>
+            <h4 style="color: #667eea; text-align: center; margin-bottom: 0.5rem;">ML Prediction</h4>
+            <p style="color: #6b7280; text-align: center;">Trained model predicts stress (1-5)</p>
+        </div>
+        """, unsafe_allow_html=True)
     
-    1. **Data Collection**: Users input their lifestyle and academic information
-    2. **Feature Engineering**: The system calculates additional metrics like wellbeing score
-    3. **ML Prediction**: A trained model predicts stress level (1-5 scale)
-    4. **Continuous Learning**: User feedback improves the model over time
+    with col2:
+        st.markdown("""
+        <div class="glass-card" style="animation-delay: 0.5s;">
+            <div style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">2️⃣</div>
+            <h4 style="color: #764ba2; text-align: center; margin-bottom: 0.5rem;">Feature Engineering</h4>
+            <p style="color: #6b7280; text-align: center;">Calculate wellbeing & pressure scores</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="glass-card" style="animation-delay: 0.7s;">
+            <div style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">4️⃣</div>
+            <h4 style="color: #764ba2; text-align: center; margin-bottom: 0.5rem;">Continuous Learning</h4>
+            <p style="color: #6b7280; text-align: center;">User feedback improves the model</p>
+        </div>
+        """, unsafe_allow_html=True)
     
-    ---
+    st.markdown("""
+    <div class="glass-card" style="animation-delay: 0.8s;">
+        <h3 style="color: #667eea; margin-bottom: 1.5rem; font-weight: 600;">📊 Features Used</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div>
+                <h4 style="color: #667eea; margin-bottom: 1rem;">Input Features (5):</h4>
+                <ul style="color: #4b5563; line-height: 2;">
+                    <li>😴 Sleep Quality (1-5)</li>
+                    <li>🤕 Headaches per Week (0-7)</li>
+                    <li>👩‍🎓 Academic Performance (1-5)</li>
+                    <li>📖 Study Load (1-5)</li>
+                    <li>🎾 Extracurricular Frequency (0-7)</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: #764ba2; margin-bottom: 1rem;">Engineered Features (3):</h4>
+                <ul style="color: #4b5563; line-height: 2;">
+                    <li>💚 Wellbeing Score</li>
+                    <li>📚 Academic Pressure</li>
+                    <li>⚖️ Total Workload</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    ### 📊 Features Used
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown("""
+        <div class="glass-card" style="text-align: center; animation-delay: 0.9s;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤖</div>
+            <h4 style="color: #667eea; margin: 0.5rem 0;">Algorithm</h4>
+            <p style="color: #6b7280; font-size: 0.9rem;">Random Forest</p>
+        </div>
+        """, unsafe_allow_html=True)
     
-    **Input Features (5):**
-    - 😴 Sleep Quality (1-5)
-    - 🤕 Headaches per Week (0-7)
-    - 👩‍🎓 Academic Performance (1-5)
-    - 📖 Study Load (1-5)
-    - 🎾 Extracurricular Frequency (0-7)
+    with col2:
+        st.markdown("""
+        <div class="glass-card" style="text-align: center; animation-delay: 1s;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎯</div>
+            <h4 style="color: #10b981; margin: 0.5rem 0;">Accuracy</h4>
+            <p style="color: #6b7280; font-size: 0.9rem;">94-97%</p>
+        </div>
+        """, unsafe_allow_html=True)
     
-    **Engineered Features (3):**
-    - 💚 Wellbeing Score
-    - 📚 Academic Pressure
-    - ⚖️ Total Workload
+    with col3:
+        st.markdown("""
+        <div class="glass-card" style="text-align: center; animation-delay: 1.1s;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+            <h4 style="color: #667eea; margin: 0.5rem 0;">Samples</h4>
+            <p style="color: #6b7280; font-size: 0.9rem;">1,600+</p>
+        </div>
+        """, unsafe_allow_html=True)
     
-    ---
+    with col4:
+        st.markdown("""
+        <div class="glass-card" style="text-align: center; animation-delay: 1.2s;">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🗂️</div>
+            <h4 style="color: #764ba2; margin: 0.5rem 0;">Datasets</h4>
+            <p style="color: #6b7280; font-size: 0.9rem;">4 combined</p>
+        </div>
+        """, unsafe_allow_html=True)
     
-    ### 🏆 Model Performance
-    
-    - **Algorithm**: Random Forest / Gradient Boosting
-    - **Accuracy**: 94-97%
-    - **Training Samples**: 1,600+
-    - **Data Sources**: 4 combined datasets
-    
-    ---
-    
-    ### 🔄 Data Flow
+    st.markdown("""
+    <div class="glass-card" style="animation-delay: 1.3s;">
+        <h3 style="color: #667eea; margin-bottom: 1rem; font-weight: 600;">🔄 Data Flow</h3>
     
     ```
     User Input → Feature Engineering → ML Model → Prediction

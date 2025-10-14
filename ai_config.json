@@ -1,7 +1,7 @@
 {
     "enabled": true,
     "provider": "groq",
-    "api_key": "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",
+    "api_key": "",
     "model": "llama-3.3-70b-versatile",
     "max_tokens": 1000,
     "timeout": 30,

@@ -11,10 +11,18 @@ import requests
 from typing import Dict, List, Optional
 from datetime import datetime
 
+# Try to import streamlit for secrets support
+try:
+    import streamlit as st
+    HAS_STREAMLIT = True
+except ImportError:
+    HAS_STREAMLIT = False
+
 
 class AIRecommendationEngine:
     """
     AI-powered recommendation engine with multiple provider support.
+    Supports Streamlit Cloud secrets, environment variables, and config file.
     """
     
     def __init__(self, config_path: str = 'ai_config.json'):
@@ -26,14 +34,41 @@ class AIRecommendationEngine:
         """
         self.config = self._load_config(config_path)
         self.provider = self.config.get('provider', 'openai')
-        # Support both AI_API_KEY and GROQ_API_KEY environment variables
-        self.api_key = self.config.get('api_key') or os.getenv('GROQ_API_KEY') or os.getenv('AI_API_KEY')
+        
+        # Try to get API key from multiple sources (priority order):
+        # 1. Streamlit secrets (for Streamlit Cloud deployment)
+        # 2. Environment variables (for local/server deployment)
+        # 3. Config file (fallback, not recommended for production)
+        self.api_key = self._get_api_key()
         self.api_url = self.config.get('api_url', '')
         self.model = self.config.get('model', 'gpt-3.5-turbo')
         self.enabled = self.config.get('enabled', False)
         self.timeout = self.config.get('timeout', 10)
         self.max_tokens = self.config.get('max_tokens', 500)
         
+    def _get_api_key(self) -> Optional[str]:
+        """
+        Get API key from multiple sources with priority:
+        1. Streamlit secrets (for Streamlit Cloud)
+        2. Environment variables (GROQ_API_KEY or AI_API_KEY)
+        3. Config file (fallback)
+        """
+        # Try Streamlit secrets first (for cloud deployment)
+        if HAS_STREAMLIT:
+            try:
+                if hasattr(st, 'secrets') and 'GROQ_API_KEY' in st.secrets:
+                    return st.secrets['GROQ_API_KEY']
+            except Exception:
+                pass  # Secrets not available, try other sources
+        
+        # Try environment variables
+        api_key = os.getenv('GROQ_API_KEY') or os.getenv('AI_API_KEY')
+        if api_key:
+            return api_key
+        
+        # Fallback to config file (not recommended for production)
+        return self.config.get('api_key')
+    
     def _load_config(self, config_path: str) -> Dict:
         """Load configuration from file."""
         if os.path.exists(config_path):
