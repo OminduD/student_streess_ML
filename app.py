@@ -29,12 +29,13 @@ storage = get_storage()
 
 # Initialize theme in session state FIRST (before any other code)
 if 'theme' not in st.session_state:
-    st.session_state.theme = 'light'
-
-# Check query params for theme (for Streamlit Cloud compatibility)
-query_params = st.query_params
-if 'theme' in query_params:
-    st.session_state.theme = query_params['theme']
+    # Check query params first, default to light if not present
+    query_params = st.query_params
+    if 'theme' in query_params and query_params['theme'] in ['light', 'dark']:
+        st.session_state.theme = query_params['theme']
+    else:
+        st.session_state.theme = 'light'  # Default to light mode
+        st.query_params['theme'] = 'light'
 
 def toggle_theme():
     """Toggle between light and dark mode"""
@@ -555,27 +556,22 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# Theme Toggle Button (Streamlit Cloud Compatible)
-col1, col2, col3 = st.columns([8, 1, 1])
-with col1:
-    # Debug info with visual indicators (remove after testing)
+# Theme Toggle in Sidebar (More reliable for cloud deployment)
+with st.sidebar:
+    st.markdown("---")
     st.markdown(f"""
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="color: {text_primary};">🎨 Theme: <strong>{current_theme.upper()}</strong></span>
-            <div style="width: 30px; height: 30px; background: {accent_1}; border-radius: 5px; border: 2px solid {card_border};"></div>
-            <div style="width: 30px; height: 30px; background: {accent_2}; border-radius: 5px; border: 2px solid {card_border};"></div>
-            <div style="width: 30px; height: 30px; background: {accent_3}; border-radius: 5px; border: 2px solid {card_border};"></div>
+        <div style="text-align: center; padding: 10px; background: {card_bg}; border-radius: 10px; margin-bottom: 10px;">
+            <p style="color: {text_primary}; margin: 0; font-size: 14px;">🎨 <strong>Theme: {current_theme.upper()}</strong></p>
+            <div style="display: flex; justify-content: center; gap: 8px; margin-top: 8px;">
+                <div style="width: 25px; height: 25px; background: {accent_1}; border-radius: 5px; border: 2px solid {card_border};"></div>
+                <div style="width: 25px; height: 25px; background: {accent_2}; border-radius: 5px; border: 2px solid {card_border};"></div>
+                <div style="width: 25px; height: 25px; background: {accent_3}; border-radius: 5px; border: 2px solid {card_border};"></div>
+            </div>
         </div>
     """, unsafe_allow_html=True)
-with col2:
-    st.write("")  # Spacer
-with col3:
-    theme_icon = "🌙" if current_theme == "light" else "☀️"
-    theme_label = "Dark" if current_theme == "light" else "Light"
-    # Use a unique key that changes with theme to force proper state
-    if st.button(f"{theme_icon}", key=f"theme_toggle_{current_theme}", 
-                 help=f"Switch to {theme_label} mode", 
-                 use_container_width=True):
+    
+    theme_icon = "🌙 Switch to Dark" if current_theme == "light" else "☀️ Switch to Light"
+    if st.button(theme_icon, key=f"theme_toggle_{current_theme}", use_container_width=True):
         toggle_theme()
         st.rerun()
 
@@ -604,6 +600,45 @@ st.markdown(f"""
                     animation: particles 16s linear infinite; left: 80%; animation-delay: 4.5s;"></div>
         <div style="position: absolute; width: 21px; height: 21px; background: {particle_color_1}; border-radius: 50%; 
                     animation: particles 23s linear infinite; left: 90%; animation-delay: 1.5s;"></div>
+    </div>
+""", unsafe_allow_html=True)
+
+# Floating Theme Toggle Button (Top Right Corner)
+float_button_icon = "🌙" if current_theme == "light" else "☀️"
+float_button_bg = card_bg
+float_button_hover = accent_1
+
+st.markdown(f"""
+    <style>
+    .floating-theme-btn {{
+        position: fixed;
+        top: 70px;
+        right: 20px;
+        z-index: 999;
+        background: {float_button_bg};
+        border: 2px solid {card_border};
+        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px {shadow_color};
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }}
+    
+    .floating-theme-btn:hover {{
+        transform: rotate(180deg) scale(1.1);
+        box-shadow: 0 6px 25px {glow_color};
+        border-color: {float_button_hover};
+    }}
+    </style>
+    
+    <div class="floating-theme-btn" onclick="window.location.href='?theme={'dark' if current_theme == 'light' else 'light'}'">
+        {float_button_icon}
     </div>
 """, unsafe_allow_html=True)
 
