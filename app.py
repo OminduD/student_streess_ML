@@ -550,6 +550,12 @@ st.markdown(f"""
     /* Loading Spinner */
     .stSpinner > div {{
         border-color: {accent_1} transparent transparent transparent !important;
+        animation: spin 1s linear infinite, pulse 2s ease-in-out infinite !important;
+    }}
+    
+    @keyframes spin {{
+        0% {{ transform: rotate(0deg); }}
+        100% {{ transform: rotate(360deg); }}
     }}
     
     /* Tab Styling */
@@ -558,6 +564,7 @@ st.markdown(f"""
         background: {card_bg};
         padding: 10px;
         border-radius: 15px;
+        box-shadow: 0 4px 16px {shadow_color};
     }}
     
     .stTabs [data-baseweb="tab"] {{
@@ -566,11 +573,122 @@ st.markdown(f"""
         padding: 10px 20px;
         color: {text_primary};
         transition: all 0.3s ease;
+        border: 1px solid transparent;
+    }}
+    
+    .stTabs [data-baseweb="tab"]:hover {{
+        background: linear-gradient(135deg, {accent_1}30 0%, {accent_2}30 100%);
+        border-color: {card_border};
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px {glow_color};
     }}
     
     .stTabs [aria-selected="true"] {{
         background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 100%);
         color: white;
+        font-weight: 600;
+        box-shadow: 0 4px 20px {glow_color};
+        transform: scale(1.02);
+    }}
+    
+    /* Enhanced Plotly Charts */
+    .js-plotly-plot {{
+        background: {card_bg} !important;
+        border-radius: 15px !important;
+        padding: 1rem !important;
+        box-shadow: 0 4px 20px {shadow_color} !important;
+        border: 1px solid {card_border} !important;
+        transition: all 0.3s ease !important;
+    }}
+    
+    .js-plotly-plot:hover {{
+        transform: translateY(-5px) !important;
+        box-shadow: 0 8px 30px {glow_color} !important;
+    }}
+    
+    /* Data Frame Styling */
+    .stDataFrame {{
+        background: {card_bg} !important;
+        border-radius: 15px !important;
+        overflow: hidden !important;
+        box-shadow: 0 4px 20px {shadow_color} !important;
+        border: 1px solid {card_border} !important;
+    }}
+    
+    .stDataFrame table {{
+        background: transparent !important;
+    }}
+    
+    .stDataFrame th {{
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 100%) !important;
+        color: white !important;
+        font-weight: 600 !important;
+        padding: 1rem !important;
+        border: none !important;
+    }}
+    
+    .stDataFrame td {{
+        color: {text_primary} !important;
+        padding: 0.8rem 1rem !important;
+        border-bottom: 1px solid {card_border} !important;
+    }}
+    
+    .stDataFrame tr:hover {{
+        background: rgba(100, 181, 246, 0.1) !important;
+    }}
+    
+    /* Progress Bar */
+    .stProgress > div > div > div > div {{
+        background: linear-gradient(90deg, {accent_1} 0%, {accent_2} 50%, {accent_3} 100%) !important;
+        background-size: 200% 100% !important;
+        animation: gradientSlide 2s ease infinite !important;
+        box-shadow: 0 2px 10px {glow_color} !important;
+    }}
+    
+    /* Download Button Special Effect */
+    .stDownloadButton > button {{
+        background: linear-gradient(135deg, {accent_2} 0%, {accent_3} 100%) !important;
+        border: none !important;
+        color: white !important;
+        font-weight: 600 !important;
+        padding: 0.75rem 2rem !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 15px rgba(77, 182, 172, 0.4) !important;
+        transition: all 0.3s ease !important;
+    }}
+    
+    .stDownloadButton > button:hover {{
+        transform: translateY(-3px) scale(1.05) !important;
+        box-shadow: 0 8px 25px rgba(77, 182, 172, 0.6) !important;
+    }}
+    
+    /* Select Box Modern Style */
+    .stSelectbox > div > div {{
+        background: {card_bg} !important;
+        border: 2px solid {card_border} !important;
+        border-radius: 12px !important;
+        transition: all 0.3s ease !important;
+    }}
+    
+    .stSelectbox > div > div:hover {{
+        border-color: {accent_1} !important;
+        box-shadow: 0 4px 12px {glow_color} !important;
+    }}
+    
+    /* Text Input Glow Effect */
+    .stTextInput > div > div > input {{
+        background: {card_bg} !important;
+        border: 2px solid {card_border} !important;
+        border-radius: 12px !important;
+        color: {text_primary} !important;
+        padding: 0.75rem !important;
+        transition: all 0.3s ease !important;
+    }}
+    
+    .stTextInput > div > div > input:focus {{
+        border-color: {accent_1} !important;
+        box-shadow: 0 0 0 3px {glow_color}, 0 4px 12px {glow_color} !important;
+        transform: scale(1.02) !important;
     }}
     
     /* Particle Effect Background */
@@ -1154,13 +1272,20 @@ def get_recommendations(stress_level, sleep_quality, headaches, study_load,
         return recommendations
 
 def show_statistics_page():
-    """Display statistics page"""
+    """Display statistics page with ultra-modern design"""
     st.markdown("""
-    <div class="glass-card" style="text-align: center; margin-bottom: 2rem; animation-delay: 0.1s;">
-        <h1 style="color: #667eea; font-weight: 700; font-size: 2.5rem; margin: 0;">
-            📊 Data Statistics & Insights
+    <div class="glass-card" style="text-align: center; margin-bottom: 2.5rem; animation-delay: 0.1s; 
+                 background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+                 border: 2px solid rgba(100, 181, 246, 0.3);
+                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(100, 181, 246, 0.2);">
+        <h1 style="background: linear-gradient(135deg, #64b5f6 0%, #4db6ac 50%, #ffb74d 100%);
+                   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                   font-weight: 800; font-size: 3rem; margin: 0; text-shadow: 0 0 30px rgba(100, 181, 246, 0.5);">
+            📊 Data Analytics Dashboard
         </h1>
-        <p style="color: #6b7280; margin-top: 0.5rem;">Real-time analytics from our student community</p>
+        <p style="color: #b8bdc8; margin-top: 1rem; font-size: 1.1rem; font-weight: 500;">
+            Real-time insights from the student community 🚀
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1168,45 +1293,121 @@ def show_statistics_page():
 
     if stats_df is None or len(stats_df) == 0:
         st.markdown("""
-        <div class="glass-card" style="text-align: center; padding: 3rem; animation-delay: 0.2s;">
-            <div style="font-size: 4rem; margin-bottom: 1rem;">📭</div>
-            <h3 style="color: #667eea; margin-bottom: 0.5rem;">No Data Yet</h3>
-            <p style="color: #6b7280;">Start by making predictions to see insights!</p>
+        <div class="glass-card" style="text-align: center; padding: 4rem; animation-delay: 0.2s;
+                     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
+            <div style="font-size: 5rem; margin-bottom: 1.5rem; animation: pulse 2s ease-in-out infinite;">📭</div>
+            <h3 style="color: #64b5f6; margin-bottom: 1rem; font-size: 2rem; font-weight: 700;">No Data Yet</h3>
+            <p style="color: #b8bdc8; font-size: 1.2rem;">Start by making predictions to unlock powerful insights!</p>
+            <div style="margin-top: 2rem;">
+                <span style="display: inline-block; padding: 0.8rem 2rem; background: linear-gradient(135deg, #64b5f6 0%, #4db6ac 100%);
+                             color: white; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 15px rgba(100, 181, 246, 0.4);">
+                    👆 Use the sidebar to get started
+                </span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         return
 
+    # Enhanced Total Submissions Card
     st.markdown(f"""
-    <div class="glass-card" style="text-align: center; margin-bottom: 2rem; animation-delay: 0.2s;">
-        <div style="font-size: 3rem; margin-bottom: 0.5rem;">✅</div>
-        <h2 style="color: #10b981; margin: 0;">{len(stats_df)}</h2>
-        <p style="color: #6b7280; margin-top: 0.3rem;">Total Submissions</p>
+    <div class="glass-card" style="text-align: center; margin-bottom: 2.5rem; animation-delay: 0.2s;
+                 background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(100, 181, 246, 0.15) 100%);
+                 border: 2px solid rgba(16, 185, 129, 0.3);
+                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(16, 185, 129, 0.2);
+                 position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; 
+                    background: radial-gradient(circle, rgba(100, 181, 246, 0.1) 0%, transparent 70%);
+                    animation: spin 20s linear infinite;"></div>
+        <div style="position: relative; z-index: 1;">
+            <div style="font-size: 4rem; margin-bottom: 1rem; animation: bounce 2s ease-in-out infinite;">✅</div>
+            <h2 style="color: #10b981; margin: 0; font-size: 3.5rem; font-weight: 800; 
+                       text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);">{len(stats_df)}</h2>
+            <p style="color: #b8bdc8; margin-top: 0.5rem; font-size: 1.2rem; font-weight: 600; letter-spacing: 1px;">
+                TOTAL SUBMISSIONS
+            </p>
+        </div>
     </div>
+    
+    @keyframes bounce {{
+        0%, 100% {{ transform: translateY(0); }}
+        50% {{ transform: translateY(-20px); }}
+    }}
     """, unsafe_allow_html=True)
 
-    # Overview metrics
+    # Enhanced Overview metrics with individual styled cards
     st.markdown("""
-    <div class="glass-card" style="animation-delay: 0.3s; margin-bottom: 1.5rem;">
-        <h3 style="color: #667eea; margin-bottom: 1.5rem; font-weight: 600;">📈 Overview Metrics</h3>
+    <div class="glass-card" style="animation-delay: 0.3s; margin-bottom: 2rem;
+                 background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+                 border: 2px solid rgba(100, 181, 246, 0.2);">
+        <h3 style="background: linear-gradient(135deg, #64b5f6 0%, #4db6ac 100%);
+                   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                   margin-bottom: 1.5rem; font-weight: 700; font-size: 1.8rem;">
+            📈 Key Metrics Overview
+        </h3>
     </div>
     """, unsafe_allow_html=True)
-    col1, col2, col3, col4 = st.columns(4)
+    
+    col1, col2, col3, col4 = st.columns(4, gap="large")
 
     with col1:
         avg_sleep = stats_df['sleep_quality'].mean()
-        st.metric("Avg Sleep Quality", f"{avg_sleep:.2f}/5")
+        st.markdown(f"""
+        <div class="glass-card" style="text-align: center; animation-delay: 0.4s;
+                     background: linear-gradient(135deg, rgba(100, 181, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%);
+                     border: 2px solid rgba(100, 181, 246, 0.3); padding: 1.5rem;
+                     box-shadow: 0 4px 20px rgba(100, 181, 246, 0.3);">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">😴</div>
+            <h4 style="color: #64b5f6; font-weight: 700; font-size: 2rem; margin: 0.5rem 0;">
+                {avg_sleep:.2f}<span style="font-size: 1.2rem; color: #b8bdc8;">/5</span>
+            </h4>
+            <p style="color: #b8bdc8; font-size: 0.9rem; font-weight: 600; margin: 0;">Sleep Quality</p>
+        </div>
+        """, unsafe_allow_html=True)
 
     with col2:
         avg_headaches = stats_df['headaches_per_week'].mean()
-        st.metric("Avg Headaches/Week", f"{avg_headaches:.1f}")
+        st.markdown(f"""
+        <div class="glass-card" style="text-align: center; animation-delay: 0.5s;
+                     background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(255, 183, 77, 0.15) 100%);
+                     border: 2px solid rgba(239, 68, 68, 0.3); padding: 1.5rem;
+                     box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🤕</div>
+            <h4 style="color: #ef4444; font-weight: 700; font-size: 2rem; margin: 0.5rem 0;">
+                {avg_headaches:.1f}
+            </h4>
+            <p style="color: #b8bdc8; font-size: 0.9rem; font-weight: 600; margin: 0;">Headaches/Week</p>
+        </div>
+        """, unsafe_allow_html=True)
 
     with col3:
         avg_performance = stats_df['academic_performance'].mean()
-        st.metric("Avg Academic Perf.", f"{avg_performance:.2f}/5")
+        st.markdown(f"""
+        <div class="glass-card" style="text-align: center; animation-delay: 0.6s;
+                     background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(77, 182, 172, 0.15) 100%);
+                     border: 2px solid rgba(16, 185, 129, 0.3); padding: 1.5rem;
+                     box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎓</div>
+            <h4 style="color: #10b981; font-weight: 700; font-size: 2rem; margin: 0.5rem 0;">
+                {avg_performance:.2f}<span style="font-size: 1.2rem; color: #b8bdc8;">/5</span>
+            </h4>
+            <p style="color: #b8bdc8; font-size: 0.9rem; font-weight: 600; margin: 0;">Academic Performance</p>
+        </div>
+        """, unsafe_allow_html=True)
 
     with col4:
         avg_load = stats_df['study_load'].mean()
-        st.metric("Avg Study Load", f"{avg_load:.2f}/5")
+        st.markdown(f"""
+        <div class="glass-card" style="text-align: center; animation-delay: 0.7s;
+                     background: linear-gradient(135deg, rgba(255, 183, 77, 0.15) 0%, rgba(251, 146, 60, 0.15) 100%);
+                     border: 2px solid rgba(255, 183, 77, 0.3); padding: 1.5rem;
+                     box-shadow: 0 4px 20px rgba(255, 183, 77, 0.3);">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📚</div>
+            <h4 style="color: #ffb74d; font-weight: 700; font-size: 2rem; margin: 0.5rem 0;">
+                {avg_load:.2f}<span style="font-size: 1.2rem; color: #b8bdc8;">/5</span>
+            </h4>
+            <p style="color: #b8bdc8; font-size: 0.9rem; font-weight: 600; margin: 0;">Study Load</p>
+        </div>
+        """, unsafe_allow_html=True)
 
     # Stress level distribution (if available)
     if 'stress_level' in stats_df.columns:
@@ -1302,166 +1503,356 @@ def show_statistics_page():
         )
 
 def show_about_page():
-    """Display about page"""
+    """Display about page with ultra-modern design"""
     st.markdown("""
-    <div class="glass-card" style="text-align: center; margin-bottom: 2rem; animation-delay: 0.1s;">
-        <h1 style="color: #667eea; font-weight: 700; font-size: 2.5rem; margin: 0;">
-            ℹ️ About This Application
-        </h1>
-        <p style="color: #6b7280; margin-top: 0.5rem;">Built with ❤️ using Machine Learning</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="glass-card" style="animation-delay: 0.2s;">
-        <h3 style="color: #667eea; margin-bottom: 1rem; font-weight: 600;">🧠 Student Stress Predictor</h3>
-        <p style="color: #4b5563; font-size: 1.05rem; line-height: 1.8;">
-            This application uses <strong>Machine Learning</strong> to predict student stress levels based on lifestyle 
-            and academic factors. It combines data from multiple sources and continuously improves as 
-            more users contribute their data.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="glass-card" style="animation-delay: 0.3s;">
-        <h3 style="color: #667eea; margin-bottom: 1rem; font-weight: 600;">🎯 How It Works</h3>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("""
-        <div class="glass-card" style="animation-delay: 0.4s;">
-            <div style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">1️⃣</div>
-            <h4 style="color: #667eea; text-align: center; margin-bottom: 0.5rem;">Data Collection</h4>
-            <p style="color: #6b7280; text-align: center;">Users input lifestyle & academic info</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="glass-card" style="animation-delay: 0.6s;">
-            <div style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">3️⃣</div>
-            <h4 style="color: #667eea; text-align: center; margin-bottom: 0.5rem;">ML Prediction</h4>
-            <p style="color: #6b7280; text-align: center;">Trained model predicts stress (1-5)</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class="glass-card" style="animation-delay: 0.5s;">
-            <div style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">2️⃣</div>
-            <h4 style="color: #764ba2; text-align: center; margin-bottom: 0.5rem;">Feature Engineering</h4>
-            <p style="color: #6b7280; text-align: center;">Calculate wellbeing & pressure scores</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="glass-card" style="animation-delay: 0.7s;">
-            <div style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">4️⃣</div>
-            <h4 style="color: #764ba2; text-align: center; margin-bottom: 0.5rem;">Continuous Learning</h4>
-            <p style="color: #6b7280; text-align: center;">User feedback improves the model</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="glass-card" style="animation-delay: 0.8s;">
-        <h3 style="color: #667eea; margin-bottom: 1.5rem; font-weight: 600;">📊 Features Used</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-            <div>
-                <h4 style="color: #667eea; margin-bottom: 1rem;">Input Features (5):</h4>
-                <ul style="color: #4b5563; line-height: 2;">
-                    <li>😴 Sleep Quality (1-5)</li>
-                    <li>🤕 Headaches per Week (0-7)</li>
-                    <li>👩‍🎓 Academic Performance (1-5)</li>
-                    <li>📖 Study Load (1-5)</li>
-                    <li>🎾 Extracurricular Frequency (0-7)</li>
-                </ul>
-            </div>
-            <div>
-                <h4 style="color: #764ba2; margin-bottom: 1rem;">Engineered Features (3):</h4>
-                <ul style="color: #4b5563; line-height: 2;">
-                    <li>💚 Wellbeing Score</li>
-                    <li>📚 Academic Pressure</li>
-                    <li>⚖️ Total Workload</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown("""
-        <div class="glass-card" style="text-align: center; animation-delay: 0.9s;">
-            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤖</div>
-            <h4 style="color: #667eea; margin: 0.5rem 0;">Algorithm</h4>
-            <p style="color: #6b7280; font-size: 0.9rem;">Random Forest</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class="glass-card" style="text-align: center; animation-delay: 1s;">
-            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎯</div>
-            <h4 style="color: #10b981; margin: 0.5rem 0;">Accuracy</h4>
-            <p style="color: #6b7280; font-size: 0.9rem;">94-97%</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown("""
-        <div class="glass-card" style="text-align: center; animation-delay: 1.1s;">
-            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
-            <h4 style="color: #667eea; margin: 0.5rem 0;">Samples</h4>
-            <p style="color: #6b7280; font-size: 0.9rem;">1,600+</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col4:
-        st.markdown("""
-        <div class="glass-card" style="text-align: center; animation-delay: 1.2s;">
-            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🗂️</div>
-            <h4 style="color: #764ba2; margin: 0.5rem 0;">Datasets</h4>
-            <p style="color: #6b7280; font-size: 0.9rem;">4 combined</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="glass-card" style="animation-delay: 1.3s;">
-        <h3 style="color: #667eea; margin-bottom: 1rem; font-weight: 600;">🔄 Data Flow</h3>
-        <div style="text-align: center; background: rgba(102, 126, 234, 0.1); padding: 2rem; border-radius: 15px; margin: 1.5rem 0;">
-            <p style="color: #e4e6eb; font-size: 1.1rem; line-height: 2; font-weight: 500;">
-                User Input → Feature Engineering → ML Model → Prediction<br>
-                <span style="color: #64b5f6;">↓</span><br>
-                Save to Database → Future Model Improvements
+    <div class="glass-card" style="text-align: center; margin-bottom: 2.5rem; animation-delay: 0.1s;
+                 background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+                 border: 2px solid rgba(100, 181, 246, 0.3);
+                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(100, 181, 246, 0.2);
+                 position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; 
+                    background: radial-gradient(circle, rgba(100, 181, 246, 0.1) 0%, transparent 50%);
+                    animation: spin 30s linear infinite;"></div>
+        <div style="position: relative; z-index: 1;">
+            <h1 style="background: linear-gradient(135deg, #64b5f6 0%, #4db6ac 50%, #ffb74d 100%);
+                       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                       font-weight: 800; font-size: 3.5rem; margin: 0; 
+                       text-shadow: 0 0 30px rgba(100, 181, 246, 0.5); animation: pulse 2s ease-in-out infinite;">
+                ℹ️ About StressAI
+            </h1>
+            <p style="color: #b8bdc8; margin-top: 1rem; font-size: 1.2rem; font-weight: 500;">
+                Built with ❤️ using Advanced Machine Learning • AI-Powered Predictions
             </p>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="glass-card" style="animation-delay: 1.4s;">
-        <h3 style="color: #667eea; margin-bottom: 1rem; font-weight: 600;">⚠️ Disclaimer</h3>
-        <p style="color: #b8bdc8; font-size: 1.05rem; line-height: 1.8; text-align: center; padding: 1rem;">
-            This tool is for <strong style="color: #e4e6eb;">educational and informational purposes only</strong>. 
-            It should not replace professional medical or psychological advice. If you're experiencing severe stress, 
-            please consult with a qualified healthcare professional.
+    <div class="glass-card" style="animation-delay: 0.2s;
+                 background: linear-gradient(135deg, rgba(77, 182, 172, 0.1) 0%, rgba(100, 181, 246, 0.1) 100%);
+                 border: 2px solid rgba(77, 182, 172, 0.2);
+                 box-shadow: 0 4px 20px rgba(77, 182, 172, 0.2);">
+        <h3 style="background: linear-gradient(135deg, #64b5f6 0%, #4db6ac 100%);
+                   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                   margin-bottom: 1.5rem; font-weight: 700; font-size: 2rem;">
+            🧠 Student Stress Predictor
+        </h3>
+        <p style="color: #e4e6eb; font-size: 1.15rem; line-height: 2; text-align: justify;">
+            This application uses <strong style="color: #64b5f6;">Advanced Machine Learning</strong> algorithms to predict 
+            student stress levels based on lifestyle and academic factors. It combines data from multiple sources and 
+            continuously improves as more users contribute their data, creating a more accurate and personalized 
+            stress prediction system.
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div style="text-align: center; margin-top: 2rem; padding: 1.5rem; animation-delay: 1.5s;">
-        <p style="color: #64b5f6; font-size: 0.95rem; font-weight: 500;">
-            Version 2.0 (Dark Mode) • Built with ❤️ using Machine Learning
+    <div class="glass-card" style="animation-delay: 0.3s; margin-bottom: 2rem;
+                 background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+                 border: 2px solid rgba(100, 181, 246, 0.2);">
+        <h3 style="background: linear-gradient(135deg, #64b5f6 0%, #ffb74d 100%);
+                   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                   margin-bottom: 1.5rem; font-weight: 700; font-size: 2rem; text-align: center;">
+            🎯 How It Works
+        </h3>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2, gap="large")
+    
+    with col1:
+        st.markdown("""
+        <div class="glass-card" style="animation-delay: 0.4s; 
+                     background: linear-gradient(135deg, rgba(100, 181, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%);
+                     border: 2px solid rgba(100, 181, 246, 0.3);
+                     box-shadow: 0 4px 20px rgba(100, 181, 246, 0.3);
+                     transition: all 0.3s ease;"
+             onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 8px 30px rgba(100, 181, 246, 0.5)'"
+             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(100, 181, 246, 0.3)'">
+            <div style="text-align: center; font-size: 3.5rem; margin-bottom: 1rem; 
+                        background: linear-gradient(135deg, #64b5f6 0%, #9333ea 100%);
+                        -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                1️⃣
+            </div>
+            <h4 style="color: #64b5f6; text-align: center; margin-bottom: 1rem; font-weight: 700; font-size: 1.3rem;">
+                Data Collection
+            </h4>
+            <p style="color: #b8bdc8; text-align: center; line-height: 1.8; font-size: 1rem;">
+                Users input lifestyle & academic information through an intuitive interface
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="glass-card" style="animation-delay: 0.6s; margin-top: 1.5rem;
+                     background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(77, 182, 172, 0.15) 100%);
+                     border: 2px solid rgba(16, 185, 129, 0.3);
+                     box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+                     transition: all 0.3s ease;"
+             onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 8px 30px rgba(16, 185, 129, 0.5)'"
+             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(16, 185, 129, 0.3)'">
+            <div style="text-align: center; font-size: 3.5rem; margin-bottom: 1rem;
+                        background: linear-gradient(135deg, #10b981 0%, #4db6ac 100%);
+                        -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                3️⃣
+            </div>
+            <h4 style="color: #10b981; text-align: center; margin-bottom: 1rem; font-weight: 700; font-size: 1.3rem;">
+                ML Prediction
+            </h4>
+            <p style="color: #b8bdc8; text-align: center; line-height: 1.8; font-size: 1rem;">
+                Trained Random Forest model predicts stress level (1-5 scale)
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="glass-card" style="animation-delay: 0.5s;
+                     background: linear-gradient(135deg, rgba(255, 183, 77, 0.15) 0%, rgba(251, 146, 60, 0.15) 100%);
+                     border: 2px solid rgba(255, 183, 77, 0.3);
+                     box-shadow: 0 4px 20px rgba(255, 183, 77, 0.3);
+                     transition: all 0.3s ease;"
+             onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 8px 30px rgba(255, 183, 77, 0.5)'"
+             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(255, 183, 77, 0.3)'">
+            <div style="text-align: center; font-size: 3.5rem; margin-bottom: 1rem;
+                        background: linear-gradient(135deg, #ffb74d 0%, #fb923c 100%);
+                        -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                2️⃣
+            </div>
+            <h4 style="color: #ffb74d; text-align: center; margin-bottom: 1rem; font-weight: 700; font-size: 1.3rem;">
+                Feature Engineering
+            </h4>
+            <p style="color: #b8bdc8; text-align: center; line-height: 1.8; font-size: 1rem;">
+                Calculate wellbeing & pressure scores from input data
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="glass-card" style="animation-delay: 0.7s; margin-top: 1.5rem;
+                     background: linear-gradient(135deg, rgba(147, 51, 234, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+                     border: 2px solid rgba(147, 51, 234, 0.3);
+                     box-shadow: 0 4px 20px rgba(147, 51, 234, 0.3);
+                     transition: all 0.3s ease;"
+             onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 8px 30px rgba(147, 51, 234, 0.5)'"
+             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(147, 51, 234, 0.3)'">
+            <div style="text-align: center; font-size: 3.5rem; margin-bottom: 1rem;
+                        background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+                        -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                4️⃣
+            </div>
+            <h4 style="color: #a855f7; text-align: center; margin-bottom: 1rem; font-weight: 700; font-size: 1.3rem;">
+                Continuous Learning
+            </h4>
+            <p style="color: #b8bdc8; text-align: center; line-height: 1.8; font-size: 1rem;">
+                User feedback continuously improves model accuracy
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="glass-card" style="animation-delay: 0.8s; margin-top: 2rem;
+                 background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+                 border: 2px solid rgba(100, 181, 246, 0.2);
+                 box-shadow: 0 4px 20px rgba(100, 181, 246, 0.2);">
+        <h3 style="background: linear-gradient(135deg, #64b5f6 0%, #a855f7 100%);
+                   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                   margin-bottom: 2rem; font-weight: 700; font-size: 2rem; text-align: center;">
+            📊 Features & Engineering
+        </h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div style="background: linear-gradient(135deg, rgba(100, 181, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+                        padding: 2rem; border-radius: 15px; border: 2px solid rgba(100, 181, 246, 0.2);
+                        box-shadow: 0 4px 15px rgba(100, 181, 246, 0.2);">
+                <h4 style="color: #64b5f6; margin-bottom: 1.5rem; font-weight: 700; font-size: 1.4rem; text-align: center;">
+                    📥 Input Features (5)
+                </h4>
+                <ul style="color: #e4e6eb; line-height: 2.5; font-size: 1.05rem; list-style: none; padding: 0;">
+                    <li style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(100, 181, 246, 0.1); border-radius: 8px;
+                               border-left: 4px solid #64b5f6;">
+                        😴 <strong>Sleep Quality</strong> (1-5)
+                    </li>
+                    <li style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(239, 68, 68, 0.1); border-radius: 8px;
+                               border-left: 4px solid #ef4444;">
+                        🤕 <strong>Headaches</strong> per Week (0-7)
+                    </li>
+                    <li style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(16, 185, 129, 0.1); border-radius: 8px;
+                               border-left: 4px solid #10b981;">
+                        👩‍🎓 <strong>Academic Performance</strong> (1-5)
+                    </li>
+                    <li style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(255, 183, 77, 0.1); border-radius: 8px;
+                               border-left: 4px solid #ffb74d;">
+                        📖 <strong>Study Load</strong> (1-5)
+                    </li>
+                    <li style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(147, 51, 234, 0.1); border-radius: 8px;
+                               border-left: 4px solid #9333ea;">
+                        🎾 <strong>Extracurricular</strong> Frequency (0-7)
+                    </li>
+                </ul>
+            </div>
+            <div style="background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+                        padding: 2rem; border-radius: 15px; border: 2px solid rgba(147, 51, 234, 0.2);
+                        box-shadow: 0 4px 15px rgba(147, 51, 234, 0.2);">
+                <h4 style="color: #a855f7; margin-bottom: 1.5rem; font-weight: 700; font-size: 1.4rem; text-align: center;">
+                    🔧 Engineered Features (3)
+                </h4>
+                <ul style="color: #e4e6eb; line-height: 2.5; font-size: 1.05rem; list-style: none; padding: 0;">
+                    <li style="padding: 1rem; margin: 0.8rem 0; background: rgba(16, 185, 129, 0.1); border-radius: 8px;
+                               border-left: 4px solid #10b981;">
+                        💚 <strong>Wellbeing Score</strong><br>
+                        <span style="font-size: 0.9rem; color: #b8bdc8;">Sleep quality - headaches</span>
+                    </li>
+                    <li style="padding: 1rem; margin: 0.8rem 0; background: rgba(255, 183, 77, 0.1); border-radius: 8px;
+                               border-left: 4px solid #ffb74d;">
+                        📚 <strong>Academic Pressure</strong><br>
+                        <span style="font-size: 0.9rem; color: #b8bdc8;">Study load + performance</span>
+                    </li>
+                    <li style="padding: 1rem; margin: 0.8rem 0; background: rgba(147, 51, 234, 0.1); border-radius: 8px;
+                               border-left: 4px solid #9333ea;">
+                        ⚖️ <strong>Total Workload</strong><br>
+                        <span style="font-size: 0.9rem; color: #b8bdc8;">Academic + extracurricular</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
+    
+    col1, col2, col3, col4 = st.columns(4, gap="large")
+    with col1:
+        st.markdown("""
+        <div class="glass-card" style="text-align: center; animation-delay: 0.9s;
+                     background: linear-gradient(135deg, rgba(100, 181, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%);
+                     border: 2px solid rgba(100, 181, 246, 0.3);
+                     box-shadow: 0 4px 20px rgba(100, 181, 246, 0.3);
+                     padding: 2rem 1rem;
+                     transition: all 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05) translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(100, 181, 246, 0.5)'"
+             onmouseout="this.style.transform='scale(1) translateY(0)'; this.style.boxShadow='0 4px 20px rgba(100, 181, 246, 0.3)'">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
+            <h4 style="color: #64b5f6; margin: 0.8rem 0; font-weight: 700; font-size: 1.1rem;">Algorithm</h4>
+            <p style="color: #e4e6eb; font-size: 1rem; font-weight: 600;">Random Forest</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="glass-card" style="text-align: center; animation-delay: 1s;
+                     background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(77, 182, 172, 0.15) 100%);
+                     border: 2px solid rgba(16, 185, 129, 0.3);
+                     box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+                     padding: 2rem 1rem;
+                     transition: all 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05) translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(16, 185, 129, 0.5)'"
+             onmouseout="this.style.transform='scale(1) translateY(0)'; this.style.boxShadow='0 4px 20px rgba(16, 185, 129, 0.3)'">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+            <h4 style="color: #10b981; margin: 0.8rem 0; font-weight: 700; font-size: 1.1rem;">Accuracy</h4>
+            <p style="color: #e4e6eb; font-size: 1rem; font-weight: 600;">94-97%</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div class="glass-card" style="text-align: center; animation-delay: 1.1s;
+                     background: linear-gradient(135deg, rgba(255, 183, 77, 0.15) 0%, rgba(251, 146, 60, 0.15) 100%);
+                     border: 2px solid rgba(255, 183, 77, 0.3);
+                     box-shadow: 0 4px 20px rgba(255, 183, 77, 0.3);
+                     padding: 2rem 1rem;
+                     transition: all 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05) translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(255, 183, 77, 0.5)'"
+             onmouseout="this.style.transform='scale(1) translateY(0)'; this.style.boxShadow='0 4px 20px rgba(255, 183, 77, 0.3)'">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+            <h4 style="color: #ffb74d; margin: 0.8rem 0; font-weight: 700; font-size: 1.1rem;">Samples</h4>
+            <p style="color: #e4e6eb; font-size: 1rem; font-weight: 600;">1,600+</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown("""
+        <div class="glass-card" style="text-align: center; animation-delay: 1.2s;
+                     background: linear-gradient(135deg, rgba(147, 51, 234, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+                     border: 2px solid rgba(147, 51, 234, 0.3);
+                     box-shadow: 0 4px 20px rgba(147, 51, 234, 0.3);
+                     padding: 2rem 1rem;
+                     transition: all 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05) translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(147, 51, 234, 0.5)'"
+             onmouseout="this.style.transform='scale(1) translateY(0)'; this.style.boxShadow='0 4px 20px rgba(147, 51, 234, 0.3)'">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🗂️</div>
+            <h4 style="color: #a855f7; margin: 0.8rem 0; font-weight: 700; font-size: 1.1rem;">Datasets</h4>
+            <p style="color: #e4e6eb; font-size: 1rem; font-weight: 600;">4 combined</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="glass-card" style="animation-delay: 1.3s; margin-top: 2rem;
+                 background: linear-gradient(135deg, rgba(77, 182, 172, 0.15) 0%, rgba(100, 181, 246, 0.15) 100%);
+                 border: 2px solid rgba(77, 182, 172, 0.3);
+                 box-shadow: 0 4px 20px rgba(77, 182, 172, 0.2);">
+        <h3 style="background: linear-gradient(135deg, #4db6ac 0%, #64b5f6 100%);
+                   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                   margin-bottom: 1.5rem; font-weight: 700; font-size: 2rem; text-align: center;">
+            🔄 Data Flow Pipeline
+        </h3>
+        <div style="text-align: center; background: rgba(77, 182, 172, 0.1); 
+                    padding: 2.5rem; border-radius: 20px; margin: 1.5rem 0;
+                    border: 2px solid rgba(77, 182, 172, 0.2);
+                    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);">
+            <p style="color: #e4e6eb; font-size: 1.2rem; line-height: 2.5; font-weight: 600;">
+                <span style="color: #64b5f6;">📥 User Input</span> 
+                <span style="color: #4db6ac;">→</span> 
+                <span style="color: #ffb74d;">🔧 Feature Engineering</span> 
+                <span style="color: #4db6ac;">→</span><br>
+                <span style="color: #10b981;">🤖 ML Model</span> 
+                <span style="color: #4db6ac;">→</span> 
+                <span style="color: #a855f7;">🎯 Prediction</span><br>
+                <span style="color: #64b5f6; font-size: 2rem;">↓</span><br>
+                <span style="color: #4db6ac;">💾 Save to Database</span> 
+                <span style="color: #4db6ac;">→</span> 
+                <span style="color: #ffb74d;">📈 Future Improvements</span>
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="glass-card" style="animation-delay: 1.4s; margin-top: 2rem;
+                 background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(255, 183, 77, 0.1) 100%);
+                 border: 2px solid rgba(239, 68, 68, 0.3);
+                 box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);">
+        <h3 style="background: linear-gradient(135deg, #ef4444 0%, #ffb74d 100%);
+                   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                   margin-bottom: 1.5rem; font-weight: 700; font-size: 1.8rem; text-align: center;">
+            ⚠️ Important Disclaimer
+        </h3>
+        <p style="color: #e4e6eb; font-size: 1.15rem; line-height: 2; text-align: center; 
+                  padding: 1.5rem; background: rgba(239, 68, 68, 0.05); border-radius: 15px;">
+            This tool is for <strong style="color: #ffb74d;">educational and informational purposes only</strong>. 
+            It should <strong style="color: #ef4444;">NOT replace</strong> professional medical or psychological advice. 
+            If you're experiencing <strong style="color: #ef4444;">severe stress</strong> or mental health concerns, 
+            please consult with a qualified healthcare professional immediately. 🏥
         </p>
-        <p style="color: #b8bdc8; font-size: 0.85rem; margin-top: 0.5rem;">
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div style="text-align: center; margin-top: 3rem; padding: 2rem; animation-delay: 1.5s;
+                background: linear-gradient(135deg, rgba(100, 181, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+                border-radius: 20px; border: 2px solid rgba(100, 181, 246, 0.2);">
+        <p style="background: linear-gradient(135deg, #64b5f6 0%, #a855f7 100%);
+                  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                  font-size: 1.1rem; font-weight: 700; margin: 0;">
+            ⚡ StressAI v2.0 (Dark Mode) • Built with ❤️ using Advanced ML
+        </p>
+        <p style="color: #b8bdc8; font-size: 0.9rem; margin-top: 0.8rem; font-weight: 500;">
+            Powered by Random Forest • Groq AI Integration • Real-time Analytics
+        </p>
+        <p style="color: #64b5f6; font-size: 0.85rem; margin-top: 0.5rem;">
             Last Updated: October 2025
         </p>
     </div>
-    """)
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
