@@ -394,6 +394,30 @@ st.markdown(f"""
         transform: translateY(-2px) scale(1.02) !important;
     }}
     
+    /* Subheaders Styling for Visibility */
+    h2, h3 {{
+        color: {text_primary} !important;
+        font-weight: 700 !important;
+    }}
+    
+    .stMarkdown h2 {{
+        color: {text_primary} !important;
+        background: linear-gradient(135deg, {accent_1} 0%, {accent_2} 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        font-weight: 700 !important;
+        font-size: 2rem !important;
+        margin: 2rem 0 1rem 0 !important;
+        padding: 0.5rem 0 !important;
+    }}
+    
+    .stMarkdown h3 {{
+        color: {accent_1} !important;
+        font-weight: 600 !important;
+        font-size: 1.5rem !important;
+        margin: 1.5rem 0 1rem 0 !important;
+    }}
+    
     /* Sidebar with Ultra Modern Glass Effect */
     section[data-testid="stSidebar"] {{
         background: linear-gradient(180deg, 
@@ -1133,8 +1157,15 @@ def show_prediction_page(model):
         predicted_stress = st.session_state.predicted_stress
         level_name, emoji, description = get_stress_description(predicted_stress)
         
-        st.markdown("---")
-        st.subheader("📊 Your Results")
+        st.markdown("""
+        <div style="text-align: center; margin: 3rem 0 2rem 0;">
+            <h2 style="background: linear-gradient(135deg, #64b5f6 0%, #10b981 100%);
+                       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                       font-weight: 700; font-size: 2.5rem; margin: 0;">
+                📊 Your Prediction Results
+            </h2>
+        </div>
+        """, unsafe_allow_html=True)
         
         # Create result display
         res_col1, res_col2, res_col3 = st.columns([1, 2, 1])
@@ -1158,8 +1189,15 @@ def show_prediction_page(model):
             """, unsafe_allow_html=True)
         
         # Recommendations
-        st.markdown("---")
-        st.subheader("💡 AI-Powered Recommendations")
+        st.markdown("""
+        <div style="text-align: center; margin: 3rem 0 2rem 0;">
+            <h2 style="background: linear-gradient(135deg, #ffb74d 0%, #4db6ac 100%);
+                       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                       font-weight: 700; font-size: 2.2rem; margin: 0;">
+                💡 AI-Powered Recommendations
+            </h2>
+        </div>
+        """, unsafe_allow_html=True)
         
         # Check if AI is enabled
         from ai_recommender import AIRecommendationEngine
@@ -1192,9 +1230,18 @@ def show_prediction_page(model):
             """, unsafe_allow_html=True)
         
         # Feedback section
-        st.markdown("---")
-        st.subheader("📝 Help Us Improve!")
-        st.markdown("If you know your actual stress level, please share it to help improve our model:")
+        st.markdown("""
+        <div style="text-align: center; margin: 3rem 0 1.5rem 0;">
+            <h2 style="background: linear-gradient(135deg, #a855f7 0%, #64b5f6 100%);
+                       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                       font-weight: 700; font-size: 2rem; margin: 0;">
+                📝 Help Us Improve!
+            </h2>
+            <p style="color: #b8bdc8; margin-top: 1rem; font-size: 1.05rem;">
+                If you know your actual stress level, please share it to help improve our model
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
         
         feedback_col1, feedback_col2 = st.columns([3, 1])
         
@@ -1310,6 +1357,12 @@ def show_statistics_page():
 
     # Enhanced Total Submissions Card
     st.markdown(f"""
+    <style>
+    @keyframes bounce {{
+        0%, 100% {{ transform: translateY(0); }}
+        50% {{ transform: translateY(-20px); }}
+    }}
+    </style>
     <div class="glass-card" style="text-align: center; margin-bottom: 2.5rem; animation-delay: 0.2s;
                  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(100, 181, 246, 0.15) 100%);
                  border: 2px solid rgba(16, 185, 129, 0.3);
@@ -1327,21 +1380,14 @@ def show_statistics_page():
             </p>
         </div>
     </div>
-    
-    @keyframes bounce {{
-        0%, 100% {{ transform: translateY(0); }}
-        50% {{ transform: translateY(-20px); }}
-    }}
     """, unsafe_allow_html=True)
 
-    # Enhanced Overview metrics with individual styled cards
+    # Enhanced Overview metrics header
     st.markdown("""
-    <div class="glass-card" style="animation-delay: 0.3s; margin-bottom: 2rem;
-                 background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-                 border: 2px solid rgba(100, 181, 246, 0.2);">
+    <div style="text-align: center; margin: 2rem 0 1.5rem 0;">
         <h3 style="background: linear-gradient(135deg, #64b5f6 0%, #4db6ac 100%);
                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-                   margin-bottom: 1.5rem; font-weight: 700; font-size: 1.8rem;">
+                   font-weight: 700; font-size: 2rem; margin: 0;">
             📈 Key Metrics Overview
         </h3>
     </div>
@@ -1414,8 +1460,15 @@ def show_statistics_page():
         valid_stress = stats_df['stress_level'].dropna()
 
         if len(valid_stress) > 0:
-            st.markdown("---")
-            st.subheader("🎯 Stress Level Distribution")
+            st.markdown("""
+            <div style="text-align: center; margin: 3rem 0 2rem 0;">
+                <h2 style="background: linear-gradient(135deg, #64b5f6 0%, #a855f7 100%);
+                           -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                           font-weight: 700; font-size: 2.2rem; margin: 0;">
+                    🎯 Stress Level Distribution
+                </h2>
+            </div>
+            """, unsafe_allow_html=True)
 
             col1, col2 = st.columns(2)
 
@@ -1443,8 +1496,15 @@ def show_statistics_page():
                 st.plotly_chart(fig, use_container_width=True)
 
     # Feature distributions
-    st.markdown("---")
-    st.subheader("📊 Feature Distributions")
+    st.markdown("""
+    <div style="text-align: center; margin: 3rem 0 2rem 0;">
+        <h2 style="background: linear-gradient(135deg, #4db6ac 0%, #ffb74d 100%);
+                   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                   font-weight: 700; font-size: 2.2rem; margin: 0;">
+            📊 Feature Distributions
+        </h2>
+    </div>
+    """, unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
@@ -1470,8 +1530,15 @@ def show_statistics_page():
 
     # Timeline
     if 'timestamp' in stats_df.columns:
-        st.markdown("---")
-        st.subheader("📅 Submission Timeline")
+        st.markdown("""
+        <div style="text-align: center; margin: 3rem 0 2rem 0;">
+            <h2 style="background: linear-gradient(135deg, #10b981 0%, #64b5f6 100%);
+                       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                       font-weight: 700; font-size: 2.2rem; margin: 0;">
+                📅 Submission Timeline
+            </h2>
+        </div>
+        """, unsafe_allow_html=True)
 
         try:
             stats_df['timestamp'] = pd.to_datetime(stats_df['timestamp'])
