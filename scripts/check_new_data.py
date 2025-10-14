@@ -40,19 +40,6 @@ def check_new_data(MIN_LABELED_RECORDS = 5):
         print("   Skipping training.")
         return False
     
-    # Check if there's recent data (within last 24 hours)
-    if 'timestamp' in df.columns:
-        try:
-            df['timestamp'] = pd.to_datetime(df['timestamp'])
-            recent_data = df[df['timestamp'] > datetime.now() - timedelta(hours=24)]
-            print(f"Recent data (last 24h): {len(recent_data)}")
-            
-            if len(recent_data) == 0:
-                print("\n⚠️ No recent data found. Skipping training.")
-                return False
-        except:
-            pass  # Continue even if timestamp parsing fails
-    
     print(f"\n✓ Sufficient data found. Proceeding with training.")
     return True
 
