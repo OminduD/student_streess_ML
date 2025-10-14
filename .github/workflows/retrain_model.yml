@@ -1,0 +1,70 @@
+name: Automated Model Retraining
+
+on:
+  # Run every hour
+  schedule:
+    - cron: '0 * * * *'  # Every hour at minute 0
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Download new data from Supabase
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      run: |
+        python scripts/download_training_data.py
+    
+    - name: Check if enough new data exists
+      id: check_data
+      run: |
+        python scripts/check_new_data.py
+        echo "should_train=$?" >> $GITHUB_OUTPUT
+    
+    - name: Ingest and process data
+      if: steps.check_data.outputs.should_train == '0'
+      run: |
+        python scripts/ingest_multi_dataset.py
+    
+    - name: Train model
+      if: steps.check_data.outputs.should_train == '0'
+      run: |
+        python scripts/train_multi_dataset.py
+    
+    - name: Commit and push updated model
+      if: steps.check_data.outputs.should_train == '0'
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add model/
+        git add data/processed/
+        git commit -m "🤖 Automated model retraining - $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+        git push
+    
+    - name: Create summary
+      if: always()
+      run: |
+        echo "## Model Retraining Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Date**: $(date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+        if [ -f model/metrics.json ]; then
+          echo "- **Accuracy**: $(python -c "import json; print(json.load(open('model/metrics.json'))['accuracy'])")" >> $GITHUB_STEP_SUMMARY
+        fi
