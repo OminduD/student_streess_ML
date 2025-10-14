@@ -397,46 +397,46 @@ def get_recommendations(stress_level, sleep_quality, headaches, study_load,
 def show_statistics_page():
     """Display statistics page"""
     st.header("📊 Data Statistics & Insights")
-    
+
     stats_df = load_statistics()
-    
-    if stats_df is None or stats_df.empty:
+
+    if stats_df is None or len(stats_df) == 0:
         st.info("📭 No data collected yet. Start by making predictions!")
         return
-    
-    st.success(f"✅ Displaying **{len(stats_df)}** entries from the database.")
-    
+
+    st.success(f"✅ Total submissions: **{len(stats_df)}** entries")
+
     # Overview metrics
     st.subheader("📈 Overview")
     col1, col2, col3, col4 = st.columns(4)
-    
+
     with col1:
         avg_sleep = stats_df['sleep_quality'].mean()
         st.metric("Avg Sleep Quality", f"{avg_sleep:.2f}/5")
-    
+
     with col2:
         avg_headaches = stats_df['headaches_per_week'].mean()
         st.metric("Avg Headaches/Week", f"{avg_headaches:.1f}")
-    
+
     with col3:
         avg_performance = stats_df['academic_performance'].mean()
         st.metric("Avg Academic Perf.", f"{avg_performance:.2f}/5")
-    
+
     with col4:
         avg_load = stats_df['study_load'].mean()
         st.metric("Avg Study Load", f"{avg_load:.2f}/5")
-    
+
     # Stress level distribution (if available)
     if 'stress_level' in stats_df.columns:
         valid_stress = stats_df['stress_level'].dropna()
-        
+
         if len(valid_stress) > 0:
             st.markdown("---")
             st.subheader("🎯 Stress Level Distribution")
-            
-            dist_col1, dist_col2 = st.columns(2)
-            
-            with dist_col1:
+
+            col1, col2 = st.columns(2)
+
+            with col1:
                 # Bar chart
                 stress_counts = valid_stress.value_counts().sort_index()
                 fig = px.bar(
@@ -448,8 +448,8 @@ def show_statistics_page():
                     color_continuous_scale='RdYlGn_r'
                 )
                 st.plotly_chart(fig, use_container_width=True)
-            
-            with dist_col2:
+
+            with col2:
                 # Pie chart
                 fig = px.pie(
                     values=stress_counts.values,
@@ -458,14 +458,14 @@ def show_statistics_page():
                     color_discrete_sequence=px.colors.sequential.RdBu_r
                 )
                 st.plotly_chart(fig, use_container_width=True)
-    
+
     # Feature distributions
     st.markdown("---")
     st.subheader("📊 Feature Distributions")
-    
-    feat_dist_col1, feat_dist_col2 = st.columns(2)
-    
-    with feat_dist_col1:
+
+    col1, col2 = st.columns(2)
+
+    with col1:
         fig = px.histogram(
             stats_df,
             x='sleep_quality',
@@ -474,8 +474,8 @@ def show_statistics_page():
             labels={'sleep_quality': 'Sleep Quality'}
         )
         st.plotly_chart(fig, use_container_width=True)
-    
-    with feat_dist_col2:
+
+    with col2:
         fig = px.histogram(
             stats_df,
             x='study_load',
@@ -484,17 +484,17 @@ def show_statistics_page():
             labels={'study_load': 'Study Load'}
         )
         st.plotly_chart(fig, use_container_width=True)
-    
+
     # Timeline
     if 'timestamp' in stats_df.columns:
         st.markdown("---")
         st.subheader("📅 Submission Timeline")
-        
+
         try:
             stats_df['timestamp'] = pd.to_datetime(stats_df['timestamp'])
             stats_df['date'] = stats_df['timestamp'].dt.date
             daily_counts = stats_df.groupby('date').size().reset_index(name='count')
-            
+
             fig = px.line(
                 daily_counts,
                 x='date',
@@ -504,22 +504,21 @@ def show_statistics_page():
             )
             st.plotly_chart(fig, use_container_width=True)
         except Exception as e:
-            st.warning(f"Timeline visualization not available: {e}")
-    
+            st.info(f"Timeline visualization not available: {e}")
+
     # Raw data
     with st.expander("🔍 View Raw Data"):
         st.dataframe(stats_df, use_container_width=True)
-        
-        # Download button
+
         # Download button
         csv = stats_df.to_csv(index=False)
         st.download_button(
             label="📥 Download CSV",
             data=csv,
             file_name=f"stress_data_{datetime.now().strftime('%Y%m%d')}.csv",
+def show_about_page():
             mime="text/csv"
-        )def show_about_page():
-    """Display about page"""
+        )
 
 def show_about_page():
     """Display about page"""
@@ -635,3 +634,4 @@ def show_about_page():
 
 if __name__ == "__main__":
     main()
+
