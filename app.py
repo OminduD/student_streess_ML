@@ -75,8 +75,9 @@ else:
     glow_color = "rgba(100, 181, 246, 0.2)"
 
 # Custom CSS for ULTRA MODERN styling with advanced animations
+# Using unique key to force CSS re-render on theme change
 st.markdown(f"""
-    <style>
+    <style id="theme-{current_theme}">
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;600;700&display=swap');
     
     /* Root variables for theme */
@@ -556,6 +557,16 @@ st.markdown(f"""
 
 # Theme Toggle Button (Streamlit Cloud Compatible)
 col1, col2, col3 = st.columns([8, 1, 1])
+with col1:
+    # Debug info with visual indicators (remove after testing)
+    st.markdown(f"""
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: {text_primary};">🎨 Theme: <strong>{current_theme.upper()}</strong></span>
+            <div style="width: 30px; height: 30px; background: {accent_1}; border-radius: 5px; border: 2px solid {card_border};"></div>
+            <div style="width: 30px; height: 30px; background: {accent_2}; border-radius: 5px; border: 2px solid {card_border};"></div>
+            <div style="width: 30px; height: 30px; background: {accent_3}; border-radius: 5px; border: 2px solid {card_border};"></div>
+        </div>
+    """, unsafe_allow_html=True)
 with col2:
     st.write("")  # Spacer
 with col3:
@@ -568,26 +579,30 @@ with col3:
         toggle_theme()
         st.rerun()
 
-# Add animated particles background
-st.markdown("""
+# Add animated particles background (theme-aware)
+# Extract RGB from accent colors for particles
+particle_color_1 = glow_color
+particle_color_2 = f"{accent_1}4d" if current_theme == 'light' else f"{accent_1}33"  # 30% opacity
+
+st.markdown(f"""
     <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden;">
-        <div style="position: absolute; width: 20px; height: 20px; background: rgba(102, 126, 234, 0.3); border-radius: 50%; 
+        <div style="position: absolute; width: 20px; height: 20px; background: {particle_color_1}; border-radius: 50%; 
                     animation: particles 15s linear infinite; left: 10%; animation-delay: 0s;"></div>
-        <div style="position: absolute; width: 15px; height: 15px; background: rgba(118, 75, 162, 0.3); border-radius: 50%; 
+        <div style="position: absolute; width: 15px; height: 15px; background: {particle_color_2}; border-radius: 50%; 
                     animation: particles 20s linear infinite; left: 20%; animation-delay: 2s;"></div>
-        <div style="position: absolute; width: 25px; height: 25px; background: rgba(240, 147, 251, 0.3); border-radius: 50%; 
+        <div style="position: absolute; width: 25px; height: 25px; background: {particle_color_1}; border-radius: 50%; 
                     animation: particles 18s linear infinite; left: 30%; animation-delay: 4s;"></div>
-        <div style="position: absolute; width: 18px; height: 18px; background: rgba(79, 172, 254, 0.3); border-radius: 50%; 
+        <div style="position: absolute; width: 18px; height: 18px; background: {particle_color_2}; border-radius: 50%; 
                     animation: particles 22s linear infinite; left: 40%; animation-delay: 1s;"></div>
-        <div style="position: absolute; width: 22px; height: 22px; background: rgba(102, 126, 234, 0.3); border-radius: 50%; 
+        <div style="position: absolute; width: 22px; height: 22px; background: {particle_color_1}; border-radius: 50%; 
                     animation: particles 17s linear infinite; left: 50%; animation-delay: 3s;"></div>
-        <div style="position: absolute; width: 16px; height: 16px; background: rgba(118, 75, 162, 0.3); border-radius: 50%; 
+        <div style="position: absolute; width: 16px; height: 16px; background: {particle_color_2}; border-radius: 50%; 
                     animation: particles 21s linear infinite; left: 60%; animation-delay: 5s;"></div>
-        <div style="position: absolute; width: 24px; height: 24px; background: rgba(240, 147, 251, 0.3); border-radius: 50%; 
+        <div style="position: absolute; width: 24px; height: 24px; background: {particle_color_1}; border-radius: 50%; 
                     animation: particles 19s linear infinite; left: 70%; animation-delay: 2.5s;"></div>
-        <div style="position: absolute; width: 19px; height: 19px; background: rgba(79, 172, 254, 0.3); border-radius: 50%; 
+        <div style="position: absolute; width: 19px; height: 19px; background: {particle_color_2}; border-radius: 50%; 
                     animation: particles 16s linear infinite; left: 80%; animation-delay: 4.5s;"></div>
-        <div style="position: absolute; width: 21px; height: 21px; background: rgba(102, 126, 234, 0.3); border-radius: 50%; 
+        <div style="position: absolute; width: 21px; height: 21px; background: {particle_color_1}; border-radius: 50%; 
                     animation: particles 23s linear infinite; left: 90%; animation-delay: 1.5s;"></div>
     </div>
 """, unsafe_allow_html=True)
