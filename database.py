@@ -13,9 +13,9 @@ import streamlit as st
 try:
     from supabase import create_client, Client
     SUPABASE_AVAILABLE = True
-except ImportError:
+except (ImportError, Exception):
     SUPABASE_AVAILABLE = False
-    st.warning("⚠️ Supabase library not installed. `pip install supabase`. Using CSV fallback.")
+    st.warning("⚠️ Supabase library not available or incompatible. Using local CSV fallback.")
 
 class DataStorage:
     """
@@ -44,7 +44,7 @@ class DataStorage:
                 supabase_url = st.secrets["SUPABASE_URL"]
                 supabase_key = st.secrets["SUPABASE_KEY"]
                 print("✓ Loaded Supabase credentials from Streamlit secrets.")
-            except (AttributeError, KeyError):
+            except Exception:
                 # Fallback to environment variables
                 print("ℹ️ Streamlit secrets not found. Falling back to environment variables.")
                 supabase_url = os.getenv("SUPABASE_URL")
@@ -84,7 +84,7 @@ class DataStorage:
             'study_load': data['study_load'],
             'extracurricular_frequency': data['extracurricular_frequency'],
             'timestamp': datetime.now().isoformat(),
-            'source': 'streamlit_app'
+            'source': data.get('source', 'streamlit_app')
         }
         
         if include_stress and 'actual_stress' in data:
@@ -124,7 +124,8 @@ class DataStorage:
         try:
             df = pd.DataFrame([record])
             
-            if os.path.exists(self.csv_path):
+            file_has_content = os.path.exists(self.csv_path) and os.path.getsize(self.csv_path) > 0
+            if file_has_content:
                 df.to_csv(self.csv_path, mode='a', header=False, index=False)
             else:
                 df.to_csv(self.csv_path, mode='w', header=True, index=False)
