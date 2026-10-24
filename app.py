@@ -920,7 +920,8 @@ def main():
         """, unsafe_allow_html=True)
         
         page = st.radio("Select Page:", 
-                       ["🔮 Predict Stress", "🍱 Bento Analytics", "📊 Statistics", "ℹ️ About"],
+                       ["🍱 Bento Analytics", "🔮 Predict Stress", "📊 Statistics", "ℹ️ About"],
+                       index=0,
                        label_visibility="collapsed")
         
         st.markdown("---")
@@ -1004,10 +1005,10 @@ def main():
         """, unsafe_allow_html=True)
     
     # Main content based on page selection
-    if page == "🔮 Predict Stress":
-        show_prediction_page(model)
-    elif page == "🍱 Bento Analytics":
+    if page == "🍱 Bento Analytics":
         render_bento_dashboard(stats_df)
+    elif page == "🔮 Predict Stress":
+        show_prediction_page(model)
     elif page == "📊 Statistics":
         show_statistics_page()
     else:
@@ -1016,9 +1017,24 @@ def main():
 def show_prediction_page(model):
     """Display the prediction page"""
     
+    # Notice banner to switch to Bento Analytics
+    st.markdown("""
+    <div style="background: linear-gradient(90deg, rgba(251, 191, 36, 0.12), rgba(99, 102, 241, 0.12));
+                border: 2px solid #fbbf24; border-radius: 12px; padding: 14px 20px; margin-bottom: 25px;
+                display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="font-size: 1.6rem;">🍱</span>
+            <div>
+                <strong style="color: #fbbf24; font-size: 0.95rem; letter-spacing: 0.5px;">LOOKING FOR THE NEW BENTO DASHBOARD?</strong>
+                <p style="color: #e4e6eb; margin: 3px 0 0 0; font-size: 0.85rem;">Select <strong>🍱 Bento Analytics</strong> in the left sidebar to explore the real-time Neo-Brutalist telemetry, radar metrics, and dataset distributions.</p>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
     # Beautiful section header
     st.markdown("""
-    <div style="text-align: center; margin: 2rem 0;">
+    <div style="text-align: center; margin: 1.5rem 0 2rem 0;">
         <h1 style="font-size: 2.5rem; font-weight: 700; 
                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
