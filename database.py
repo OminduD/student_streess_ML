@@ -7,7 +7,23 @@ import os
 from datetime import datetime
 from typing import Optional, Dict, List
 import pandas as pd
-import streamlit as st
+try:
+    import streamlit as st
+    HAS_STREAMLIT = True
+except ImportError:
+    st = None
+    HAS_STREAMLIT = False
+
+def _notify(kind: str, msg: str):
+    if st is not None:
+        try:
+            fn = getattr(st, kind, None)
+            if fn:
+                fn(msg)
+                return
+        except Exception:
+            pass
+    print(f"[{kind.upper()}] {msg}")
 
 # Try to import supabase, but allow fallback to CSV
 try:
@@ -15,7 +31,7 @@ try:
     SUPABASE_AVAILABLE = True
 except (ImportError, Exception):
     SUPABASE_AVAILABLE = False
-    st.warning("⚠️ Supabase library not available or incompatible. Using local CSV fallback.")
+    _notify("warning", "⚠️ Supabase library not available or incompatible. Using local CSV fallback.")
 
 class DataStorage:
     """
@@ -270,16 +286,18 @@ class DataStorage:
 # Singleton instance for the DataStorage class
 _storage_instance: Optional[DataStorage] = None
 
-@st.cache_resource
 def get_storage() -> DataStorage:
     """
     Get or create the storage singleton instance.
-    Using st.cache_resource ensures the connection is made only once.
+    Using st.cache_resource ensures the connection is made only once when running in Streamlit.
     """
     global _storage_instance
     if _storage_instance is None:
         print("Creating new DataStorage instance.")
         _storage_instance = DataStorage()
     return _storage_instance
+
+if HAS_STREAMLIT:
+    get_storage = st.cache_resource(get_storage)
 
 
