@@ -32,7 +32,18 @@ def test_supabase_connection() -> bool:
         print("💡 Run: pip install supabase")
         return False
 
-    # 2. Check credentials from environment or secrets
+    # 2. Check credentials from environment, .env file, or secrets
+    if os.path.exists(".env"):
+        try:
+            with open(".env", "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        os.environ.setdefault(k.strip(), v.strip())
+        except Exception:
+            pass
+
     supabase_url = os.getenv("SUPABASE_URL")
     supabase_key = os.getenv("SUPABASE_KEY")
 
@@ -55,6 +66,11 @@ def test_supabase_connection() -> bool:
         print("     - Copy 'anon / public' key into SUPABASE_KEY")
         print("  3. For Streamlit Cloud: add to App Settings -> Secrets")
         return False
+
+    # Normalize URL: strip trailing slash and /rest/v1 if included
+    supabase_url = supabase_url.strip().rstrip("/")
+    if supabase_url.endswith("/rest/v1"):
+        supabase_url = supabase_url[:-8].rstrip("/")
 
     # Validate URL format
     if not supabase_url.startswith("https://") or "supabase.co" not in supabase_url:

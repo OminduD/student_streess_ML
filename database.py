@@ -47,6 +47,18 @@ class DataStorage:
             except Exception:
                 # Fallback to environment variables
                 print("ℹ️ Streamlit secrets not found. Falling back to environment variables.")
+                # Load from local .env if available
+                if os.path.exists(".env"):
+                    try:
+                        with open(".env", "r", encoding="utf-8") as f:
+                            for line in f:
+                                line = line.strip()
+                                if line and not line.startswith("#") and "=" in line:
+                                    k, v = line.split("=", 1)
+                                    os.environ.setdefault(k.strip(), v.strip())
+                    except Exception:
+                        pass
+
                 supabase_url = os.getenv("SUPABASE_URL")
                 supabase_key = os.getenv("SUPABASE_KEY")
 
@@ -55,6 +67,11 @@ class DataStorage:
                 st.info("Please set them in your Streamlit Cloud secrets or a local .env file.")
                 self.use_supabase = False
                 return
+
+            # Clean URL: ensure no trailing slash or /rest/v1
+            supabase_url = supabase_url.strip().rstrip("/")
+            if supabase_url.endswith("/rest/v1"):
+                supabase_url = supabase_url[:-8].rstrip("/")
             
             self.supabase_client = create_client(supabase_url, supabase_key)
             # Don't show success message on every run, only on first connection.
