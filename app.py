@@ -540,24 +540,13 @@ def main():
     # Bento Light Header
     st.markdown("""
     <div class="bento-box bento-yellow" style="margin-bottom: 2rem;">
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
-            <span class="bento-pill pill-yellow">⚡ AI CORE v2.4</span>
-            <span class="bento-pill pill-cyan">N=1,100 GROUND TRUTH</span>
-            <span class="bento-pill pill-green">PERSISTENCE SYNC</span>
-            <span class="bento-pill pill-black">BENTO LIGHT THEME</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px;">
-            <div>
-                <h1 style="font-size: 2.6rem; font-weight: 900; margin: 0; letter-spacing: -0.5px; text-transform: uppercase; color: #0f172a;">
-                    🧠 STUDENT STRESS PREDICTOR
-                </h1>
-                <p style="color: #64748b; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin: 6px 0 0 0;">
-                    Multi-Modal Machine Learning Inference & Community Telemetry
-                </p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-                <span class="bento-pill pill-white" style="font-size: 11px; padding: 6px 12px;">BENTO SYSTEM ACTIVE</span>
-            </div>
+        <div>
+            <h1 style="font-size: 2.5rem; font-weight: 900; margin: 0; letter-spacing: -0.5px; text-transform: uppercase; color: #0f172a;">
+                🧠 STUDENT STRESS PREDICTOR
+            </h1>
+            <p style="color: #475569; font-size: 0.95rem; font-weight: 600; margin: 6px 0 0 0;">
+                Personalized stress assessment and wellness recommendations for students
+            </p>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -579,23 +568,12 @@ def main():
     with st.sidebar:
         # Bento Logo Header
         st.markdown("""
-        <div style="background: #f8fafc; border: 2px solid #0f172a; box-shadow: 4px 4px 0px 0px #0f172a; border-radius: 8px; padding: 18px 14px; text-align: center; margin-bottom: 1.5rem;">
-            <div style="font-size: 2.5rem; margin-bottom: 4px;">🧠</div>
-            <div style="font-size: 1.4rem; font-weight: 900; letter-spacing: -0.5px; text-transform: uppercase; color: #0f172a;">
+        <div style="background: #ffffff; border: 2px solid #0f172a; box-shadow: 4px 4px 0px 0px #0f172a; border-radius: 8px; padding: 18px 14px; text-align: center; margin-bottom: 1.5rem;">
+            <div style="font-size: 2.2rem; margin-bottom: 4px;">🧠</div>
+            <div style="font-size: 1.3rem; font-weight: 900; letter-spacing: -0.5px; text-transform: uppercase; color: #0f172a;">
                 STRESS.AI
             </div>
-            <div style="margin-top: 8px;">
-                <span class="bento-pill pill-yellow" style="font-size: 10px;">BENTO LIGHT v2.4</span>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Navigation Header
-        st.markdown("""
-        <div style="margin-bottom: 0.8rem;">
-            <span class="bento-pill pill-cyan" style="width: 100%; justify-content: center;">
-                📍 SELECT MODULE
-            </span>
+            <p style="color: #64748b; font-size: 0.8rem; font-weight: 600; margin: 4px 0 0 0;">Student Wellness Guide</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -607,11 +585,11 @@ def main():
         
         st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
         
-        # Live Telemetry Section with Bento Cards
+        # Summary Overview Section with Bento Cards
         st.markdown("""
         <div style="margin-bottom: 0.8rem;">
             <span class="bento-pill pill-green" style="width: 100%; justify-content: center;">
-                📊 LIVE TELEMETRY
+                📊 OVERVIEW
             </span>
         </div>
         """, unsafe_allow_html=True)
@@ -621,7 +599,7 @@ def main():
             sub_count = len(stats_df)
             st.markdown(f"""
             <div style="background: #ffffff; border: 2px solid #0f172a; box-shadow: 3px 3px 0px 0px #0f172a; border-radius: 6px; padding: 12px 14px; margin-bottom: 12px;">
-                <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #64748b; letter-spacing: 0.8px;">TOTAL SUBMISSIONS</div>
+                <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #64748b; letter-spacing: 0.8px;">TOTAL ASSESSMENTS</div>
                 <div style="font-size: 1.8rem; font-weight: 900; color: #0f172a; margin-top: 2px;">{sub_count}</div>
             </div>
             """, unsafe_allow_html=True)
@@ -645,31 +623,13 @@ def main():
             st.markdown("""
             <div style="background: #f8fafc; border: 2px solid #0f172a; box-shadow: 3px 3px 0px 0px #0f172a; border-radius: 6px; padding: 14px; text-align: center;">
                 <p style="color: #64748b; font-weight: 800; margin: 0; font-size: 0.85rem; text-transform: uppercase;">
-                    No Telemetry Yet
+                    No Assessments Yet
                 </p>
                 <p style="color: #0284c7; font-size: 0.75rem; margin: 4px 0 0 0; font-weight: 800; text-transform: uppercase;">
-                    Make a prediction to log data!
+                    Take the assessment to get started!
                 </p>
             </div>
             """, unsafe_allow_html=True)
-            
-        st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
-        
-        # Sidebar Footer - Storage Status
-        storage_medium = getattr(storage, 'last_storage_medium', 'DATABASE')
-        status_text = "SUPABASE POSTGRESQL SYNC" if storage_medium == "SUPABASE" else "LOCAL CSV STORAGE"
-        status_pill = "pill-green" if storage_medium == "SUPABASE" else "pill-yellow"
-        
-        st.markdown(f"""
-        <div style="background: #f8fafc; border: 2px solid #0f172a; box-shadow: 3px 3px 0px 0px #0f172a; border-radius: 6px; padding: 12px; text-align: center;">
-            <div style="margin-bottom: 4px;">
-                <span class="bento-pill {status_pill}" style="font-size: 9px;">{status_text}</span>
-            </div>
-            <div style="font-size: 9px; font-weight: 700; color: #64748b; margin-top: 4px; text-transform: uppercase;">
-                SECURE TELEMETRY ENGINE
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
     
     # Route to Module
     if page == "🔮 Predict Stress":
@@ -688,16 +648,11 @@ def show_prediction_page(model):
     # Bento Header Box
     st.markdown("""
     <div class="bento-box bento-cyan" style="margin-bottom: 1.5rem;">
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
-            <span class="bento-pill pill-cyan">MODULE 01</span>
-            <span class="bento-pill pill-yellow">INFERENCE ENGINE</span>
-            <span class="bento-pill pill-black">REAL-TIME ML</span>
-        </div>
         <h2 style="font-size: 2.2rem; font-weight: 900; margin: 0; color: #0f172a; letter-spacing: -0.5px; text-transform: uppercase;">
             🔮 STRESS LEVEL PREDICTION
         </h2>
-        <p style="color: #475569; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 6px 0 0 0;">
-            Input lifestyle and academic telemetry below for real-time model inference
+        <p style="color: #475569; font-size: 0.95rem; font-weight: 600; margin: 6px 0 0 0;">
+            Enter your daily habits and study routine below to assess your current stress level
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -707,23 +662,23 @@ def show_prediction_page(model):
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px;">
         <div style="background: #ffffff; border: 2px solid #0f172a; box-shadow: 3px 3px 0px #0f172a; border-radius: 6px; padding: 12px 14px;">
             <span class="bento-pill pill-cyan" style="font-size: 9px; padding: 2px 6px;">STEP 01</span>
-            <div style="font-weight: 900; font-size: 0.85rem; margin-top: 6px; text-transform: uppercase; color: #0f172a;">INPUT SIGNALS</div>
+            <div style="font-weight: 900; font-size: 0.85rem; margin-top: 6px; text-transform: uppercase; color: #0f172a;">YOUR HABITS</div>
             <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Sleep, headaches, study load</div>
         </div>
         <div style="background: #ffffff; border: 2px solid #0f172a; box-shadow: 3px 3px 0px #0f172a; border-radius: 6px; padding: 12px 14px;">
             <span class="bento-pill pill-yellow" style="font-size: 9px; padding: 2px 6px;">STEP 02</span>
-            <div style="font-weight: 900; font-size: 0.85rem; margin-top: 6px; text-transform: uppercase; color: #0f172a;">CALCULATE METRICS</div>
-            <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Dynamic feature derivation</div>
+            <div style="font-weight: 900; font-size: 0.85rem; margin-top: 6px; text-transform: uppercase; color: #0f172a;">HEALTH METRICS</div>
+            <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Wellbeing & pressure balance</div>
         </div>
         <div style="background: #ffffff; border: 2px solid #0f172a; box-shadow: 3px 3px 0px #0f172a; border-radius: 6px; padding: 12px 14px;">
             <span class="bento-pill pill-green" style="font-size: 9px; padding: 2px 6px;">STEP 03</span>
-            <div style="font-weight: 900; font-size: 0.85rem; margin-top: 6px; text-transform: uppercase; color: #0f172a;">ML INFERENCE</div>
-            <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Random Forest classification</div>
+            <div style="font-weight: 900; font-size: 0.85rem; margin-top: 6px; text-transform: uppercase; color: #0f172a;">AI PREDICTION</div>
+            <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Immediate stress level result</div>
         </div>
         <div style="background: #ffffff; border: 2px solid #0f172a; box-shadow: 3px 3px 0px #0f172a; border-radius: 6px; padding: 12px 14px;">
             <span class="bento-pill pill-purple" style="font-size: 9px; padding: 2px 6px;">STEP 04</span>
-            <div style="font-weight: 900; font-size: 0.85rem; margin-top: 6px; text-transform: uppercase; color: #0f172a;">ACTION PROTOCOL</div>
-            <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">AI tactical recommendations</div>
+            <div style="font-weight: 900; font-size: 0.85rem; margin-top: 6px; text-transform: uppercase; color: #0f172a;">WELLNESS PLAN</div>
+            <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Personalized recommendations</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -735,8 +690,8 @@ def show_prediction_page(model):
         st.markdown("""
         <div class="bento-box bento-cyan" style="padding: 14px 18px; margin-bottom: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="bento-pill pill-cyan">FACTOR GROUP A</span>
-                <span style="font-weight: 900; font-size: 0.85rem; color: #0369a1; text-transform: uppercase;">LIFESTYLE & RECOVERY</span>
+                <span class="bento-pill pill-cyan">LIFESTYLE & SLEEP</span>
+                <span style="font-weight: 900; font-size: 0.85rem; color: #0369a1; text-transform: uppercase;">DAILY HABITS</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -763,8 +718,8 @@ def show_prediction_page(model):
         st.markdown("""
         <div class="bento-box bento-yellow" style="padding: 14px 18px; margin-bottom: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="bento-pill pill-yellow">FACTOR GROUP B</span>
-                <span style="font-weight: 900; font-size: 0.85rem; color: #92400e; text-transform: uppercase;">ACADEMIC WORKLOAD</span>
+                <span class="bento-pill pill-yellow">ACADEMICS & STUDY</span>
+                <span style="font-weight: 900; font-size: 0.85rem; color: #92400e; text-transform: uppercase;">WORKLOAD</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -793,7 +748,7 @@ def show_prediction_page(model):
     
     st.markdown("""
     <div style="margin-bottom: 12px;">
-        <span class="bento-pill pill-purple">DYNAMIC FEATURE DERIVATION (CO-FACTORS)</span>
+        <span class="bento-pill pill-purple">DERIVED HEALTH & WORKLOAD METRICS</span>
     </div>
     """, unsafe_allow_html=True)
     
@@ -805,7 +760,7 @@ def show_prediction_page(model):
     st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
     
     # Predict button
-    if st.button("⚡ EXECUTE ML STRESS PREDICTION", type="primary", use_container_width=True):
+    if st.button("⚡ PREDICT STRESS LEVEL", type="primary", use_container_width=True):
         # Input validation
         validation_error = None
         if not (1 <= sleep_quality <= 5):
@@ -821,10 +776,10 @@ def show_prediction_page(model):
             
         if validation_error:
             show_bento_error(
-                title="Input Telemetry Validation Failed",
+                title="Input Validation Notice",
                 message=validation_error,
                 error_code="ERR_INPUT_RANGE",
-                action_hint="Adjust the input sliders to stay within standard clinical telemetry ranges."
+                action_hint="Adjust the input sliders within the valid range."
             )
         else:
             features = pd.DataFrame([{
@@ -882,14 +837,13 @@ def show_prediction_page(model):
             for i in range(1, 6)
         ])
         
-        st.markdown(f"""
+        st.html(f"""
         <div class="bento-box" style="background: {cfg['bg']}; border: 2px solid #0f172a; box-shadow: 6px 6px 0px #0f172a; margin-top: 2rem; margin-bottom: 2rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 2px solid #0f172a; padding-bottom: 12px; flex-wrap: wrap; gap: 8px;">
                 <div style="display: flex; gap: 8px;">
                     <span class="bento-pill {cfg['pill']}">PREDICTION RESULT</span>
                     <span class="bento-pill pill-black">CONFIDENCE: {confidence:.0f}%</span>
                 </div>
-                <span class="bento-pill pill-white">MODEL: RANDOM FOREST</span>
             </div>
             
             <div style="display: grid; grid-template-columns: 130px 1fr; gap: 24px; align-items: center;">
@@ -919,28 +873,18 @@ def show_prediction_page(model):
                 </div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
         
         # Recommendations
         st.markdown("""
         <div style="margin: 2.5rem 0 1.2rem 0;">
-            <div style="display: flex; gap: 8px; align-items: center;">
-                <span class="bento-pill pill-yellow">AI PROTOCOL</span>
-                <h3 style="font-size: 1.6rem; font-weight: 900; margin: 0; color: #0f172a;">
-                    💡 ACTIONABLE RECOMMENDATIONS
-                </h3>
-            </div>
+            <h3 style="font-size: 1.6rem; font-weight: 900; margin: 0; color: #0f172a;">
+                💡 ACTIONABLE RECOMMENDATIONS
+            </h3>
         </div>
         """, unsafe_allow_html=True)
         
-        engine = AIRecommendationEngine()
-        if engine.enabled and engine.api_key:
-            provider_tag = "GROQ AI (LIGHTNING FAST)" if engine.provider == 'groq' else f"{engine.provider.upper()} AI"
-            st.markdown(f'<span class="bento-pill pill-green" style="margin-bottom: 12px;">⚡ POWERED BY {provider_tag}</span>', unsafe_allow_html=True)
-        else:
-            st.markdown('<span class="bento-pill pill-yellow" style="margin-bottom: 12px;">⚡ CLINICAL RULE-BASED HEURISTICS ACTIVE</span>', unsafe_allow_html=True)
-        
-        with st.spinner("⚡ Running recommendation engine..."):
+        with st.spinner("Analyzing profile & generating recommendations..."):
             recommendations = get_recommendations(
                 predicted_stress,
                 st.session_state.input_data['sleep_quality'],
@@ -956,25 +900,20 @@ def show_prediction_page(model):
             st.markdown(f"""
             <div class="bento-box {box_type}" style="padding: 14px 18px; margin-bottom: 12px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span class="bento-pill {pill_type}">TACTIC #{i}</span>
-                    <span style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">PRIORITY ACTION</span>
+                    <span class="bento-pill {pill_type}">Tip #{i}</span>
                 </div>
                 <p style="margin: 0; font-size: 0.98rem; color: #0f172a; font-weight: 600; line-height: 1.5;">{rec}</p>
             </div>
             """, unsafe_allow_html=True)
         
-        # Ground Truth Feedback Section in Bento Light Style
+        # User Feedback Section in Bento Light Style
         st.markdown("""
         <div class="bento-box bento-purple" style="margin-top: 2rem;">
-            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                <span class="bento-pill pill-purple">COMMUNITY CALIBRATION</span>
-                <span class="bento-pill pill-green">PERSISTENCE SYNC</span>
-            </div>
             <h3 style="font-size: 1.3rem; font-weight: 900; margin: 0 0 6px 0; color: #0f172a; text-transform: uppercase;">
-                📝 REPORT YOUR ACTUAL EXPERIENCED STRESS
+                📝 How accurate was this prediction?
             </h3>
             <p style="color: #475569; font-size: 0.9rem; font-weight: 600; margin: 0 0 16px 0;">
-                Help calibrate model weights and contribute anonymous ground truth data to our telemetry database.
+                Share your actual stress level to help us continuously improve recommendations.
             </p>
         """, unsafe_allow_html=True)
         
@@ -989,35 +928,15 @@ def show_prediction_page(model):
         
         with feedback_col2:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-            if st.button("📤 SYNC TO DB", type="primary", use_container_width=True):
+            if st.button("Save Feedback", type="primary", use_container_width=True):
                 data = st.session_state.input_data.copy()
                 data['actual_stress'] = actual_stress
                 
                 success = save_user_input(data, include_stress=True)
                 if success:
-                    storage_medium = getattr(storage, 'last_storage_medium', 'DATABASE')
-                    if storage_medium == 'SUPABASE':
-                        show_bento_success(
-                            title="Telemetry Logged to Supabase",
-                            message="Your ground truth feedback was securely written to PostgreSQL with RLS protection.",
-                            success_code="SYNC_SUPABASE_OK"
-                        )
-                    else:
-                        show_bento_warning(
-                            title="Telemetry Stored Locally (CSV Fallback)",
-                            message="Cloud database unconfigured or unreachable. Your submission was safely recorded in local storage.",
-                            warning_code="STORAGE_LOCAL_CSV",
-                            action_hint="To sync directly with Supabase, add SUPABASE_URL and SUPABASE_KEY to your .env configuration."
-                        )
-                    st.balloons()
+                    st.success("✅ Thank you! Your feedback has been recorded.")
                 else:
-                    last_err = getattr(storage, 'last_error', 'Unknown storage error')
-                    show_bento_error(
-                        title="Telemetry Sync Failed",
-                        message=f"Unable to write telemetry data: {last_err}",
-                        error_code="ERR_STORAGE_WRITE",
-                        action_hint="Check disk write permissions or internet connectivity."
-                    )
+                    st.error("Unable to record feedback right now. Please try again.")
         
         st.markdown("</div>", unsafe_allow_html=True)
 
@@ -1065,17 +984,11 @@ def show_analytics_page(stats_df):
     # Bento Header
     st.markdown("""
     <div class="bento-box bento-green" style="margin-bottom: 1.5rem;">
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
-            <span class="bento-pill pill-green">MODULE 02</span>
-            <span class="bento-pill pill-yellow">COMMUNITY TELEMETRY</span>
-            <span class="bento-pill pill-cyan">N=1,100 GROUND TRUTH</span>
-            <span class="bento-pill pill-black">REAL-TIME INSIGHTS</span>
-        </div>
         <h2 style="font-size: 2.2rem; font-weight: 900; margin: 0; color: #0f172a; letter-spacing: -0.5px; text-transform: uppercase;">
-            📊 COMMUNITY TELEMETRY & DATASET INSIGHTS
+            📊 STUDENT WELLNESS ANALYTICS
         </h2>
-        <p style="color: #475569; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 6px 0 0 0;">
-            Historic submission trends, cross-factor correlations, and population metrics
+        <p style="color: #475569; font-size: 0.95rem; font-weight: 600; margin: 6px 0 0 0;">
+            Comprehensive trends, lifestyle factor correlations, and student population statistics
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -1089,7 +1002,7 @@ def show_analytics_page(stats_df):
         # Bento KPI Metrics Ribbon (4 Cards)
         st.markdown("""
         <div style="margin-bottom: 12px;">
-            <span class="bento-pill pill-yellow">POPULATION TELEMETRY OVERVIEW</span>
+            <span class="bento-pill pill-yellow">STUDENT COMMUNITY METRICS</span>
         </div>
         """, unsafe_allow_html=True)
 
@@ -1182,13 +1095,13 @@ def show_analytics_page(stats_df):
                     st.plotly_chart(fig_pie, use_container_width=True)
 
         # Raw data Bento expander
-        with st.expander("🔍 VIEW TELEMETRY RAW DATASET & EXPORT"):
+        with st.expander("🔍 VIEW DATASET & EXPORT"):
             st.dataframe(stats_df, use_container_width=True)
             csv = stats_df.to_csv(index=False)
             st.download_button(
-                label="📥 EXPORT TELEMETRY TO CSV",
+                label="📥 DOWNLOAD DATASET (CSV)",
                 data=csv,
-                file_name=f"stress_telemetry_{datetime.now().strftime('%Y%m%d')}.csv",
+                file_name=f"stress_data_{datetime.now().strftime('%Y%m%d')}.csv",
                 mime="text/csv"
             )
 
@@ -1214,10 +1127,10 @@ def show_analytics_page(stats_df):
             st.markdown("""
             <div class="bento-box bento-purple" style="margin-bottom: 16px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <span class="bento-pill pill-purple">PERSISTENCE</span>
+                    <span class="bento-pill pill-purple">DATA STORAGE</span>
                     <span style="font-size: 11px; font-weight: 800; color: #6b21a8;">POSTGRESQL</span>
                 </div>
-                <h4 style="margin: 0 0 8px 0; color: #0f172a;">⚡ SUPABASE & RLS POLICIES</h4>
+                <h4 style="margin: 0 0 8px 0; color: #0f172a;">⚡ SECURE STORAGE</h4>
                 <p style="color: #475569; font-size: 0.9rem; line-height: 1.5; font-weight: 600;">
                     Row Level Security (RLS) protects table integrity with automatic graceful fallback to local encrypted CSV storage when offline.
                 </p>
@@ -1231,9 +1144,9 @@ def show_analytics_page(stats_df):
                     <span class="bento-pill pill-cyan">DATASET</span>
                     <span style="font-size: 11px; font-weight: 800; color: #0369a1;">N=1,100</span>
                 </div>
-                <h4 style="margin: 0 0 8px 0; color: #0f172a;">📊 VERIFIED GROUND TRUTH</h4>
+                <h4 style="margin: 0 0 8px 0; color: #0f172a;">📊 RESEARCH DATASET</h4>
                 <p style="color: #475569; font-size: 0.9rem; line-height: 1.5; font-weight: 600;">
-                    Trained on curated <code>StressLevelDataset.csv</code> containing 1,100 verified responses across 21 indicators with zero synthetic data.
+                    Trained on curated student dataset containing 1,100 verified responses across 21 lifestyle and physiological indicators.
                 </p>
             </div>
             """, unsafe_allow_html=True)
@@ -1276,15 +1189,12 @@ def show_analytics_page(stats_df):
 
     # Footer Strip
     st.markdown("""
-    <div style="background: #ffffff; border: 2px solid #0f172a; box-shadow: 4px 4px 0px 0px #0f172a; border-radius: 8px; padding: 16px 20px; text-align: center; margin-top: 2rem;">
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 6px;">
-            <span class="bento-pill pill-yellow">⚡ STRESS.AI v2.4</span>
-            <span class="bento-pill pill-cyan">STREAMLIT + PYTHON 3.10</span>
-            <span class="bento-pill pill-green">PERSISTENCE SYNC</span>
-            <span class="bento-pill pill-black">100% BENTO LIGHT THEME</span>
-        </div>
-        <p style="color: #64748b; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 6px 0 0 0;">
-            Engineered for high performance, accessibility, and zero-compromise design standards.
+    <div style="background: #ffffff; border: 2px solid #0f172a; box-shadow: 4px 4px 0px 0px #0f172a; border-radius: 8px; padding: 18px 20px; text-align: center; margin-top: 2rem;">
+        <p style="color: #0f172a; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; margin: 0 0 4px 0;">
+            Student Stress Prediction & Wellness Platform
+        </p>
+        <p style="color: #64748b; font-size: 0.85rem; font-weight: 600; margin: 0;">
+            Designed to support student health, academic balance, and mental well-being.
         </p>
     </div>
     """, unsafe_allow_html=True)

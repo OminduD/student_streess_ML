@@ -46,28 +46,59 @@ class AIRecommendationEngine:
         self.timeout = self.config.get('timeout', 10)
         self.max_tokens = self.config.get('max_tokens', 500)
         
+    @staticmethod
+    def _clean_key(key: Optional[str]) -> Optional[str]:
+        """Clean and validate API key string, filtering out dummy placeholders."""
+        if not key:
+            return None
+        cleaned = str(key).strip().strip("'\"")
+        if cleaned.lower() in ("your_groq_api_key_here", "your-api-key-here", "your_api_key_here", "none", ""):
+            return None
+        # Handle accidental leading character paste errors (e.g. ygsk_ -> gsk_)
+        if cleaned.startswith("ygsk_"):
+            cleaned = cleaned[1:]
+        return cleaned if len(cleaned) > 10 else None
+
     def _get_api_key(self) -> Optional[str]:
         """
         Get API key from multiple sources with priority:
         1. Streamlit secrets (for Streamlit Cloud)
         2. Environment variables (GROQ_API_KEY or AI_API_KEY)
-        3. Config file (fallback)
+        3. Local .env file fallback
+        4. Config file (fallback)
         """
         # Try Streamlit secrets first (for cloud deployment)
         if HAS_STREAMLIT:
             try:
                 if hasattr(st, 'secrets') and 'GROQ_API_KEY' in st.secrets:
-                    return st.secrets['GROQ_API_KEY']
+                    val = self._clean_key(st.secrets['GROQ_API_KEY'])
+                    if val:
+                        return val
             except Exception:
                 pass  # Secrets not available, try other sources
         
         # Try environment variables
-        api_key = os.getenv('GROQ_API_KEY') or os.getenv('AI_API_KEY')
+        api_key = self._clean_key(os.getenv('GROQ_API_KEY') or os.getenv('AI_API_KEY'))
         if api_key:
             return api_key
         
-        # Fallback to config file (not recommended for production)
-        return self.config.get('api_key')
+        # Try reading .env file directly if not loaded into os.environ
+        try:
+            env_file = os.path.join(os.path.dirname(__file__), '.env')
+            if os.path.exists(env_file):
+                with open(env_file, 'r') as f:
+                    for line in f:
+                        line = line.strip()
+                        if line.startswith('GROQ_API_KEY='):
+                            raw_val = line.split('=', 1)[1]
+                            val = self._clean_key(raw_val)
+                            if val:
+                                return val
+        except Exception:
+            pass
+
+        # Fallback to config file
+        return self._clean_key(self.config.get('api_key'))
     
     def _load_config(self, config_path: str) -> Dict:
         """Load configuration from file."""
@@ -263,63 +294,78 @@ Format each recommendation on a new line starting with an emoji."""
         academic_perf, study_load, extracurricular
     ) -> List[str]:
         """
-        Get recommendations from Groq API (SUPER FAST and FREE!).
-        Groq provides incredibly fast inference with generous free tier.
-        Sign up at: https://console.groq.com
+        Get recommendations from Groq API with automatic fallback models.
         """
-        
         url = self.api_url or "https://api.groq.com/openai/v1/chat/completions"
-        
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
         }
         
-        # Groq supports models like llama-3.1-70b-versatile (best quality)
-        # or llama-3.1-8b-instant (fastest)
-        model = self.model or "llama-3.1-70b-versatile"
+        # Candidate models on Groq in priority order
+        preferred_models = [self.model, "qwen/qwen3.8-27b", "openai/gpt-oss-120b", "openai/gpt-oss-20b"]
+        candidate_models = []
+        for m in preferred_models:
+            if m and m not in candidate_models:
+                candidate_models.append(m)
         
-        data = {
-            "model": model,
-            "messages": [
-                {
-                    "role": "system",
-                    "content": "You are an empathetic student wellness advisor specializing in stress management and mental health support. Provide practical, actionable advice."
-                },
-                {
-                    "role": "user",
-                    "content": self._create_prompt(
-                        stress_level, sleep_quality, headaches,
-                        academic_perf, study_load, extracurricular
-                    )
-                }
-            ],
-            "max_tokens": self.max_tokens,
-            "temperature": 0.7,
-            "top_p": 0.9,
-            "stream": False
-        }
+        prompt_text = self._create_prompt(
+            stress_level, sleep_quality, headaches,
+            academic_perf, study_load, extracurricular
+        )
         
-        response = requests.post(url, headers=headers, json=data, timeout=self.timeout)
-        response.raise_for_status()
+        last_exception = None
+        for model_name in candidate_models:
+            data = {
+                "model": model_name,
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "You are an empathetic student wellness advisor specializing in stress management and mental health support. Provide 3 to 5 practical, actionable recommendations tailored for students."
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt_text
+                    }
+                ],
+                "max_tokens": self.max_tokens,
+                "temperature": 0.7,
+                "stream": False
+            }
+            
+            try:
+                response = requests.post(url, headers=headers, json=data, timeout=self.timeout)
+                if response.status_code == 404:
+                    # Model not found on Groq, try next candidate
+                    continue
+                response.raise_for_status()
+                result = response.json()
+                choice = result.get('choices', [{}])[0].get('message', {})
+                content = choice.get('content') or choice.get('reasoning') or ""
+                
+                # Parse recommendations (split by lines, filter empty)
+                recommendations = [
+                    line.strip() 
+                    for line in content.split('\n') 
+                    if line.strip() and len(line.strip()) > 10
+                ]
+                
+                # Remove common prefixes like numbers, bullets, dashes
+                recommendations = [
+                    rec.lstrip('0123456789.-)•* ') 
+                    for rec in recommendations
+                ]
+                
+                valid_recs = [r for r in recommendations if len(r) > 10]
+                if valid_recs:
+                    return valid_recs[:5]
+            except Exception as e:
+                last_exception = e
+                continue
         
-        result = response.json()
-        content = result['choices'][0]['message']['content']
-        
-        # Parse recommendations (split by lines, filter empty)
-        recommendations = [
-            line.strip() 
-            for line in content.split('\n') 
-            if line.strip() and len(line.strip()) > 10
-        ]
-        
-        # Remove common prefixes
-        recommendations = [
-            rec.lstrip('0123456789.-) ') 
-            for rec in recommendations
-        ]
-        
-        return recommendations[:5]  # Max 5 recommendations
+        if last_exception:
+            raise last_exception
+        return self._fallback_recommendations(stress_level, sleep_quality, headaches, study_load)
     
     def _get_anthropic_recommendations(
         self, stress_level, sleep_quality, headaches,
