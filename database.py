@@ -79,8 +79,8 @@ class DataStorage:
                 supabase_key = os.getenv("SUPABASE_KEY")
 
             if not supabase_url or not supabase_key:
-                st.error("❌ **Supabase Error**: `SUPABASE_URL` or `SUPABASE_KEY` not found in secrets or environment variables.")
-                st.info("Please set them in your Streamlit Cloud secrets or a local .env file.")
+                self.connection_status = "unconfigured"
+                self.connection_error = "SUPABASE_URL or SUPABASE_KEY not set. Operating in local CSV storage mode."
                 self.use_supabase = False
                 return
 
@@ -90,12 +90,12 @@ class DataStorage:
                 supabase_url = supabase_url[:-8].rstrip("/")
             
             self.supabase_client = create_client(supabase_url, supabase_key)
-            # Don't show success message on every run, only on first connection.
-            # This is handled by the singleton pattern.
+            self.connection_status = "connected"
+            self.connection_error = None
             
         except Exception as e:
-            st.error(f"❌ **Failed to connect to Supabase**: {e}")
-            st.info("Using CSV as a fallback. Check your Supabase URL and Key.")
+            self.connection_status = "offline"
+            self.connection_error = f"Failed to connect to Supabase: {str(e)}"
             self.use_supabase = False
     
     def save_user_input(self, data: Dict, include_stress: bool = False) -> bool:
@@ -126,31 +126,39 @@ class DataStorage:
             record['stress_level'] = None
         
         if self.use_supabase:
-            return self._save_to_supabase(record)
+            success = self._save_to_supabase(record)
+            if success:
+                self.last_storage_medium = "supabase"
+                return True
+            # Fall back to CSV if Supabase failed
+            csv_saved = self._save_to_csv(record)
+            if csv_saved:
+                self.last_storage_medium = "csv_fallback"
+            return csv_saved
         else:
-            st.warning("⚠️ Supabase not connected. Saving to local CSV file as a fallback.")
-            return self._save_to_csv(record)
+            saved = self._save_to_csv(record)
+            if saved:
+                self.last_storage_medium = "csv"
+            return saved
     
     def _save_to_supabase(self, record: Dict) -> bool:
         """Save record to Supabase"""
         if not self.supabase_client:
-            st.error("❌ Cannot save to Supabase, client not initialized.")
+            self.last_error = "Cannot save to Supabase: client is uninitialized."
             return False
         try:
             result = self.supabase_client.table('user_inputs').insert(record).execute()
             
             # Check for API errors in the result
             if hasattr(result, 'error') and result.error:
-                st.error(f"❌ **Supabase API Error**: {result.error.message}")
-                st.info("This could be due to incorrect RLS policies or table structure.")
+                self.last_error = f"Supabase API Error: {result.error.message}"
                 return False
 
-            st.success(f"✓ Thank you! Your data has been saved to the cloud.")
+            self.last_error = None
             return True
         except Exception as e:
-            st.error(f"❌ **Error saving to Supabase**: {e}")
-            st.info("Falling back to CSV.")
-            return self._save_to_csv(record)
+            self.last_error = f"Error saving to Supabase: {str(e)}"
+            return False
     
     def _save_to_csv(self, record: Dict) -> bool:
         """Save record to CSV file"""
@@ -163,10 +171,10 @@ class DataStorage:
             else:
                 df.to_csv(self.csv_path, mode='w', header=True, index=False)
             
-            st.info(f"✓ Data saved to local CSV: {self.csv_path}")
+            self.last_error = None
             return True
         except Exception as e:
-            st.error(f"❌ Error saving to CSV: {e}")
+            self.last_error = f"Error saving to CSV: {str(e)}"
             return False
     
     def get_all_data(self) -> Optional[pd.DataFrame]:
@@ -176,34 +184,31 @@ class DataStorage:
         Returns:
             DataFrame with all data, or None if error
         """
-        if self.use_supabase:
-            return self._get_from_supabase()
-        else:
-            st.info("ℹ️ Supabase not connected. Loading data from local CSV file.")
-            return self._get_from_csv()
+        if self.use_supabase and self.supabase_client:
+            df = self._get_from_supabase()
+            if df is not None:
+                return df
+        return self._get_from_csv()
     
     def _get_from_supabase(self) -> Optional[pd.DataFrame]:
         """Retrieve data from Supabase"""
         if not self.supabase_client:
-            st.error("❌ Cannot get data from Supabase, client not initialized.")
             return None
         try:
             result = self.supabase_client.table('user_inputs').select("*").execute()
             
             if hasattr(result, 'error') and result.error:
-                st.error(f"❌ **Supabase API Error (get_all_data)**: {result.error.message}")
+                self.last_error = f"Supabase API Error (get_all_data): {result.error.message}"
                 return None
 
             if result.data:
-                df = pd.DataFrame(result.data)
-                return df
+                return pd.DataFrame(result.data)
             else:
                 return pd.DataFrame() # Return empty dataframe
                 
         except Exception as e:
-            st.error(f"❌ **Error retrieving from Supabase**: {e}")
-            st.info("Falling back to CSV.")
-            return self._get_from_csv()
+            self.last_error = f"Error retrieving from Supabase: {str(e)}"
+            return None
     
     def _get_from_csv(self) -> Optional[pd.DataFrame]:
         """Retrieve data from CSV file"""

@@ -232,8 +232,8 @@ def render_bento_dashboard(stats_df=None):
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }}
         body {{
-          background-color: #12141c;
-          color: #f3f4f6;
+          background-color: #f8fafc;
+          color: #0f172a;
           padding: 16px;
         }}
         .header {{
@@ -242,7 +242,7 @@ def render_bento_dashboard(stats_df=None):
           justify-content: space-between;
           align-items: flex-end;
           gap: 16px;
-          border-bottom: 3px solid #fff;
+          border-bottom: 2px solid #0f172a;
           padding-bottom: 16px;
           margin-bottom: 24px;
         }}
@@ -255,17 +255,19 @@ def render_bento_dashboard(stats_df=None):
           font-size: 11px;
           font-weight: 900;
           text-transform: uppercase;
-          padding: 3px 8px;
-          border: 2px solid #000;
+          padding: 4px 10px;
+          border: 1.5px solid #0f172a;
+          border-radius: 4px;
+          box-shadow: 2px 2px 0px #0f172a;
         }}
-        .pill-black {{ background: #000; color: #fff; border-color: #fff; }}
-        .pill-green {{ background: #4ade80; color: #000; }}
+        .pill-black {{ background: #0f172a; color: #ffffff; }}
+        .pill-green {{ background: #bbf7d0; color: #14532d; }}
         .title {{
-          font-size: 32px;
+          font-size: 28px;
           font-weight: 900;
           text-transform: uppercase;
-          letter-spacing: -1px;
-          color: #fff;
+          letter-spacing: -0.5px;
+          color: #0f172a;
           display: flex;
           align-items: center;
           gap: 10px;
@@ -273,7 +275,7 @@ def render_bento_dashboard(stats_df=None):
         .subtitle {{
           font-size: 13px;
           font-weight: 700;
-          color: #9ca3af;
+          color: #475569;
           text-transform: uppercase;
           letter-spacing: 1px;
           margin-top: 4px;
@@ -284,9 +286,11 @@ def render_bento_dashboard(stats_df=None):
           gap: 8px;
         }}
         .tab-btn {{
-          background: #1f2430;
-          color: #fff;
-          border: 3px solid #fff;
+          background: #ffffff;
+          color: #0f172a;
+          border: 2px solid #0f172a;
+          border-radius: 6px;
+          box-shadow: 2px 2px 0px #0f172a;
           font-weight: 900;
           font-size: 12px;
           text-transform: uppercase;
@@ -298,19 +302,20 @@ def render_bento_dashboard(stats_df=None):
           gap: 8px;
         }}
         .tab-btn:hover {{
-          background: #2d3345;
+          background: #f1f5f9;
         }}
         .tab-btn.active {{
-          background: #fff;
-          color: #000;
-          box-shadow: 4px 4px 0px 0px #60a5fa;
+          background: #0f172a;
+          color: #ffffff;
+          box-shadow: 3px 3px 0px 0px #0284c7;
           transform: translate(-2px, -2px);
         }}
         .tab-badge {{
           font-size: 10px;
           padding: 2px 6px;
           border: 1px solid currentColor;
-          background: rgba(0,0,0,0.1);
+          background: rgba(0,0,0,0.06);
+          border-radius: 3px;
         }}
 
         /* BENTO GRID */
@@ -331,11 +336,12 @@ def render_bento_dashboard(stats_df=None):
           gap: 24px;
         }}
 
-        /* BRUTALIST CARD */
+        /* BRUTALIST CARD (LIGHT BENTO) */
         .brutalist-card {{
-          background: #181b24;
-          border: 3px solid #fff;
-          box-shadow: 8px 8px 0px 0px #fff;
+          background: #ffffff;
+          border: 2px solid #0f172a;
+          box-shadow: 5px 5px 0px 0px #0f172a;
+          border-radius: 10px;
           padding: 20px;
           position: relative;
           display: flex;
@@ -346,22 +352,23 @@ def render_bento_dashboard(stats_df=None):
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: 3px solid #fff;
+          border-bottom: 2px solid #e2e8f0;
           padding-bottom: 12px;
           margin-bottom: 16px;
         }}
         .card-title {{
-          font-size: 18px;
+          font-size: 17px;
           font-weight: 900;
           text-transform: uppercase;
-          color: #fff;
+          color: #0f172a;
         }}
         .real-data-tag {{
           font-size: 10px;
           font-weight: 900;
-          background: #000;
-          color: #4ade80;
-          border: 1px solid #4ade80;
+          background: #f0fdf4;
+          color: #166534;
+          border: 1.5px solid #16a34a;
+          border-radius: 4px;
           padding: 2px 6px;
           font-family: monospace;
         }}
@@ -387,7 +394,8 @@ def render_bento_dashboard(stats_df=None):
         }}
         .bar {{
           width: 100%;
-          border: 3px solid #fff;
+          border: 2px solid #0f172a;
+          border-radius: 4px 4px 0 0;
           cursor: pointer;
           transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           position: relative;
@@ -401,9 +409,9 @@ def render_bento_dashboard(stats_df=None):
         .bar-label {{
           margin-top: 8px;
           font-size: 11px;
-          font-weight: 900;
+          font-weight: 800;
           font-family: monospace;
-          color: #e5e7eb;
+          color: #334155;
           text-align: center;
         }}
         .bar-tooltip {{
@@ -412,15 +420,16 @@ def render_bento_dashboard(stats_df=None):
           bottom: 105%;
           left: 50%;
           transform: translateX(-50%);
-          background: #fff;
-          color: #000;
-          border: 2px solid #000;
+          background: #0f172a;
+          color: #ffffff;
+          border: 1.5px solid #0f172a;
           padding: 3px 8px;
           font-size: 11px;
           font-weight: 900;
           white-space: nowrap;
           z-index: 30;
-          box-shadow: 3px 3px 0px 0px #000;
+          border-radius: 4px;
+          box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.2);
         }}
         .bar-col:hover .bar-tooltip {{
           display: block;
@@ -459,21 +468,26 @@ def render_bento_dashboard(stats_df=None):
           align-items: center;
           justify-content: space-between;
           padding: 6px 8px;
-          border: 2px solid #374151;
-          background: #111827;
+          border: 1.5px solid #cbd5e1;
+          background: #f8fafc;
+          border-radius: 6px;
           font-size: 12px;
           font-weight: 900;
+          color: #0f172a;
           cursor: pointer;
           transition: all 0.15s ease;
         }}
         .radar-stat-item:hover {{
-          border-color: #fff;
+          border-color: #0f172a;
+          background: #ffffff;
+          box-shadow: 2px 2px 0px #0f172a;
           transform: translateX(4px);
         }}
         .radar-stat-dot {{
           width: 10px;
           height: 10px;
-          border: 1px solid #fff;
+          border: 1px solid #0f172a;
+          border-radius: 2px;
           margin-right: 6px;
         }}
 
@@ -503,17 +517,18 @@ def render_bento_dashboard(stats_df=None):
           font-size: 28px;
           font-weight: 900;
           font-family: monospace;
-          color: #fff;
+          color: #0f172a;
         }}
         .donut-center-label {{
           font-size: 10px;
           font-weight: 900;
           text-transform: uppercase;
           letter-spacing: 1px;
-          background: #fff;
-          color: #000;
+          background: #0f172a;
+          color: #ffffff;
           padding: 2px 6px;
-          border: 1px solid #000;
+          border: 1px solid #0f172a;
+          border-radius: 4px;
           margin-top: 4px;
         }}
         .donut-legend-grid {{
@@ -527,19 +542,23 @@ def render_bento_dashboard(stats_df=None):
           align-items: center;
           justify-content: space-between;
           padding: 8px 10px;
-          border: 2px solid #fff;
-          background: #111827;
-          box-shadow: 3px 3px 0px 0px #fff;
+          border: 2px solid #0f172a;
+          background: #ffffff;
+          border-radius: 6px;
+          box-shadow: 3px 3px 0px 0px #e2e8f0;
           cursor: pointer;
+          color: #0f172a;
           transition: transform 0.15s ease;
         }}
         .donut-legend-item:hover {{
           transform: translateY(-2px);
+          box-shadow: 3px 3px 0px 0px #0f172a;
         }}
         .legend-name {{
           font-size: 11px;
           font-weight: 900;
           text-transform: uppercase;
+          color: #0f172a;
           display: flex;
           align-items: center;
           gap: 6px;
@@ -547,6 +566,7 @@ def render_bento_dashboard(stats_df=None):
         .legend-pct {{
           font-size: 13px;
           font-weight: 900;
+          color: #0f172a;
           font-family: monospace;
         }}
       </style>
@@ -688,7 +708,7 @@ def render_bento_dashboard(stats_df=None):
             const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
             path.setAttribute("d", pathD);
             path.setAttribute("fill", "none");
-            path.setAttribute("stroke", "rgba(255,255,255,0.15)");
+            path.setAttribute("stroke", "rgba(15, 23, 42, 0.12)");
             path.setAttribute("stroke-width", "1.5");
             path.setAttribute("stroke-dasharray", "3 3");
             svg.appendChild(path);
@@ -702,7 +722,7 @@ def render_bento_dashboard(stats_df=None):
             line.setAttribute("y1", "110");
             line.setAttribute("x2", c.x);
             line.setAttribute("y2", c.y);
-            line.setAttribute("stroke", "rgba(255,255,255,0.15)");
+            line.setAttribute("stroke", "rgba(15, 23, 42, 0.12)");
             line.setAttribute("stroke-width", "1.5");
             svg.appendChild(line);
           }});
@@ -715,9 +735,9 @@ def render_bento_dashboard(stats_df=None):
 
           const poly = document.createElementNS("http://www.w3.org/2000/svg", "path");
           poly.setAttribute("d", polyD);
-          poly.setAttribute("fill", "rgba(96, 165, 250, 0.45)");
-          poly.setAttribute("stroke", "#fff");
-          poly.setAttribute("stroke-width", "3");
+          poly.setAttribute("fill", "rgba(2, 132, 199, 0.20)");
+          poly.setAttribute("stroke", "#0284c7");
+          poly.setAttribute("stroke-width", "2.5");
           poly.setAttribute("stroke-linejoin", "round");
           svg.appendChild(poly);
 
@@ -729,7 +749,7 @@ def render_bento_dashboard(stats_df=None):
             circle.setAttribute("cy", c.y);
             circle.setAttribute("r", "5");
             circle.setAttribute("fill", d.color);
-            circle.setAttribute("stroke", "#fff");
+            circle.setAttribute("stroke", "#0f172a");
             circle.setAttribute("stroke-width", "2");
             svg.appendChild(circle);
           }});
@@ -745,7 +765,7 @@ def render_bento_dashboard(stats_df=None):
                 <span class="radar-stat-dot" style="background:${{d.color}}"></span>
                 <span>${{d.label}}</span>
               </div>
-              <span style="font-family:monospace; color:#60a5fa;">${{d.value}}%</span>
+              <span style="font-family:monospace; color:#0369a1; font-weight:800;">${{d.value}}%</span>
             `;
             statsList.appendChild(row);
           }});
@@ -771,7 +791,7 @@ def render_bento_dashboard(stats_df=None):
             const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
             path.setAttribute("d", pathD);
             path.setAttribute("fill", slice.color);
-            path.setAttribute("stroke", "#181b24");
+            path.setAttribute("stroke", "#ffffff");
             path.setAttribute("stroke-width", "0.04");
             path.style.cursor = "pointer";
             path.style.transition = "transform 0.15s ease";
@@ -793,8 +813,8 @@ def render_bento_dashboard(stats_df=None):
           cutout.setAttribute("cx", "0");
           cutout.setAttribute("cy", "0");
           cutout.setAttribute("r", "0.58");
-          cutout.setAttribute("fill", "#181b24");
-          cutout.setAttribute("stroke", "#fff");
+          cutout.setAttribute("fill", "#ffffff");
+          cutout.setAttribute("stroke", "#0f172a");
           cutout.setAttribute("stroke-width", "0.03");
           svg.appendChild(cutout);
 
@@ -806,7 +826,7 @@ def render_bento_dashboard(stats_df=None):
             item.className = "donut-legend-item";
             item.innerHTML = `
               <div class="legend-name">
-                <span style="width:10px; height:10px; border:1px solid #fff; background:${{slice.color}}"></span>
+                <span style="width:10px; height:10px; border:1px solid #0f172a; border-radius:2px; background:${{slice.color}}"></span>
                 <span>${{slice.label}}</span>
               </div>
               <span class="legend-pct">${{slice.value}}%</span>
