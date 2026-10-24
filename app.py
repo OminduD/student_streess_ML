@@ -15,6 +15,7 @@ import plotly.graph_objects as go
 from pathlib import Path
 from ai_recommender import get_ai_recommendations
 from database import get_storage
+from bento_component import render_bento_dashboard
 
 # Page configuration
 st.set_page_config(
@@ -919,7 +920,7 @@ def main():
         """, unsafe_allow_html=True)
         
         page = st.radio("Select Page:", 
-                       ["🔮 Predict Stress", "📊 Statistics", "ℹ️ About"],
+                       ["🔮 Predict Stress", "🍱 Bento Analytics", "📊 Statistics", "ℹ️ About"],
                        label_visibility="collapsed")
         
         st.markdown("---")
@@ -1005,6 +1006,8 @@ def main():
     # Main content based on page selection
     if page == "🔮 Predict Stress":
         show_prediction_page(model)
+    elif page == "🍱 Bento Analytics":
+        render_bento_dashboard(stats_df)
     elif page == "📊 Statistics":
         show_statistics_page()
     else:
@@ -1320,6 +1323,12 @@ def get_recommendations(stress_level, sleep_quality, headaches, study_load,
 
 def show_statistics_page():
     """Display statistics page with ultra-modern design"""
+    stats_df = load_statistics()
+
+    # Neo-Brutalist Bento Dashboard (Real Data Driven)
+    render_bento_dashboard(stats_df)
+
+    st.markdown("---")
     st.markdown("""
     <div class="glass-card" style="text-align: center; margin-bottom: 2.5rem; animation-delay: 0.1s; 
                  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
@@ -1327,16 +1336,14 @@ def show_statistics_page():
                  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(100, 181, 246, 0.2);">
         <h1 style="background: linear-gradient(135deg, #64b5f6 0%, #4db6ac 50%, #ffb74d 100%);
                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-                   font-weight: 800; font-size: 3rem; margin: 0; text-shadow: 0 0 30px rgba(100, 181, 246, 0.5);">
-            📊 Data Analytics Dashboard
+                   font-weight: 800; font-size: 2.2rem; margin: 0; text-shadow: 0 0 30px rgba(100, 181, 246, 0.5);">
+            📊 Detailed Community Telemetry & Timeline
         </h1>
-        <p style="color: #b8bdc8; margin-top: 1rem; font-size: 1.1rem; font-weight: 500;">
-            Real-time insights from the student community 🚀
+        <p style="color: #b8bdc8; margin-top: 0.5rem; font-size: 1rem; font-weight: 500;">
+            Historic submission trends and deep distributions 🚀
         </p>
     </div>
     """, unsafe_allow_html=True)
-
-    stats_df = load_statistics()
 
     if stats_df is None or len(stats_df) == 0:
         st.markdown("""
